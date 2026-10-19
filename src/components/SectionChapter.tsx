@@ -36,7 +36,7 @@ export function SectionChapter({
   const notedListingId = meta ? listings.find((l) => l.category === meta.note.beforeCategory)?.id : undefined;
 
   return (
-    <section id={`section-${section.id}`} aria-labelledby={`heading-${section.id}`} className="scroll-mt-20 lg:scroll-mt-6">
+    <section id={`section-${section.id}`} aria-labelledby={`heading-${section.id}`} className="chapter">
       <header className="halftone mb-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 border-b-[3px] border-ink pb-3">
         <div className="flex items-center gap-3">
           <span className="chapter-num" aria-hidden="true">
@@ -45,7 +45,7 @@ export function SectionChapter({
           <div>
             <h2
               id={`heading-${section.id}`}
-              className="font-display text-3xl font-bold uppercase leading-none tracking-tight md:text-5xl"
+              className="font-display text-balance text-3xl font-bold uppercase leading-none tracking-tight md:text-5xl"
             >
               <span className="sr-only">Chapter {section.number}: </span>
               {section.title}

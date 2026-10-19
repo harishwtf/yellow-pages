@@ -30,6 +30,7 @@ export function SearchBar({ value, onChange, resultCount, total }: SearchBarProp
         <input
           id="guide-search"
           type="search"
+          name="q"
           className="search-input"
           placeholder={COPY.searchPlaceholder}
           value={value}

@@ -27,7 +27,7 @@ src/
   data/listings.json          generated; { sections: [{ id, number, title, listings: [...] }] }
   data/annotations.ts         UI copy, thumb-tab labels, margin notes, featured card, storage keys
   lib/                        phone formatting, search matching, clipboard, deterministic wobble
-  hooks/                      useLocalStorage (try/catch), useInView, useActiveSection, useToast
+  hooks/                      useLocalStorage (try/catch), useInView, useActiveSection, useToast, useUrlState
   components/
     Header                    phone-book cover masthead with torn bottom edge
     SectionNav                thumb-index tabs (sticky strip on mobile, right-edge stack on desktop)
@@ -58,8 +58,26 @@ a CSS radial-gradient vignette and halftone, a CSS coffee ring and an SVG torn e
 of `<section>-<category>-<name>`. Nothing in the UI invents data: ratings, phones and links are
 shown exactly as listed, and a phone like "1533 (WhatsApp …)" dials the part before the bracket.
 
+## Linkable state
+
+Search, per-chapter category filters and the My Page drawer are mirrored into the query string
+(`?q=gas&kitchen=Gas&page=mine`), and the active chapter into the hash, so any view can be
+shared or bookmarked. Writes use `replaceState`, debounced, so typing never spams history.
+
 ## Local state
 
 Favourites (`movein-guide:favorites`) and the chapter checklist (`movein-guide:checklist`)
 are stored in `localStorage`; every access is wrapped in try/catch so private mode or a full
 quota only loses persistence, never the page.
+
+## Versions
+
+- **v1** — first complete build: data pipeline, paper textures, annotations, search, favourites,
+  checklist, self-hosted fonts.
+- **v2** — audited against Vercel's Web Interface Guidelines (`web-design-guidelines` skill):
+  URL-linkable search, filters and drawer; Undo when a place is taken off My Page; hover and
+  thumb-tab motion on transform/opacity only; safe-area insets and `viewport-fit=cover`;
+  `touch-action: manipulation` and intentional tap highlight; `scroll-padding-top` so the sticky
+  tab strip never covers a focused element; `overscroll-behavior` on the drawer and desktop page;
+  `content-visibility: auto` per chapter; `text-balance` / `text-pretty`, curly quotes, non-breaking
+  spaces and `translate="no"` on names and numbers; modifier-clicks on thumb tabs left to the browser.

@@ -58,12 +58,17 @@ export function ListingCard({ listing, query, isFavorite, onToggleFavorite, onNo
 
   const titleRow = (
     <div className="leader-row">
-      <h3 className="min-w-0 text-[1.05rem] font-bold uppercase leading-tight tracking-wide">
+      <h3 className="min-w-0 text-pretty text-[1.05rem] font-bold uppercase leading-tight tracking-wide" translate="no">
         <Highlight text={listing.name} query={query} />
       </h3>
       <span aria-hidden="true" className="leader" />
       {phone ? (
-        <a className="phone" href={telHref(listing.phone as string)} aria-label={`Call ${listing.name}: ${phone.primary}`}>
+        <a
+          className="phone"
+          translate="no"
+          href={telHref(listing.phone as string)}
+          aria-label={`Call ${listing.name}: ${phone.primary}`}
+        >
           {phone.primary}
         </a>
       ) : (
@@ -73,14 +78,14 @@ export function ListingCard({ listing, query, isFavorite, onToggleFavorite, onNo
   );
 
   const meta = (
-    <p className="text-[0.92rem] leading-snug text-ink-soft">
+    <p className="min-w-0 break-words text-[0.92rem] leading-snug text-ink-soft">
       <Highlight text={listing.category} query={query} />
       {listing.rating !== null && (
         <>
           <span aria-hidden="true"> · </span>
           <HandCircle active={circled}>
-            <span className="font-bold text-ink">
-              <span aria-hidden="true">★ </span>
+            <span className="font-bold tabular-nums text-ink">
+              <span aria-hidden="true">{'★\u00A0'}</span>
               <span className="sr-only">rated </span>
               {listing.rating.toFixed(1)}
             </span>
@@ -117,13 +122,17 @@ export function ListingCard({ listing, query, isFavorite, onToggleFavorite, onNo
         </span>
       )}
       {titleRow}
-      {phone?.extra && <p className="mt-1 text-right text-sm tabular-nums text-ink-soft">{phone.extra}</p>}
+      {phone?.extra && (
+        <p className="mt-1 text-right text-sm tabular-nums text-ink-soft" translate="no">
+          {phone.extra}
+        </p>
+      )}
       <div className="mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
         {meta}
         <div className="-my-1 flex items-center gap-1">
           {phone && (
-            <button type="button" className="btn" onClick={handleCopy} aria-label={`Copy the number for ${listing.name}`}>
-              Copy
+            <button type="button" className="btn" onClick={handleCopy} aria-label={`${COPY.copyNumber} for ${listing.name}`}>
+              {COPY.copyNumber}
             </button>
           )}
           {phone && openLink('btn')}

@@ -1,3 +1,4 @@
+import type { MouseEvent } from 'react';
 import { SECTION_META } from '../data/annotations';
 import type { Section } from '../types';
 import { HandCheck } from './ink/HandCheck';
@@ -24,6 +25,13 @@ export function SectionNav({
 }: SectionNavProps) {
   const doneCount = sections.filter((section) => doneIds.has(section.id)).length;
 
+  const handleTabClick = (sectionId: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    // Leave modifier clicks and middle clicks to the browser (new tab, etc.).
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+    onSelect(sectionId);
+  };
+
   return (
     <nav aria-label="Chapters" className="thumb-index">
       <ol className="thumb-index__list">
@@ -35,10 +43,7 @@ export function SectionNav({
                 href={`#section-${section.id}`}
                 className="thumb-tab"
                 aria-current={activeId === section.id ? 'true' : undefined}
-                onClick={(event) => {
-                  event.preventDefault();
-                  onSelect(section.id);
-                }}
+                onClick={handleTabClick(section.id)}
               >
                 <span className="thumb-tab__num" aria-hidden="true">
                   {section.number}
@@ -66,9 +71,9 @@ export function SectionNav({
             <span className="thumb-tab__num" aria-hidden="true">
               ★
             </span>
-            <span>My Page</span>
+            <span>My&nbsp;Page</span>
             {favoriteCount > 0 && (
-              <span className="rounded-full bg-pen-red px-1.5 py-0.5 text-[0.68rem] leading-none text-white lg:absolute lg:-left-2 lg:-top-2">
+              <span className="rounded-full bg-pen-red px-1.5 py-0.5 text-[0.68rem] leading-none text-white tabular-nums lg:absolute lg:-left-2 lg:-top-2">
                 {favoriteCount}
                 <span className="sr-only"> starred</span>
               </span>
@@ -76,7 +81,7 @@ export function SectionNav({
           </button>
         </li>
       </ol>
-      <p className="thumb-index__progress">
+      <p className="thumb-index__progress tabular-nums">
         <span aria-hidden="true">
           {doneCount}/{sections.length} done
         </span>

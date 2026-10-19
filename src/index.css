@@ -31,14 +31,35 @@
   html {
     scroll-behavior: smooth;
     overflow-x: clip;
+    color-scheme: light;
+    /* keeps anchors and focused elements clear of the sticky tab strip */
+    scroll-padding-top: 4.5rem;
+  }
+  @media (width >= 64rem) {
+    html {
+      scroll-padding-top: 1.5rem;
+    }
+  }
+  @media (pointer: fine) {
+    html {
+      overscroll-behavior: none;
+    }
   }
   body {
     overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
     background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-print);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+  a,
+  button,
+  input,
+  label,
+  summary {
+    touch-action: manipulation;
   }
   /* Focus rings look like a pen outline. */
   :focus-visible {
@@ -132,6 +153,29 @@
     border-top-color: color-mix(in srgb, var(--color-stain) 6%, transparent);
   }
 
+  .cover {
+    padding-top: calc(1.25rem + env(safe-area-inset-top, 0px));
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+  @media (width >= 48rem) {
+    .cover {
+      padding-top: calc(2rem + env(safe-area-inset-top, 0px));
+    }
+  }
+  .page-foot {
+    padding-bottom: calc(7rem + env(safe-area-inset-bottom, 0px));
+  }
+  @media (width >= 64rem) {
+    .page-foot {
+      padding-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+  .chapter {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 40rem;
+  }
+
   .rule-double {
     height: 7px;
     border-top: 3px solid var(--color-ink);
@@ -154,18 +198,30 @@
     }
   }
   .listing {
+    position: relative;
+    isolation: isolate;
     break-inside: avoid;
     border-radius: 4px;
-    transition:
-      transform 0.18s ease,
-      background-color 0.18s ease,
-      box-shadow 0.18s ease;
+    transition: transform 0.18s ease;
+  }
+  .listing::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-color: color-mix(in srgb, var(--color-paper-light) 55%, transparent);
+    box-shadow: var(--shadow-lift);
+    opacity: 0;
+    transition: opacity 0.18s ease;
+    pointer-events: none;
   }
   @media (hover: hover) {
     .listing:hover {
       transform: translateY(-2px);
-      background-color: color-mix(in srgb, var(--color-paper-light) 55%, transparent);
-      box-shadow: var(--shadow-lift);
+    }
+    .listing:hover::after {
+      opacity: 1;
     }
   }
 
@@ -198,10 +254,12 @@
     white-space: nowrap;
     color: var(--color-ink);
     text-decoration: none;
-    transition: background-color 0.15s ease;
   }
   .phone:hover {
     background-color: color-mix(in srgb, var(--color-ink) 9%, transparent);
+  }
+  .phone:active {
+    background-color: color-mix(in srgb, var(--color-ink) 16%, transparent);
   }
   .phone--link {
     font-size: 1rem;
@@ -227,9 +285,7 @@
     color: var(--color-ink);
     text-decoration: none;
     cursor: pointer;
-    transition:
-      background-color 0.15s ease,
-      transform 0.15s ease;
+    transition: transform 0.15s ease;
   }
   .btn:hover {
     background-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
@@ -256,9 +312,7 @@
     border: 0;
     color: var(--color-ink);
     cursor: pointer;
-    transition:
-      background-color 0.15s ease,
-      transform 0.15s ease;
+    transition: transform 0.15s ease;
   }
   .icon-btn:hover {
     background-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
@@ -284,7 +338,9 @@
     text-align: left;
     color: var(--color-ink);
     cursor: pointer;
-    transition: background-color 0.15s ease;
+  }
+  .chip:active {
+    transform: translateY(1px);
   }
   .chip:hover {
     background-color: color-mix(in srgb, var(--color-ink) 10%, transparent);
@@ -367,7 +423,7 @@
     align-items: stretch;
     gap: 0.4rem;
     overflow-x: auto;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem max(1rem, env(safe-area-inset-right, 0px)) 0.5rem max(1rem, env(safe-area-inset-left, 0px));
     scrollbar-width: none;
   }
   .thumb-index__list::-webkit-scrollbar {
@@ -409,9 +465,10 @@
     color: var(--color-ink);
     text-decoration: none;
     cursor: pointer;
-    transition:
-      background-color 0.15s ease,
-      width 0.15s ease;
+    transition: transform 0.15s ease;
+  }
+  .thumb-tab:active {
+    transform: translateY(1px);
   }
   .thumb-tab:hover {
     background: var(--color-paper-light);
@@ -440,7 +497,7 @@
       gap: 0.4rem;
       position: fixed;
       top: 50%;
-      right: 0;
+      right: env(safe-area-inset-right, 0px);
       width: auto;
       transform: translateY(-50%);
       background: transparent;
@@ -462,7 +519,8 @@
       padding: 0;
     }
     .thumb-tab {
-      width: 4.6rem;
+      width: 5.2rem;
+      transform: translateX(0.6rem);
       flex-direction: column;
       justify-content: center;
       gap: 0.15rem;
@@ -478,7 +536,10 @@
     }
     .thumb-tab:hover,
     .thumb-tab[aria-current="true"] {
-      width: 5.2rem;
+      transform: translateX(0);
+    }
+    .thumb-tab:active {
+      transform: translateX(0) translateY(1px);
     }
     .thumb-tab__num {
       font-size: 1.6rem;
@@ -550,28 +611,39 @@
     box-shadow: 0 1px 3px rgba(60, 40, 0, 0.18);
   }
 
-  .toast-pop {
-    animation: toast-pop 1.7s ease-out forwards;
+  .toast-region {
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
-  @keyframes toast-pop {
-    0% {
+  .toast-pop {
+    --toast-duration: 1.7s;
+    animation:
+      toast-in 0.25s ease-out both,
+      toast-out 0.4s ease-in calc(var(--toast-duration) - 0.4s) forwards;
+  }
+  .toast-pop--sticky {
+    --toast-duration: 6s;
+  }
+  @keyframes toast-in {
+    from {
       opacity: 0;
-      transform: translateY(10px) rotate(-2deg);
+      transform: translateY(10px);
     }
-    12% {
+    to {
       opacity: 1;
-      transform: translateY(0) rotate(-2deg);
+      transform: translateY(0);
     }
-    80% {
-      opacity: 1;
-      transform: translateY(0) rotate(-2deg);
-    }
-    100% {
+  }
+  @keyframes toast-out {
+    to {
       opacity: 0;
-      transform: translateY(-4px) rotate(-2deg);
+      transform: translateY(-4px);
     }
   }
 
+  .drawer-body {
+    overscroll-behavior: contain;
+    padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+  }
   .torn-page {
     background: var(--color-paper);
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.45);

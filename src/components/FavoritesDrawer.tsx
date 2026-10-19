@@ -74,7 +74,7 @@ export function FavoritesDrawer({ open, items, onClose, onRemove }: FavoritesDra
           <TornEdge edge="top" fill="var(--color-paper)" seed={5} className="md:hidden" />
           <TornEdge edge="left" fill="var(--color-paper)" seed={9} className="hidden md:block" />
         </div>
-        <div className="torn-page min-h-0 flex-1 overflow-y-auto px-5 pb-10 pt-2 md:pt-8">
+        <div className="torn-page drawer-body min-h-0 flex-1 overflow-y-auto px-5 pt-2 md:pt-8">
           <div className="flex items-start justify-between gap-4">
             <h2 id="my-page-title" className="hand relative inline-block pr-2 text-5xl leading-none text-pen-blue">
               My Page
@@ -111,10 +111,17 @@ function FavoriteRow({ listing, sectionLabel, onRemove }: FavoriteItem & { onRem
   return (
     <li className="py-3">
       <div className="leader-row">
-        <h3 className="min-w-0 text-[1.05rem] font-bold uppercase leading-tight tracking-wide">{listing.name}</h3>
+        <h3 className="min-w-0 text-pretty text-[1.05rem] font-bold uppercase leading-tight tracking-wide" translate="no">
+          {listing.name}
+        </h3>
         <span aria-hidden="true" className="leader" />
         {phone ? (
-          <a className="phone" href={telHref(listing.phone as string)} aria-label={`Call ${listing.name}: ${phone.primary}`}>
+          <a
+            className="phone"
+            translate="no"
+            href={telHref(listing.phone as string)}
+            aria-label={`Call ${listing.name}: ${phone.primary}`}
+          >
             {phone.primary}
           </a>
         ) : (
@@ -131,13 +138,13 @@ function FavoriteRow({ listing, sectionLabel, onRemove }: FavoriteItem & { onRem
         )}
       </div>
       <div className="mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-        <p className="text-sm text-ink-soft">
+        <p className="min-w-0 break-words text-sm text-ink-soft">
           {sectionLabel} · {listing.category}
           {listing.rating !== null && (
             <>
               {' · '}
-              <span className="font-bold text-ink">
-                <span aria-hidden="true">★ </span>
+              <span className="font-bold tabular-nums text-ink">
+                <span aria-hidden="true">{'★\u00A0'}</span>
                 <span className="sr-only">rated </span>
                 {listing.rating.toFixed(1)}
               </span>

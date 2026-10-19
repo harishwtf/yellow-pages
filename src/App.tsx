@@ -12,6 +12,7 @@ import listingsData from './data/listings.json';
 import { useActiveSection } from './hooks/useActiveSection';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useToast } from './hooks/useToast';
+import { readUrlState, useUrlSync } from './hooks/useUrlState';
 import { matchesQuery } from './lib/search';
 import type { GuideData, Listing } from './types';
 
@@ -19,14 +20,17 @@ const data = listingsData as GuideData;
 const ALL_LISTINGS: Listing[] = data.sections.flatMap((section) => section.listings);
 const LISTING_BY_ID = new Map(ALL_LISTINGS.map((listing) => [listing.id, listing]));
 const SECTION_OF = new Map(data.sections.flatMap((section) => section.listings.map((listing) => [listing.id, section.id])));
+const INITIAL_URL_STATE = readUrlState(data.sections);
 
 export default function App() {
-  const [query, setQuery] = useState('');
-  const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>({});
+  const [query, setQuery] = useState(INITIAL_URL_STATE.query);
+  const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>(INITIAL_URL_STATE.filters);
+  const [favoritesOpen, setFavoritesOpen] = useState(INITIAL_URL_STATE.myPage);
   const [favoriteIds, setFavoriteIds] = useLocalStorage<string[]>(STORAGE_KEYS.favorites, []);
   const [doneIds, setDoneIds] = useLocalStorage<string[]>(STORAGE_KEYS.checklist, []);
-  const [favoritesOpen, setFavoritesOpen] = useState(false);
-  const { toast, show: notify } = useToast();
+  const { toast, show: notify, dismiss: dismissToast } = useToast();
+
+  useUrlSync({ query, filters: categoryFilters, myPage: favoritesOpen });
 
   const favorites = useMemo(() => new Set(favoriteIds), [favoriteIds]);
   const done = useMemo(() => new Set(doneIds), [doneIds]);
@@ -60,11 +64,25 @@ export default function App() {
 
   const toggleFavorite = useCallback(
     (listing: Listing) => {
-      const has = favorites.has(listing.id);
-      setFavoriteIds((prev) => (has ? prev.filter((id) => id !== listing.id) : [...prev.filter((id) => id !== listing.id), listing.id]));
-      notify(has ? COPY.favoriteRemoved : COPY.favoriteAdded);
+      const index = favoriteIds.indexOf(listing.id);
+      if (index === -1) {
+        setFavoriteIds((prev) => (prev.includes(listing.id) ? prev : [...prev, listing.id]));
+        notify(COPY.favoriteAdded);
+        return;
+      }
+      setFavoriteIds((prev) => prev.filter((id) => id !== listing.id));
+      notify(COPY.favoriteRemoved, {
+        label: COPY.undo,
+        onClick: () =>
+          setFavoriteIds((prev) => {
+            if (prev.includes(listing.id)) return prev;
+            const next = [...prev];
+            next.splice(Math.min(index, next.length), 0, listing.id);
+            return next;
+          }),
+      });
     },
-    [favorites, setFavoriteIds, notify],
+    [favoriteIds, setFavoriteIds, notify],
   );
 
   const setSectionDone = (sectionId: string, isDone: boolean) => {
@@ -76,7 +94,11 @@ export default function App() {
     if (!visibleChapters.some((chapter) => chapter.section.id === sectionId)) setQuery('');
     window.requestAnimationFrame(() => {
       document.getElementById(`section-${sectionId}`)?.scrollIntoView({ block: 'start' });
-      window.history.replaceState(null, '', `#section-${sectionId}`);
+      try {
+        window.history.replaceState(window.history.state, '', `#section-${sectionId}`);
+      } catch {
+        // History API unavailable: scrolling already happened.
+      }
     });
   };
 
@@ -124,13 +146,13 @@ export default function App() {
         </div>
 
         {searching && visibleChapters.length === 0 && (
-          <p className="hand mt-16 text-center text-4xl leading-tight text-pen-blue">{COPY.emptySearch}</p>
+          <p className="hand mt-16 text-balance text-center text-4xl leading-tight text-pen-blue">{COPY.emptySearch}</p>
         )}
       </main>
 
       <Footer />
       <FavoritesDrawer open={favoritesOpen} items={favoriteItems} onClose={closeFavorites} onRemove={toggleFavorite} />
-      <Toast toast={toast} />
+      <Toast toast={toast} onDismiss={dismissToast} />
     </div>
   );
 }
