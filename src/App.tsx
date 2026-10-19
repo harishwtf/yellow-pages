@@ -100,7 +100,18 @@ export default function App() {
       >
         Skip to places
       </a>
-      <Header />
+      <Header
+        onHome={() => {
+          setQuery('');
+          setView('all');
+          window.scrollTo({ top: 0 });
+          try {
+            window.history.replaceState(window.history.state, '', window.location.pathname);
+          } catch {
+            // the view is already reset
+          }
+        }}
+      />
       <div className="sticky-bar">
         <div className="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-2.5">
           <SearchBar value={query} onChange={setQuery} resultCount={view === 'saved' ? savedItems.length : resultCount} />

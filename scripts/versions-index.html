@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>peela.pages versions</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5d85a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-weight='800' font-size='20' text-anchor='middle' fill='%231c1a17'%3Ep.%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root { --bg: #f5d85a; --paper: #fbeaa0; --ink: #1c1a17; --muted: #574f44; --keyline: rgb(28 26 23 / 0.4); }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body { display: flex; flex-direction: column; background: var(--bg); color: var(--ink);
+      font: 15px/1.35 "Archivo Narrow", "Helvetica Neue", Arial, sans-serif; }
+    header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px;
+      border-bottom: 1px solid var(--keyline); }
+    h1 { margin: 0; font: 800 18px/1 Georgia, serif; letter-spacing: -0.01em; }
+    h1 span { font: 400 14px/1 "Archivo Narrow", Arial, sans-serif; color: var(--muted); margin-left: 6px; }
+    nav { order: 3; flex-basis: 100%; display: flex; gap: 8px; overflow-x: auto; padding: 2px 4px 6px 2px; }
+    button, a.open { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--ink);
+      border-radius: 4px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+    button:hover, a.open:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+    button:focus-visible, a.open:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+    .ver { flex: none; display: flex; flex-direction: column; align-items: flex-start; width: 170px; padding: 6px 10px; text-align: left; }
+    .ver b { font: 800 16px/1.1 Georgia, serif; }
+    .ver small { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; color: var(--muted); }
+    .ver[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    .ver[aria-pressed="true"] small { color: var(--paper); opacity: 0.8; }
+    .modes { display: flex; gap: 6px; align-items: center; margin-left: auto; }
+    .modes button { padding: 6px 10px; }
+    .modes button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+    a.open { padding: 6px 10px; text-decoration: none; white-space: nowrap; }
+    main { flex: 1; min-height: 0; display: flex; justify-content: center; padding: 16px; overflow: auto; }
+    .frame { display: flex; flex-direction: column; gap: 6px; flex: none; }
+    .frame p { margin: 0; font-size: 13px; color: var(--muted); }
+    .frame p b { color: var(--ink); font: 800 15px Georgia, serif; margin-right: 4px; }
+    iframe { display: block; border: 1px solid var(--ink); border-radius: 6px; background: var(--paper);
+      box-shadow: 4px 4px 0 var(--ink); height: 100%; }
+    .single .frame { height: 100%; }
+    .single.phone iframe { width: 390px; max-width: calc(100vw - 32px); }
+    .single.desktop .frame { width: 100%; }
+    .single.desktop iframe { width: 100%; }
+    .all { justify-content: flex-start; gap: 20px; }
+    .all .frame { height: 100%; }
+    .all iframe { width: 390px; flex: 1; }
+    .hint { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>peela.pages<span>every saved version</span></h1>
+    <nav id="versions" aria-label="Versions"></nav>
+    <div class="modes" role="group" aria-label="View">
+      <button data-mode="phone">Phone</button>
+      <button data-mode="desktop">Desktop</button>
+      <button data-mode="all">Side by side</button>
+      <a class="open" id="open" target="_blank" rel="noopener">Open on its own ↗</a>
+    </div>
+    <span class="hint">← → to flip</span>
+  </header>
+  <main id="stage"></main>
+  <script>
+    const nav = document.getElementById('versions');
+    const stage = document.getElementById('stage');
+    const open = document.getElementById('open');
+    let versions = [];
+    let state = { id: null, mode: 'phone' };
+
+    const label = (v) => (v.id === 'now' ? 'Now' : v.id);
+    const frame = (v) => {
+      const box = document.createElement('div');
+      box.className = 'frame';
+      box.innerHTML = `<p><b>${label(v)}</b>${v.note}</p>`;
+      const f = document.createElement('iframe');
+      f.src = `/${v.id}/`;
+      f.title = `peela.pages ${label(v)}`;
+      box.append(f);
+      return box;
+    };
+
+    function render() {
+      const current = versions.find((v) => v.id === state.id) ?? versions[versions.length - 1];
+      state.id = current.id;
+      try { history.replaceState(null, '', `#${state.id}/${state.mode}`); } catch {}
+      nav.querySelectorAll('.ver').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === state.id)));
+      document.querySelectorAll('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
+      open.href = `/${state.id}/`;
+      open.textContent = `Open ${label(current)} on its own ↗`;
+      stage.className = state.mode === 'all' ? 'all' : `single ${state.mode}`;
+      stage.replaceChildren(...(state.mode === 'all' ? versions.map(frame) : [frame(current)]));
+      if (state.mode === 'all') stage.children[versions.indexOf(current)].scrollIntoView({ inline: 'center', block: 'nearest' });
+    }
+
+    function step(by) {
+      const i = versions.findIndex((v) => v.id === state.id);
+      state.id = versions[(i + by + versions.length) % versions.length].id;
+      render();
+    }
+
+    document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => { state.mode = b.dataset.mode; render(); }));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'ArrowLeft') step(-1);
+    });
+
+    fetch('versions.json').then((r) => r.json()).then((list) => {
+      versions = list;
+      for (const v of versions) {
+        const b = document.createElement('button');
+        b.className = 'ver';
+        b.dataset.id = v.id;
+        b.title = v.note;
+        b.innerHTML = `<b>${label(v)}</b><small>${v.note}</small>`;
+        b.addEventListener('click', () => { state.id = v.id; render(); });
+        nav.append(b);
+      }
+      readHash();
+      render();
+    });
+
+    function readHash() {
+      const [id, mode] = location.hash.slice(1).split('/');
+      if (versions.some((v) => v.id === id)) state.id = id;
+      if (['phone', 'desktop', 'all'].includes(mode)) state.mode = mode;
+    }
+    window.addEventListener('hashchange', () => {
+      if (location.hash === `#${state.id}/${state.mode}`) return;
+      readHash();
+      render();
+    });
+  </script>
+</body>
+</html>

@@ -1,4 +1,7 @@
-# The Indiranagar Move-In Guide — by M
+# peela.pages
+
+*Peela* is Hindi for yellow: the yellow pages for anyone moving into Indiranagar, Bengaluru.
+It is the Indiranagar move-in guide by M, set as a phone book.
 
 A calm, single-column directory of trusted services for people moving into Indiranagar, Bengaluru:
 who to call, where to go, what to install. Source data: [indiranagar.tellm.co](https://indiranagar.tellm.co/).
@@ -10,6 +13,8 @@ npm install
 npm run dev      # http://localhost:5173
 npm run build    # production build in dist/
 npm run preview  # serve dist/
+npm run versions        # build every saved version (git tags v1, v2, …) + the working copy into versions/
+npm run versions:serve  # flip between them at http://localhost:4180
 ```
 
 ## Where things live
@@ -21,6 +26,7 @@ scripts/build-listings.mjs    converts data/guide.md → src/data/listings.json 
 scripts/fetch-fonts.sh        re-downloads the self-hosted fonts                (npm run fonts)
 scripts/ink-art.mjs           turns black-and-white art into a 4-tone ink PNG with transparent paper
 scripts/pixel-cursors.mjs     draws the 1-bit cursors as crisp SVGs (npm run cursors prints the CSS tokens)
+scripts/build-versions.sh     builds every tag side by side, with versions-index.html as the viewer
 public/fonts/                 Archivo Narrow, Fraunces with its SOFT axis (latin woff2, OFL)
 design/                       the store icon SVGs and the cursor SVGs
 src/
@@ -32,7 +38,7 @@ src/
   lib/                        phone formatting, search matching, clipboard, group-by-category
   hooks/                      useLocalStorage (try/catch), useActiveSection, useToast, useUrlState
   components/
-    Header                    the masthead: the title in type, then "by M — who to call, where to go, what to install"
+    Header                    the masthead: the "peela.pages by M" home link top left, the title, one line
     PaperTexture              paper relief (SVG normal map, soft-light) + printed ink voids (lighten), over the document
     SearchBar                 live search across name + category
     ChapterChips              the index: numbered chapter tabs + Saved, in a sticky bar
@@ -49,8 +55,9 @@ src/
 
 A printed phone-book page in directory yellow and ink, built so nobody has to think or click
 more than once. Nothing decorative that doesn't help someone act: no imprint line, no ornamental
-rules. The masthead is just type: the title in Fraunces set soft and chunky, then one quiet line,
-"by M — who to call, where to go, what to install". Each chapter opens on a
+rules. The masthead is just type: a small "peela.pages by M" home link top left, the title in Fraunces
+set soft and chunky, then one quiet line, "Who to call, where to go, what to install." The home
+link clears search, leaves Saved and goes back to the top. Each chapter opens on a
 numbered ink tab and a soft-serif title, then lists its places under black category bars, like a
 phone book.
 

@@ -1,5 +1,5 @@
 {
-  "name": "move-in-guide",
+  "name": "peela-pages",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "data": "node scripts/build-listings.mjs",
     "fonts": "bash scripts/fetch-fonts.sh",
-    "cursors": "node scripts/pixel-cursors.mjs"
+    "cursors": "node scripts/pixel-cursors.mjs",
+    "versions": "bash scripts/build-versions.sh",
+    "versions:serve": "python3 -m http.server 4180 --directory versions"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

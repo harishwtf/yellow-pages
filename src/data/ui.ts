@@ -34,9 +34,11 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const COPY = {
+  siteName: 'peela.pages',
+  homeLabel: 'peela.pages by M, home',
   title: 'The Indiranagar Move-In Guide',
   byline: 'by M',
-  promise: 'who to call, where to go, what to install',
+  promise: 'Who to call, where to go, what to install.',
   searchPlaceholder: 'Search places or categories…',
   searchLabel: 'Search places and categories',
   saved: 'Saved',
