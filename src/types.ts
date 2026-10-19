@@ -1,19 +1,20 @@
+/** How a listing's link opens: an App Store page, a Google Maps search, a website, or M's contact form. */
 export type LinkType = 'app' | 'maps' | 'website' | 'contact';
 
 export interface Listing {
   id: string;
-  /** One or more categories; Urban Company covers six. */
+  /** Usually one; Urban Company covers several trades. */
   categories: string[];
   name: string;
-  /** Official helplines (BESCOM, BBMP) show a small check mark. */
+  /** Official services (BESCOM, BBMP) get a small check mark. */
   verified?: boolean;
   linkType: LinkType;
   url: string;
   phone: string | null;
-  /** A second number or channel, e.g. "WhatsApp +91 94481 97197". */
+  /** Extra contact detail kept as written, e.g. "WhatsApp +91 94481 97197". */
   phoneNote?: string;
   rating: number | null;
-  /** M's own entry, set in a boxed entry. */
+  /** Set as a boxed entry with the red-pen accent. */
   featured?: boolean;
 }
 
@@ -22,11 +23,9 @@ export interface Section {
   navLabel: string;
   title: string;
   subtitle: string;
-  /** The sheet's one-line note for the section. */
-  note?: string;
   listings: Listing[];
 }
 
-export interface Directory {
+export interface GuideData {
   sections: Section[];
 }

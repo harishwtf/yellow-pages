@@ -1,21 +1,22 @@
 import type { ReactNode } from 'react';
-import { findRanges } from '../lib/search';
 
-/** `text` with every match of `query` under a highlighter swipe. */
-export function Highlight({ text, query }: { text: string; query: string }) {
-  const ranges = findRanges(text, query);
-  if (ranges.length === 0) return <>{text}</>;
+/** Renders `text` with every match of `pattern` (from tokenPattern) under a soft highlighter swipe. */
+export function Highlight({ text, pattern }: { text: string; pattern: RegExp | null }) {
+  if (!pattern) return <>{text}</>;
   const parts: ReactNode[] = [];
   let cursor = 0;
-  for (const range of ranges) {
-    if (range.start > cursor) parts.push(text.slice(cursor, range.start));
+  for (const match of text.matchAll(pattern)) {
+    const at = match.index ?? 0;
+    if (match[0].length === 0) continue;
+    if (at > cursor) parts.push(text.slice(cursor, at));
     parts.push(
-      <mark key={range.start} className="hl">
-        {text.slice(range.start, range.end)}
+      <mark key={at} className="match">
+        {match[0]}
       </mark>,
     );
-    cursor = range.end;
+    cursor = at + match[0].length;
   }
+  if (cursor === 0) return <>{text}</>;
   parts.push(text.slice(cursor));
   return <>{parts}</>;
 }

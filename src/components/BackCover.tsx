@@ -1,23 +1,26 @@
-import { COPY } from '../data/ui';
-import { MWave } from './MWave';
+import { COPY, LINKS } from '../data/ui';
+import { ArrowUpRight, MWave } from './icons';
 
-/** The back cover: yellow, the M wave, the closing note, and the small print. */
+/** The back cover: M's mark, the closing note, one way to reach M, and the small print. */
 export function BackCover() {
   return (
-    <footer className="cover mt-16">
-      <div className="mx-auto max-w-[62rem] px-4 pb-10 pt-14 md:pb-12 md:pt-20">
-        <MWave className="h-6 w-auto" />
-        <p className="mt-6 max-w-xl text-[1.15rem] leading-snug text-pretty md:text-[1.35rem]">{COPY.closing.body}</p>
-        <a className="btn btn--ink mt-6" href={COPY.closing.url} target="_blank" rel="noopener">
+    <footer className="back-cover">
+      <div className="page">
+        <MWave className="back-cover__mark" title="M" />
+        <p className="back-cover__note">{COPY.closing.note}</p>
+        <a href={LINKS.m} target="_blank" rel="noopener noreferrer" className="btn btn--ink">
           {COPY.closing.cta}
-          <span aria-hidden="true">↗</span>
+          <span className="sr-only"> ({COPY.newTab})</span>
+          <ArrowUpRight size={16} />
         </a>
-        <div className="mt-14 border-t border-ink/30 pt-4 text-[0.8rem] leading-relaxed">
+        <div className="small-print">
+          <p>{COPY.about}</p>
           <p>{COPY.smallPrint}</p>
-          <p className="mt-1">
-            Source:{' '}
-            <a className="underline underline-offset-2" href={COPY.source.url} target="_blank" rel="noopener" translate="no">
-              {COPY.source.label}
+          <p>
+            {COPY.sourceLabel}{' '}
+            <a href={LINKS.source} target="_blank" rel="noopener noreferrer">
+              {COPY.sourceName}
+              <span className="sr-only"> ({COPY.newTab})</span>
             </a>
           </p>
         </div>

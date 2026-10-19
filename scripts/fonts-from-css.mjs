@@ -1,5 +1,5 @@
 // Reads a Google Fonts CSS2 response on stdin, downloads the latin woff2 files to public/fonts
-// (one file per family/style, keeping weight and width ranges for variable fonts) and writes src/fonts.css.
+// (one file per family/style, with a weight range when the file is a variable font) and writes src/fonts.css.
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
@@ -42,9 +42,7 @@ for (const g of groups.values()) {
   if (existsSync(`${dir}/${file}`)) unlinkSync(`${dir}/${file}`);
   renameSync(g.tmp, `${dir}/${file}`);
   keep.add(file);
-  out += `@font-face {\n  font-family: '${g.family}';\n  font-style: ${g.style};\n  font-weight: ${min === max ? min : `${min} ${max}`};\n`;
-  if (g.stretch) out += `  font-stretch: ${g.stretch};\n`;
-  out += `  font-display: swap;\n  src: url('/fonts/${file}') format('woff2');\n  unicode-range: ${g.range};\n}\n`;
+  out += `@font-face {\n  font-family: '${g.family}';\n  font-style: ${g.style};\n  font-weight: ${min === max ? min : `${min} ${max}`};\n${g.stretch ? `  font-stretch: ${g.stretch};\n` : ''}  font-display: swap;\n  src: url('/fonts/${file}') format('woff2');\n  unicode-range: ${g.range};\n}\n`;
 }
 for (const f of readdirSync(dir)) if (!keep.has(f)) unlinkSync(`${dir}/${f}`);
 writeFileSync('src/fonts.css', out);
