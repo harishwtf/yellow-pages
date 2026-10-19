@@ -1,23 +1,20 @@
 import type { ReactNode } from 'react';
+import { findRanges } from '../lib/search';
 
-/** Renders `text` with every case-insensitive occurrence of `query` wrapped in a soft highlight. */
+/** `text` with every match of `query` under a highlighter swipe. */
 export function Highlight({ text, query }: { text: string; query: string }) {
-  const needle = query.trim().toLowerCase();
-  if (!needle) return <>{text}</>;
-
-  const haystack = text.toLowerCase();
+  const ranges = findRanges(text, query);
+  if (ranges.length === 0) return <>{text}</>;
   const parts: ReactNode[] = [];
   let cursor = 0;
-  for (;;) {
-    const at = haystack.indexOf(needle, cursor);
-    if (at === -1) break;
-    if (at > cursor) parts.push(text.slice(cursor, at));
+  for (const range of ranges) {
+    if (range.start > cursor) parts.push(text.slice(cursor, range.start));
     parts.push(
-      <mark key={at} className="match">
-        {text.slice(at, at + needle.length)}
+      <mark key={range.start} className="hl">
+        {text.slice(range.start, range.end)}
       </mark>,
     );
-    cursor = at + needle.length;
+    cursor = range.end;
   }
   parts.push(text.slice(cursor));
   return <>{parts}</>;

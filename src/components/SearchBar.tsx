@@ -11,12 +11,12 @@ interface SearchBarProps {
 export function SearchBar({ value, onChange, resultCount }: SearchBarProps) {
   return (
     <div className="relative">
-      <label htmlFor="guide-search" className="sr-only">
+      <label htmlFor="directory-search" className="sr-only">
         {COPY.searchLabel}
       </label>
-      <Icon name="search" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-muted" />
+      <Icon name="search" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-ink" />
       <input
-        id="guide-search"
+        id="directory-search"
         type="search"
         name="q"
         className="search"
@@ -31,14 +31,14 @@ export function SearchBar({ value, onChange, resultCount }: SearchBarProps) {
         <button
           type="button"
           className="icon-btn absolute right-1 top-1/2 -translate-y-1/2"
-          aria-label="Clear search"
+          aria-label={COPY.clearSearch}
           onClick={() => onChange('')}
         >
           <Icon name="close" />
         </button>
       )}
       <p className="sr-only" aria-live="polite">
-        {value.trim() ? `${resultCount} ${resultCount === 1 ? 'match' : 'matches'}` : ''}
+        {value.trim() ? `${resultCount} ${resultCount === 1 ? 'listing' : 'listings'}` : ''}
       </p>
     </div>
   );

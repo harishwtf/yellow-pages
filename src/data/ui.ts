@@ -1,64 +1,49 @@
 import type { LinkType } from '../types';
 
-/** Everything that is UI, not listing data, lives here. */
+/** Everything that is copy or UI configuration, not listing data. */
 
-export interface ChapterMeta {
-  /** Short label for the index tab. */
-  short: string;
-}
-
-export const CHAPTER_META: Record<string, ChapterMeta> = {
-  'settle-in': { short: 'Settle in' },
-  kitchen: { short: 'Kitchen' },
-  utilities: { short: 'Utilities' },
-  laundry: { short: 'Laundry' },
-  plants: { short: 'Plants' },
-  corners: { short: 'Corners' },
-};
-
-export const FEATURED_LISTING_ID = 'kitchen-kitchen-management-m-kitchen-management';
-
-/** Ratings at or above this get a "Top rated!" sticker. */
-export const TOP_RATED_FROM = 4.9;
-
-export const OPEN_LABELS: Record<LinkType, string> = {
-  website: 'Website',
-  maps: 'Map',
-  appstore: 'App Store',
-  contact: 'Contact M',
-};
-export const PLAY_STORE_LABEL = 'Play Store';
-
-export const STORAGE_KEYS = {
-  favorites: 'movein-guide:favorites',
-} as const;
+const CONTACT_M = 'https://tellm.co/';
 
 export const COPY = {
-  siteName: 'peela.pages',
-  homeLabel: 'peela.pages by M, home',
-  title: 'The Indiranagar Move-In Guide',
-  byline: 'by M',
-  promise: 'Who to call, where to go, what to install.',
-  searchPlaceholder: 'Search places or categories…',
-  searchLabel: 'Search places and categories',
-  saved: 'Saved',
-  savedIntro: 'Places you tapped the heart on. They stay on this phone.',
-  savedEmpty: 'Nothing saved yet',
-  savedEmptyHint: 'Tap the heart on any place to keep it here.',
-  noMatches: 'No matches for',
-  noMatchesHint: 'Try a category like “gas” or “coffee”.',
-  places: 'places',
-  featuredBlurb: 'M runs kitchens end to end: setting up, groceries, a cook, meal plans and the washing-up.',
-  copied: 'Copied',
-  copyLabel: 'Copy number',
-  topRated: 'Top rated!',
-  openLabel: 'Open',
-  saveLabel: 'Save',
-  savedLabel: 'Saved',
+  place: 'Indiranagar',
+  title: ['The Indiranagar', 'Move-In Guide'],
+  subtitle: 'A handbook of everything you need to turn your house into a home',
+  byline: '— by M',
+  searchLabel: 'Search the directory by name or category',
+  searchPlaceholder: 'What do you need? Try gas, wifi, coffee…',
+  clearSearch: 'Clear search',
+  chips: ['Gas', 'Wi-Fi', 'Cook', 'Laundry', 'Coffee'],
+  sectionsNav: 'Sections',
+  skipLink: 'Skip to the listings',
+  empty: 'Nothing in the directory for that. Try ‘gas’ or ‘coffee’.',
+  copied: 'Number copied',
   copyFailed: 'Couldn’t copy. Select the number instead.',
-  savedToast: 'Saved',
-  removedToast: 'Removed',
-  undo: 'Undo',
+  verified: 'Official',
+  topRated: 'Top rated',
+  ad: {
+    label: 'Advertisement',
+    body: 'It’s not easy to set up a new kitchen in a new home. Good thing there’s M. M runs your kitchen end-to-end. From planning the meals, to providing a certified cook, to ordering groceries, M takes care of all of it. You just show up and eat :)',
+    cta: 'Get Access to M',
+    url: CONTACT_M,
+  },
+  closing: {
+    body: 'Moving into a new neighborhood can be intimidating. Hope this little guide helps you find your feet. It won’t be long before you belong.',
+    cta: 'Need a hand?',
+    url: CONTACT_M,
+  },
+  smallPrint: 'Map links open a Google Maps search for the listed address. App links point to the iOS App Store.',
   source: { label: 'indiranagar.tellm.co', url: 'https://indiranagar.tellm.co' },
-  smallPrint: 'Map links open a Google Maps search for the listed address. App links point to the iOS App Store and Google Play.',
 } as const;
+
+export const LINK_LABELS: Record<LinkType, string> = {
+  app: 'App',
+  maps: 'Map',
+  website: 'Website',
+  contact: 'Contact M',
+};
+
+/** Ratings at or above this get the red-pen circle. */
+export const CIRCLE_FROM = 4.8;
+
+/** The M classified ad runs after this section. */
+export const AD_AFTER_SECTION = 'kitchen';

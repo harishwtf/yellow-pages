@@ -1,25 +1,32 @@
-export type LinkType = 'website' | 'maps' | 'appstore' | 'contact';
+export type LinkType = 'app' | 'maps' | 'website' | 'contact';
 
 export interface Listing {
   id: string;
-  category: string;
+  /** One or more categories; Urban Company covers six. */
+  categories: string[];
   name: string;
+  /** Official helplines (BESCOM, BBMP) show a small check mark. */
+  verified?: boolean;
   linkType: LinkType;
   url: string;
   phone: string | null;
+  /** A second number or channel, e.g. "WhatsApp +91 94481 97197". */
+  phoneNote?: string;
   rating: number | null;
-  /** Google Play page for listings whose link is an iOS App Store page. */
-  androidUrl?: string;
+  /** M's own entry, set in a boxed entry. */
+  featured?: boolean;
 }
 
 export interface Section {
   id: string;
-  number: number;
+  navLabel: string;
   title: string;
-  subtitle?: string;
+  subtitle: string;
+  /** The sheet's one-line note for the section. */
+  note?: string;
   listings: Listing[];
 }
 
-export interface GuideData {
+export interface Directory {
   sections: Section[];
 }

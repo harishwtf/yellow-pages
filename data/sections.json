@@ -1,0 +1,8 @@
+[
+  { "id": "settle-in", "navLabel": "Settle in", "title": "A little shelf help", "subtitle": "Unpack, unwind and settle in" },
+  { "id": "kitchen", "navLabel": "Kitchen", "title": "May the fork be with you", "subtitle": "Set up your kitchen" },
+  { "id": "utilities", "navLabel": "Utilities", "title": "Plug into Convenience", "subtitle": "Get your utilities working" },
+  { "id": "laundry", "navLabel": "Laundry", "title": "Dhobi or not dhobi?", "subtitle": "Get your laundry sorted" },
+  { "id": "plants", "navLabel": "Plants", "title": "Grow new roots", "subtitle": "Make it cozy with plants" },
+  { "id": "neighbourhood", "navLabel": "Neighbourhood", "title": "Love thy neighbourhood", "subtitle": "Find cafes, gyms and favorite corners" }
+]

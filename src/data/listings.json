@@ -2,31 +2,27 @@
   "sections": [
     {
       "id": "settle-in",
-      "number": 1,
-      "title": "Unpack, unwind and settle in",
+      "navLabel": "Settle in",
+      "title": "A little shelf help",
+      "subtitle": "Unpack, unwind and settle in",
+      "note": "Everything that lets you comfortably live in the home from night one",
       "listings": [
         {
-          "id": "settle-in-furniture-wakefit",
-          "category": "Furniture",
-          "name": "Wakefit",
-          "linkType": "website",
-          "url": "https://www.wakefit.co/furniture-store/bangalore/koramangala",
-          "phone": "+91 98833 33123",
-          "rating": 4.6
-        },
-        {
-          "id": "settle-in-furniture-ikea",
-          "category": "Furniture",
+          "id": "settle-in-ikea",
+          "categories": [
+            "Furniture"
+          ],
           "name": "IKEA",
-          "linkType": "appstore",
+          "linkType": "app",
           "url": "https://apps.apple.com/in/app/ikea/id1452164827",
           "phone": null,
-          "rating": 4.7,
-          "androidUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app"
+          "rating": 4.7
         },
         {
-          "id": "settle-in-furniture-rentomojo",
-          "category": "Furniture",
+          "id": "settle-in-rentomojo",
+          "categories": [
+            "Furniture"
+          ],
           "name": "RentoMojo",
           "linkType": "website",
           "url": "https://www.rentomojo.com/",
@@ -34,8 +30,98 @@
           "rating": 4.5
         },
         {
-          "id": "settle-in-cleaning-unpacking-snabbit",
-          "category": "Cleaning & unpacking",
+          "id": "settle-in-wakefit",
+          "categories": [
+            "Furniture"
+          ],
+          "name": "Wakefit",
+          "linkType": "website",
+          "url": "https://www.wakefit.co/",
+          "phone": "+91 98833 33123",
+          "rating": 4.6
+        },
+        {
+          "id": "settle-in-fabindia",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "Fabindia",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Fabindia+969+12th+Main+Indiranagar+Bengaluru",
+          "phone": "+91 63669 75766",
+          "rating": 4.2
+        },
+        {
+          "id": "settle-in-ellementry",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "Ellementry",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Ellementry+3163+Paramahansa+Yogananda+Road+HAL+2nd+Stage+Bengaluru",
+          "phone": "+91 90193 52348",
+          "rating": 5
+        },
+        {
+          "id": "settle-in-pure-home-living",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "Pure Home + Living",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Pure+Home+Living+770+100+Feet+Road+Indiranagar+Bengaluru",
+          "phone": "+91 89814 04443",
+          "rating": 4.9
+        },
+        {
+          "id": "settle-in-floating-walls",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "Floating Walls",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Floating+Walls+100+Feet+Road+Indiranagar+Bengaluru",
+          "phone": "+91 95388 76949",
+          "rating": 4.7
+        },
+        {
+          "id": "settle-in-vaaree",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "Vaaree",
+          "linkType": "website",
+          "url": "https://vaaree.com",
+          "phone": "+91 92402 76401",
+          "rating": null
+        },
+        {
+          "id": "settle-in-the-decor-kart",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "The Decor Kart",
+          "linkType": "website",
+          "url": "https://thedecorkart.com",
+          "phone": null,
+          "rating": null
+        },
+        {
+          "id": "settle-in-the-yellow-dwelling",
+          "categories": [
+            "Home decor"
+          ],
+          "name": "The Yellow Dwelling",
+          "linkType": "website",
+          "url": "https://theyellowdwelling.com/",
+          "phone": "+91 96062 46004",
+          "rating": null
+        },
+        {
+          "id": "settle-in-snabbit",
+          "categories": [
+            "Cleaning & unpacking"
+          ],
           "name": "Snabbit",
           "linkType": "website",
           "url": "https://www.snabbit.com/house-cleaning/bangalore/indiranagar",
@@ -43,8 +129,10 @@
           "rating": 4.8
         },
         {
-          "id": "settle-in-cleaning-unpacking-urban-company",
-          "category": "Cleaning & unpacking",
+          "id": "settle-in-urban-company",
+          "categories": [
+            "Cleaning & unpacking"
+          ],
           "name": "Urban Company",
           "linkType": "website",
           "url": "https://www.urbancompany.com/bangalore-professional-home-cleaning-indiranagar",
@@ -52,42 +140,63 @@
           "rating": 4.8
         },
         {
-          "id": "settle-in-cleaning-unpacking-pronto",
-          "category": "Cleaning & unpacking",
+          "id": "settle-in-pronto",
+          "categories": [
+            "Cleaning & unpacking"
+          ],
           "name": "Pronto",
           "linkType": "website",
           "url": "https://withpronto.com/",
           "phone": "+91 99104 83315",
-          "rating": 4.6
+          "rating": 4.5
         },
         {
-          "id": "settle-in-key-duplication-shasi-enterprises",
-          "category": "Key duplication",
+          "id": "settle-in-shasi-enterprises",
+          "categories": [
+            "Key duplication"
+          ],
           "name": "Shasi Enterprises",
           "linkType": "maps",
           "url": "https://maps.app.goo.gl/PEhtHHPnN4KReR6d9",
           "phone": "+91 99809 94953",
           "rating": 4
+        },
+        {
+          "id": "settle-in-star-key-maker-lock-repair",
+          "categories": [
+            "Key duplication"
+          ],
+          "name": "Star Key Maker & Lock Repair",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/place/Star+Key+Maker+%26+Lock+Repair/data=!4m2!3m1!19sChIJO3heARMVrjsRn7D6UKJosIc",
+          "phone": "+91 76762 91994",
+          "rating": 4.9
+        },
+        {
+          "id": "settle-in-crystal-times-and-keys",
+          "categories": [
+            "Key duplication"
+          ],
+          "name": "Crystal Times And Keys",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/place/Crystal+Times+And+Keys/data=!4m2!3m1!19sChIJX4WWXboWrjsR0xVabu3B7nw",
+          "phone": "+91 97390 05558",
+          "rating": 5
         }
       ]
     },
     {
       "id": "kitchen",
-      "number": 2,
-      "title": "Set up your kitchen",
+      "navLabel": "Kitchen",
+      "title": "May the fork be with you",
+      "subtitle": "Set up your kitchen",
+      "note": "The biggest section: everything you need to cook and eat well at home",
       "listings": [
         {
-          "id": "kitchen-kitchen-management-m-kitchen-management",
-          "category": "Kitchen management",
-          "name": "M – kitchen management",
-          "linkType": "contact",
-          "url": "https://app.tellm.co/q/mqYeNfEp",
-          "phone": null,
-          "rating": null
-        },
-        {
-          "id": "kitchen-gas-indane-vasant-enterprises",
-          "category": "Gas",
+          "id": "kitchen-indane-vasant-enterprises",
+          "categories": [
+            "Gas"
+          ],
           "name": "Indane: Vasant Enterprises",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Vasant+Enterprises+Indane+30+5th+Cross+1st+Stage+Indiranagar+Bengaluru",
@@ -95,8 +204,10 @@
           "rating": 3.4
         },
         {
-          "id": "kitchen-gas-bharat-gas-mahalakshmi-enterprises",
-          "category": "Gas",
+          "id": "kitchen-bharat-gas-mahalakshmi-enterprises",
+          "categories": [
+            "Gas"
+          ],
           "name": "Bharat Gas: Mahalakshmi Enterprises",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Mahalakshmi+Enterprises+Bharat+Gas+2153+17th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -104,8 +215,10 @@
           "rating": null
         },
         {
-          "id": "kitchen-gas-hp-gas-manrath-enterprises",
-          "category": "Gas",
+          "id": "kitchen-hp-gas-manrath-enterprises",
+          "categories": [
+            "Gas"
+          ],
           "name": "HP Gas: Manrath Enterprises",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Manrath+Enterprises+HP+Gas+311+7th+Cross+Road+Domlur+Bengaluru",
@@ -113,8 +226,10 @@
           "rating": 4.1
         },
         {
-          "id": "kitchen-appliances-rentomojo",
-          "category": "Appliances",
+          "id": "kitchen-rentomojo",
+          "categories": [
+            "Appliances"
+          ],
           "name": "RentoMojo",
           "linkType": "website",
           "url": "https://www.rentomojo.com/bangalore/appliances/refrigerators-on-rent",
@@ -122,36 +237,43 @@
           "rating": 4.5
         },
         {
-          "id": "kitchen-appliances-furlenco",
-          "category": "Appliances",
+          "id": "kitchen-furlenco",
+          "categories": [
+            "Appliances"
+          ],
           "name": "Furlenco",
           "linkType": "website",
-          "url": "https://www.furlenco.com/",
+          "url": "https://www.furlenco.com",
           "phone": "080 4646 7373",
+          "rating": 4.5
+        },
+        {
+          "id": "kitchen-amazon-india",
+          "categories": [
+            "Appliances"
+          ],
+          "name": "Amazon India",
+          "linkType": "app",
+          "url": "https://apps.apple.com/in/app/amazon-india-shop-pay-minitv/id1478350915",
+          "phone": null,
           "rating": 4.6
         },
         {
-          "id": "kitchen-appliances-amazon-india",
-          "category": "Appliances",
-          "name": "Amazon India",
-          "linkType": "appstore",
-          "url": "https://apps.apple.com/in/app/amazon-india-shop-pay-minitv/id1478350915",
-          "phone": null,
-          "rating": 4.6,
-          "androidUrl": "https://play.google.com/store/apps/details?id=in.amazon.mShop.android.shopping"
-        },
-        {
-          "id": "kitchen-water-purifier-drinkprime",
-          "category": "Water purifier",
+          "id": "kitchen-drinkprime",
+          "categories": [
+            "Water purifier"
+          ],
           "name": "DrinkPrime",
           "linkType": "website",
           "url": "https://drinkprime.in/water-purifier-on-rent/bangalore",
           "phone": "080 6876 4787",
-          "rating": 4.5
+          "rating": 4.2
         },
         {
-          "id": "kitchen-water-purifier-uc-native-ro-purifier",
-          "category": "Water purifier",
+          "id": "kitchen-uc-native-ro-purifier",
+          "categories": [
+            "Water purifier"
+          ],
           "name": "UC Native RO purifier",
           "linkType": "website",
           "url": "https://www.urbancompany.com/native-ro-water-purifier",
@@ -159,37 +281,43 @@
           "rating": 4.8
         },
         {
-          "id": "kitchen-kitchen-basics-vishal-mega-mart",
-          "category": "Kitchen basics",
+          "id": "kitchen-vishal-mega-mart",
+          "categories": [
+            "Kitchen basics"
+          ],
           "name": "Vishal Mega Mart",
-          "linkType": "website",
-          "url": "https://stores.vishalmegamart.com/shopping-mart-bengaluru-north-bengaluru-30434/home",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Vishal+Mega+Mart+806%2F1+New+Thippasandra+Main+Rd+HAL+3rd+Stage+Bengaluru",
           "phone": "+91 78279 40164",
           "rating": 3.9
         },
         {
-          "id": "kitchen-kitchen-basics-dmart-ready",
-          "category": "Kitchen basics",
+          "id": "kitchen-dmart-ready",
+          "categories": [
+            "Kitchen basics"
+          ],
           "name": "DMart Ready",
-          "linkType": "appstore",
+          "linkType": "app",
           "url": "https://apps.apple.com/in/app/dmart-ready-online-grocery-app/id1121933197",
           "phone": null,
-          "rating": 4.8,
-          "androidUrl": "https://play.google.com/store/apps/details?id=in.dmart"
+          "rating": 4.8
         },
         {
-          "id": "kitchen-kitchen-basics-ikea",
-          "category": "Kitchen basics",
+          "id": "kitchen-ikea",
+          "categories": [
+            "Kitchen basics"
+          ],
           "name": "IKEA",
-          "linkType": "appstore",
+          "linkType": "app",
           "url": "https://apps.apple.com/in/app/ikea/id1452164827",
           "phone": null,
-          "rating": 4.7,
-          "androidUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app"
+          "rating": 4.7
         },
         {
-          "id": "kitchen-fresh-produce-new-fruitland",
-          "category": "Fresh produce",
+          "id": "kitchen-new-fruitland",
+          "categories": [
+            "Fresh produce"
+          ],
           "name": "New Fruitland",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=New+Fruitland+582+9th+A+Main+Rd+Defence+Colony+Indiranagar+Bengaluru",
@@ -197,8 +325,10 @@
           "rating": 4.4
         },
         {
-          "id": "kitchen-fresh-produce-namdhari-s-fresh",
-          "category": "Fresh produce",
+          "id": "kitchen-namdhari-s-fresh",
+          "categories": [
+            "Fresh produce"
+          ],
           "name": "Namdhari's Fresh",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Namdharis+Fresh+789+12th+A+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -206,8 +336,10 @@
           "rating": 4
         },
         {
-          "id": "kitchen-fresh-meat-new-frostys",
-          "category": "Fresh meat",
+          "id": "kitchen-new-frostys",
+          "categories": [
+            "Fresh Meat"
+          ],
           "name": "New Frostys",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=New+Frostys+5+80+Feet+Road+Indiranagar+Bengaluru",
@@ -215,8 +347,10 @@
           "rating": 4.2
         },
         {
-          "id": "kitchen-fresh-meat-nandu-s",
-          "category": "Fresh meat",
+          "id": "kitchen-nandu-s",
+          "categories": [
+            "Fresh Meat"
+          ],
           "name": "Nandu's",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Nandus+473+10th+Main+Road+Jeevan+Bima+Nagar+Bengaluru",
@@ -224,8 +358,10 @@
           "rating": 4.3
         },
         {
-          "id": "kitchen-fresh-meat-my-chicken-and-more",
-          "category": "Fresh meat",
+          "id": "kitchen-my-chicken-and-more",
+          "categories": [
+            "Fresh Meat"
+          ],
           "name": "My Chicken and More",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=My+Chicken+and+More+628-2+11th+Cross+Rd+Indiranagar+Bengaluru",
@@ -233,52 +369,83 @@
           "rating": 4.8
         },
         {
-          "id": "kitchen-fresh-meat-kpn-fresh-indiranagar",
-          "category": "Fresh meat",
+          "id": "kitchen-kpn-fresh-indiranagar",
+          "categories": [
+            "Fresh Meat"
+          ],
           "name": "KPN Fresh Indiranagar",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=KPN+Fresh+Chinmaya+Mission+Hospital+Road+Indiranagar+Bengaluru",
           "phone": "+91 92402 02911",
           "rating": 4.7
+        },
+        {
+          "id": "kitchen-m",
+          "categories": [
+            "Finding and setting up a cook",
+            "Meal planning and keeping groceries stocked"
+          ],
+          "name": "M",
+          "linkType": "contact",
+          "url": "https://tellm.co",
+          "phone": null,
+          "rating": null,
+          "featured": true
         }
       ]
     },
     {
       "id": "utilities",
-      "number": 3,
-      "title": "Get your utilities working",
+      "navLabel": "Utilities",
+      "title": "Plug into Convenience",
+      "subtitle": "Get your utilities working",
+      "note": "Internet and power, plus the numbers to keep handy",
       "listings": [
         {
-          "id": "utilities-wi-fi-jiofiber",
-          "category": "Wi-Fi",
+          "id": "utilities-jiofiber",
+          "categories": [
+            "Wi-Fi"
+          ],
           "name": "JioFiber",
-          "linkType": "appstore",
+          "linkType": "app",
           "url": "https://apps.apple.com/in/app/myjio-for-everything-jio/id1074964262",
           "phone": "1800 896 9999",
-          "rating": 4.6,
-          "androidUrl": "https://play.google.com/store/apps/details?id=com.jio.myjio"
+          "rating": 4.6
         },
         {
-          "id": "utilities-wi-fi-act-fibernet",
-          "category": "Wi-Fi",
+          "id": "utilities-act-fibernet",
+          "categories": [
+            "Wi-Fi"
+          ],
           "name": "ACT Fibernet",
-          "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=ACT+Fibernet+43+80+Feet+Road+HAL+3rd+Stage+Indiranagar+Bengaluru",
+          "linkType": "website",
+          "url": "https://www.actcorp.in/fibernet/bengaluru/indiranagar",
           "phone": "1800 1022 8369",
+          "phoneNote": "+91 72889 99999",
           "rating": 3.3
         },
         {
-          "id": "utilities-electricity-bescom-24x7",
-          "category": "Electricity",
+          "id": "utilities-bescom-24x7",
+          "categories": [
+            "Electricity"
+          ],
           "name": "BESCOM 24x7",
+          "verified": true,
           "linkType": "website",
           "url": "https://bescom.karnataka.gov.in/5/24%2A7-helpline/en",
           "phone": "1912",
           "rating": null
         },
         {
-          "id": "utilities-plumber-electrician-carpenter-appliance-repair-pest-control-deep-cleaning-urban-company",
-          "category": "Plumber / Electrician / Carpenter / Appliance repair / Pest control / Deep cleaning",
+          "id": "utilities-urban-company",
+          "categories": [
+            "Plumber",
+            "Electrician",
+            "Carpenter",
+            "Appliance repair",
+            "Pest control",
+            "Deep cleaning"
+          ],
           "name": "Urban Company",
           "linkType": "website",
           "url": "https://www.urbancompany.com/bangalore-plumbers",
@@ -286,17 +453,23 @@
           "rating": 4.8
         },
         {
-          "id": "utilities-trash-bbmp-bswml",
-          "category": "Trash",
+          "id": "utilities-bbmp-bswml",
+          "categories": [
+            "Trash"
+          ],
           "name": "BBMP / BSWML",
+          "verified": true,
           "linkType": "website",
           "url": "https://site.bbmp.gov.in/departmentwebsites/swm/",
-          "phone": "1533 (WhatsApp +91 94481 97197)",
+          "phone": "1533",
+          "phoneNote": "WhatsApp +91 94481 97197",
           "rating": null
         },
         {
-          "id": "utilities-pest-control-herbal-pest-controls",
-          "category": "Pest control",
+          "id": "utilities-herbal-pest-controls",
+          "categories": [
+            "Pest control"
+          ],
           "name": "Herbal Pest Controls",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Herbal+Pest+Controls+404+13th+Main+100+Feet+Road+Indiranagar+Bengaluru",
@@ -304,8 +477,10 @@
           "rating": 4.9
         },
         {
-          "id": "utilities-deep-cleaning-snabbit",
-          "category": "Deep cleaning",
+          "id": "utilities-snabbit",
+          "categories": [
+            "Deep cleaning"
+          ],
           "name": "Snabbit",
           "linkType": "website",
           "url": "https://www.snabbit.com/house-help/bangalore/indiranagar",
@@ -313,81 +488,132 @@
           "rating": 4.8
         },
         {
-          "id": "utilities-deep-cleaning-pronto",
-          "category": "Deep cleaning",
+          "id": "utilities-pronto",
+          "categories": [
+            "Deep cleaning"
+          ],
           "name": "Pronto",
           "linkType": "website",
           "url": "https://withpronto.com/",
           "phone": "+91 99104 83315",
-          "rating": 4.6
+          "rating": 4.5
         }
       ]
     },
     {
       "id": "laundry",
-      "number": 4,
-      "title": "Get your laundry sorted",
+      "navLabel": "Laundry",
+      "title": "Dhobi or not dhobi?",
+      "subtitle": "Get your laundry sorted",
+      "note": "Cleaning, laundry, trash, supplies and living things, on a routine",
       "listings": [
         {
-          "id": "laundry-laundry-pressto",
-          "category": "Laundry",
+          "id": "laundry-pressto",
+          "categories": [
+            "Laundry"
+          ],
           "name": "Pressto",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=Pressto+Drycleaning+The+ICON+80+Feet+Road+HAL+3rd+Stage+Indiranagar+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=Pressto%20Drycleaning%20The%20ICON%2080%20Feet%20Road%20HAL%203rd%20Stage%20Indiranagar%20Bengaluru",
           "phone": "+91 72089 72772",
           "rating": 4
         },
         {
-          "id": "laundry-laundry-spin-cycles",
-          "category": "Laundry",
+          "id": "laundry-spin-cycles",
+          "categories": [
+            "Laundry"
+          ],
           "name": "Spin Cycles",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=SPIN+CYCLES+10th+Main+Road+HAL+3rd+Stage+Jeevan+Bhima+Nagar+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=SPIN%20CYCLES%2010th%20Main%20Road%20HAL%203rd%20Stage%20Jeevan%20Bhima%20Nagar%20Bengaluru",
           "phone": "+91 88800 04880",
           "rating": 4.7
         },
         {
-          "id": "laundry-laundry-james-bond-dry-cleaners",
-          "category": "Laundry",
+          "id": "laundry-james-bond-dry-cleaners",
+          "categories": [
+            "Laundry"
+          ],
           "name": "James Bond Dry Cleaners",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=James+Bond+Dry+Cleaners+483+10th+Main+Road+HAL+3rd+Stage+Jeevan+Bima+Nagar+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=James%20Bond%20Dry%20Cleaners%20483%2010th%20Main%20Road%20HAL%203rd%20Stage%20Jeevan%20Bima%20Nagar%20Bengaluru",
           "phone": "+91 97417 16007",
           "rating": 4.8
         },
         {
-          "id": "laundry-laundry-door-to-door-laundry-service",
-          "category": "Laundry",
+          "id": "laundry-door-to-door-laundry-service",
+          "categories": [
+            "Laundry"
+          ],
           "name": "Door-to-Door Laundry Service",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=Door+To+Door+Laundry+Service+3694+9th+Cross+Road+HAL+2nd+Stage+Indiranagar+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=Door%20To%20Door%20Laundry%20Service%203694%209th%20Cross%20Road%20HAL%202nd%20Stage%20Indiranagar%20Bengaluru",
           "phone": "+91 73531 99213",
           "rating": 4.3
         },
         {
-          "id": "laundry-laundry-laundrymate",
-          "category": "Laundry",
+          "id": "laundry-laundrymate",
+          "categories": [
+            "Laundry"
+          ],
           "name": "LaundryMate",
           "linkType": "website",
           "url": "https://www.laundrymate.in/",
           "phone": "080 4748 6688",
-          "rating": 4.4
+          "rating": 3.5
         },
         {
-          "id": "laundry-shoe-care-renewrite",
-          "category": "Shoe care",
+          "id": "laundry-laundroswitch",
+          "categories": [
+            "Laundry"
+          ],
+          "name": "Laundroswitch",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Laundroswitch+275+6th+Main+100+Feet+Road+Indiranagar+Bengaluru",
+          "phone": "+91 91087 57176",
+          "rating": 4.9
+        },
+        {
+          "id": "laundry-faabro-care",
+          "categories": [
+            "Laundry"
+          ],
+          "name": "Faabro Care",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Faabro+Care+30+Kempegowda+Service+Road+HAL+Old+Airport+Road+Domlur+Bengaluru",
+          "phone": "+91 96067 57775",
+          "rating": 4.5
+        },
+        {
+          "id": "laundry-door-to-door-dryclean-laundry-steam-iron",
+          "categories": [
+            "Laundry"
+          ],
+          "name": "Door To Door Dryclean Laundry & Steam Iron",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Door+To+Door+Dryclean+Laundry+Steam+Iron+Church+Street+New+Tippasandra+Bengaluru",
+          "phone": "+91 81236 85100",
+          "rating": 4.8
+        },
+        {
+          "id": "laundry-renewrite",
+          "categories": [
+            "Shoe care"
+          ],
           "name": "RenewRite",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=RenewRite+100+Feet+Road+Indiranagar+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=RenewRite%20100%20Feet%20Road%20Indiranagar%20Bengaluru",
           "phone": "+91 93459 99060",
           "rating": 4.9
         },
         {
-          "id": "laundry-shoe-care-cobbler-shoe-bag-repair-shop",
-          "category": "Shoe care",
+          "id": "laundry-cobbler-shoe-bag-repair-shop",
+          "categories": [
+            "Shoe care"
+          ],
           "name": "Cobbler, Shoe bag repair Shop",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=Cobbler+Shoe+bag+repair+Shop+Paramahansa+Yogananda+Rd+Doopanahalli+Indiranagar+Bengaluru",
+          "url": "https://www.google.com/maps?cid=3361267865305506772",
           "phone": "+91 88671 93549",
           "rating": 4.5
         }
@@ -395,12 +621,16 @@
     },
     {
       "id": "plants",
-      "number": 5,
-      "title": "Make it cozy with plants",
+      "navLabel": "Plants",
+      "title": "Grow new roots",
+      "subtitle": "Make it cozy with plants",
+      "note": "Nurseries and plant stores near Indiranagar",
       "listings": [
         {
-          "id": "plants-plants-ugaoo-store",
-          "category": "Plants",
+          "id": "plants-ugaoo-store",
+          "categories": [
+            "Nurseries"
+          ],
           "name": "Ugaoo Store",
           "linkType": "website",
           "url": "https://www.ugaoo.com/",
@@ -408,8 +638,10 @@
           "rating": 4.4
         },
         {
-          "id": "plants-plants-beruru",
-          "category": "Plants",
+          "id": "plants-beruru",
+          "categories": [
+            "Nurseries"
+          ],
           "name": "Beruru",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Beruru+4019+1st+Main+Paramahansa+Yogananda+Road+Domlur+Bengaluru",
@@ -417,8 +649,10 @@
           "rating": 4.5
         },
         {
-          "id": "plants-plants-garden-villa",
-          "category": "Plants",
+          "id": "plants-garden-villa",
+          "categories": [
+            "Nurseries"
+          ],
           "name": "Garden Villa",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Garden+Villa+463+9th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -426,8 +660,10 @@
           "rating": 4.9
         },
         {
-          "id": "plants-plants-klorophyl",
-          "category": "Plants",
+          "id": "plants-klorophyl",
+          "categories": [
+            "Nurseries"
+          ],
           "name": "Klorophyl",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Klorophyl+329+7th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -435,8 +671,10 @@
           "rating": 4.9
         },
         {
-          "id": "plants-plants-r-k-nursery-and-pottery-house",
-          "category": "Plants",
+          "id": "plants-r-k-nursery-and-pottery-house",
+          "categories": [
+            "Nurseries"
+          ],
           "name": "R K Nursery and Pottery House",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=R+K+Nursery+and+Pottery+House+2148+18th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -444,8 +682,76 @@
           "rating": 4.6
         },
         {
-          "id": "plants-gardener-sunshine-s-nest-gardens",
-          "category": "Gardener",
+          "id": "plants-new-sentiment-florist",
+          "categories": [
+            "Florist"
+          ],
+          "name": "New Sentiment Florist",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=New+Sentiment+Florist+421+Krishna+Temple+Road+Indiranagar+Bengaluru",
+          "phone": "+91 98453 70077",
+          "rating": 4.7
+        },
+        {
+          "id": "plants-bloom-story",
+          "categories": [
+            "Florist"
+          ],
+          "name": "Bloom Story",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=The+Bloom+Story+100+Feet+Road+Domlur+Bengaluru",
+          "phone": "+91 98860 73911",
+          "rating": 4.9
+        },
+        {
+          "id": "plants-urth-florist",
+          "categories": [
+            "Florist"
+          ],
+          "name": "Urth Florist",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Urth+The+Green+Company+3353+12th+A+Main+Indiranagar+Bengaluru",
+          "phone": "+91 81974 97531",
+          "rating": 4.8
+        },
+        {
+          "id": "plants-farmerr-florist",
+          "categories": [
+            "Florist"
+          ],
+          "name": "Farmerr Florist",
+          "linkType": "website",
+          "url": "https://farmerr.in/",
+          "phone": "+91 63663 56363",
+          "rating": 4
+        },
+        {
+          "id": "plants-shades-of-spring",
+          "categories": [
+            "Florist"
+          ],
+          "name": "Shades of Spring",
+          "linkType": "website",
+          "url": "https://www.shadesofspring.in/",
+          "phone": "+91 63645 35321",
+          "rating": 4.4
+        },
+        {
+          "id": "plants-munmun-flowers",
+          "categories": [
+            "Florist"
+          ],
+          "name": "Munmun Flowers",
+          "linkType": "website",
+          "url": "https://munmunflorist.com/",
+          "phone": "+91 97329 64053",
+          "rating": 5
+        },
+        {
+          "id": "plants-sunshine-s-nest-gardens",
+          "categories": [
+            "Gardener"
+          ],
           "name": "Sunshine's Nest & Gardens",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Sunshine%27s+Nest+%26+Gardens+1023+13th+Main+Indiranagar+Bengaluru",
@@ -453,24 +759,30 @@
           "rating": 5
         },
         {
-          "id": "plants-gardener-dream-garden-botanicals",
-          "category": "Gardener",
+          "id": "plants-dream-garden-botanicals",
+          "categories": [
+            "Gardener"
+          ],
           "name": "Dream garden botanicals",
           "linkType": "maps",
-          "url": "https://www.google.com/maps/search/?api=1&query=Dream+garden+botanicals+24+2+3rd+Cross+HAL+3rd+Stage+Kodihalli+Bengaluru",
+          "url": "https://www.google.com/maps/search/?api=1&query=Dream+garden+botanicals+24%2F2+3rd+Cross+HAL+3rd+Stage+Kodihalli+Bengaluru",
           "phone": "+91 63624 21903",
           "rating": 4.9
         }
       ]
     },
     {
-      "id": "corners",
-      "number": 6,
-      "title": "Cafes, gyms and favorite corners",
+      "id": "neighbourhood",
+      "navLabel": "Neighbourhood",
+      "title": "Love thy neighbourhood",
+      "subtitle": "Find cafes, gyms and favorite corners",
+      "note": "Gyms, classes, pilates, yoga and coffee nearby",
       "listings": [
         {
-          "id": "corners-gym-aurum-luxury-fitness-club",
-          "category": "Gym",
+          "id": "neighbourhood-aurum-luxury-fitness-club",
+          "categories": [
+            "Gyms"
+          ],
           "name": "Aurum Luxury Fitness Club",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Aurum+Luxury+Fitness+Club+368+100+Feet+Road+Indiranagar+Bengaluru",
@@ -478,8 +790,10 @@
           "rating": 4.8
         },
         {
-          "id": "corners-gym-vault",
-          "category": "Gym",
+          "id": "neighbourhood-vault",
+          "categories": [
+            "Gyms"
+          ],
           "name": "VAULT",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=VAULT+by+Virat+Kohli+765+100+Feet+Road+Indiranagar+Bengaluru",
@@ -487,8 +801,10 @@
           "rating": 4.8
         },
         {
-          "id": "corners-gym-volt-fitness",
-          "category": "Gym",
+          "id": "neighbourhood-volt-fitness",
+          "categories": [
+            "Gyms"
+          ],
           "name": "Volt Fitness",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Volt+Fitness+2986+12th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -496,8 +812,10 @@
           "rating": 4.3
         },
         {
-          "id": "corners-gym-crossfit-9one",
-          "category": "Gym",
+          "id": "neighbourhood-crossfit-9one",
+          "categories": [
+            "Gyms"
+          ],
           "name": "CrossFit 9one",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=CrossFit+9one+473+10th+Main+HAL+3rd+Stage+Bengaluru",
@@ -505,8 +823,10 @@
           "rating": 5
         },
         {
-          "id": "corners-classes-academy-of-strength",
-          "category": "Classes",
+          "id": "neighbourhood-academy-of-strength",
+          "categories": [
+            "Classes"
+          ],
           "name": "Academy of Strength",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Academy+of+Strength+759+100+Feet+Road+Indiranagar+Bengaluru",
@@ -514,8 +834,10 @@
           "rating": 4.7
         },
         {
-          "id": "corners-classes-my-third-space",
-          "category": "Classes",
+          "id": "neighbourhood-my-third-space",
+          "categories": [
+            "Classes"
+          ],
           "name": "My Third Space",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=My+Third+Space+MSK+Plaza+100+Feet+Road+Indiranagar+Bengaluru",
@@ -523,17 +845,21 @@
           "rating": 4.9
         },
         {
-          "id": "corners-classes-fit-district",
-          "category": "Classes",
+          "id": "neighbourhood-fit-district",
+          "categories": [
+            "Classes"
+          ],
           "name": "Fit District",
-          "linkType": "website",
-          "url": "https://fitdistrict.co/",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=Fit+District+842+100+Feet+Road+Indiranagar+Bengaluru",
           "phone": "+91 91481 43388",
           "rating": null
         },
         {
-          "id": "corners-pilates-purple-pilates",
-          "category": "Pilates",
+          "id": "neighbourhood-purple-pilates",
+          "categories": [
+            "Pilates"
+          ],
           "name": "Purple Pilates",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Purple+Pilates+250+6th+Cross+Binnamangala+Indiranagar+Bengaluru",
@@ -541,8 +867,10 @@
           "rating": 4.8
         },
         {
-          "id": "corners-pilates-the-pilates-studio-namrata-purohit",
-          "category": "Pilates",
+          "id": "neighbourhood-the-pilates-studio-namrata-purohit",
+          "categories": [
+            "Pilates"
+          ],
           "name": "The Pilates Studio (Namrata Purohit)",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=The+Pilates+Studio+3052+80+Feet+Road+Indiranagar+Bengaluru",
@@ -550,8 +878,10 @@
           "rating": 4.1
         },
         {
-          "id": "corners-pilates-tone30-pilates",
-          "category": "Pilates",
+          "id": "neighbourhood-tone30-pilates",
+          "categories": [
+            "Pilates"
+          ],
           "name": "Tone30 Pilates",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Tone30+Pilates+13th+H+Main+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -559,8 +889,10 @@
           "rating": 5
         },
         {
-          "id": "corners-yoga-studio-oura",
-          "category": "Yoga",
+          "id": "neighbourhood-studio-oura",
+          "categories": [
+            "Yoga"
+          ],
           "name": "Studio Oura",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Studio+Oura+169+9th+Cross+Indiranagar+1st+Stage+Bengaluru",
@@ -568,8 +900,10 @@
           "rating": null
         },
         {
-          "id": "corners-coffee-araku-coffee",
-          "category": "Coffee",
+          "id": "neighbourhood-araku-coffee",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "ARAKU Coffee",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=ARAKU+Coffee+968+12th+Main+Indiranagar+Bengaluru",
@@ -577,8 +911,10 @@
           "rating": 4.1
         },
         {
-          "id": "corners-coffee-subkotree",
-          "category": "Coffee",
+          "id": "neighbourhood-subkotree",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "SubkoTree",
           "linkType": "website",
           "url": "https://www.subko.coffee/",
@@ -586,8 +922,10 @@
           "rating": 4.3
         },
         {
-          "id": "corners-coffee-still-coffee",
-          "category": "Coffee",
+          "id": "neighbourhood-still-coffee",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "Still Coffee",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Still+Coffee+4121+6th+Cross+HAL+2nd+Stage+Indiranagar+Bengaluru",
@@ -595,8 +933,10 @@
           "rating": 4.5
         },
         {
-          "id": "corners-coffee-kink-coffee",
-          "category": "Coffee",
+          "id": "neighbourhood-kink-coffee",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "Kink Coffee",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Kink+Speciality+Coffee+5th+Main+Indiranagar+Bengaluru",
@@ -604,8 +944,10 @@
           "rating": 4.7
         },
         {
-          "id": "corners-coffee-tribal-brew-coffee",
-          "category": "Coffee",
+          "id": "neighbourhood-tribal-brew-coffee",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "Tribal Brew Coffee",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Tribal+Brew+Coffee+840+100+Feet+Road+Indiranagar+Bengaluru",
@@ -613,13 +955,26 @@
           "rating": 4.8
         },
         {
-          "id": "corners-coffee-nerlu-cafe",
-          "category": "Coffee",
+          "id": "neighbourhood-nerlu-cafe",
+          "categories": [
+            "Coffee shops"
+          ],
           "name": "Nerlu Cafe",
           "linkType": "maps",
           "url": "https://www.google.com/maps/search/?api=1&query=Nerlu+Cafe+4019+1st+Main+Paramahansa+Yogananda+Rd+Indiranagar+Bengaluru",
           "phone": "+91 91104 31189",
           "rating": 4.3
+        },
+        {
+          "id": "neighbourhood-humble-bean",
+          "categories": [
+            "Coffee shops"
+          ],
+          "name": "Humble Bean",
+          "linkType": "maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=HumbleBean+Coffee+3165+60+Feet+Road+HAL+2nd+Stage+Indiranagar+Bengaluru",
+          "phone": "+91 95133 30015",
+          "rating": 4.4
         }
       ]
     }

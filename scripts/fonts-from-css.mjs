@@ -1,5 +1,5 @@
 // Reads a Google Fonts CSS2 response on stdin, downloads the latin woff2 files to public/fonts
-// (one file per family/style, with a weight range when the file is a variable font) and writes src/fonts.css.
+// (one file per family/style, keeping weight and width ranges for variable fonts) and writes src/fonts.css.
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync, renameSync, unlinkSync, writeFileSync } from 'node:fs';
@@ -17,11 +17,12 @@ for (const chunk of css.split(/(?=\/\*\s*[a-z-]+\s*\*\/)/)) {
   const weightMatch = chunk.match(/font-weight:\s*(\d+)(?:\s+(\d+))?/);
   const weight = Number(weightMatch[1]);
   const weightMax = weightMatch[2] ? Number(weightMatch[2]) : weight;
+  const stretch = chunk.match(/font-stretch:\s*([^;]+);/)?.[1].trim() ?? null;
   const url = chunk.match(/url\(([^)]+)\)/)[1];
   const range = chunk.match(/unicode-range:\s*([^;]+);/)[1].trim();
   const tmp = `${dir}/.tmp-${faces.length}.woff2`;
   execFileSync('curl', ['-sL', url, '-o', tmp]);
-  faces.push({ family, style, weight, weightMax, range, tmp, hash: createHash('md5').update(readFileSync(tmp)).digest('hex') });
+  faces.push({ family, style, weight, weightMax, stretch, range, tmp, hash: createHash('md5').update(readFileSync(tmp)).digest('hex') });
 }
 
 const groups = new Map();
@@ -41,7 +42,9 @@ for (const g of groups.values()) {
   if (existsSync(`${dir}/${file}`)) unlinkSync(`${dir}/${file}`);
   renameSync(g.tmp, `${dir}/${file}`);
   keep.add(file);
-  out += `@font-face {\n  font-family: '${g.family}';\n  font-style: ${g.style};\n  font-weight: ${min === max ? min : `${min} ${max}`};\n  font-display: swap;\n  src: url('/fonts/${file}') format('woff2');\n  unicode-range: ${g.range};\n}\n`;
+  out += `@font-face {\n  font-family: '${g.family}';\n  font-style: ${g.style};\n  font-weight: ${min === max ? min : `${min} ${max}`};\n`;
+  if (g.stretch) out += `  font-stretch: ${g.stretch};\n`;
+  out += `  font-display: swap;\n  src: url('/fonts/${file}') format('woff2');\n  unicode-range: ${g.range};\n}\n`;
 }
 for (const f of readdirSync(dir)) if (!keep.has(f)) unlinkSync(`${dir}/${f}`);
 writeFileSync('src/fonts.css', out);
