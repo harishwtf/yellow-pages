@@ -18,6 +18,9 @@ export const CHAPTER_META: Record<string, ChapterMeta> = {
 
 export const FEATURED_LISTING_ID = 'kitchen-kitchen-management-m-kitchen-management';
 
+/** Ratings at or above this get a "Top rated!" sticker. */
+export const TOP_RATED_FROM = 4.9;
+
 export const OPEN_LABELS: Record<LinkType, string> = {
   website: 'Website',
   maps: 'Map',
@@ -31,10 +34,9 @@ export const STORAGE_KEYS = {
 } as const;
 
 export const COPY = {
-  imprint: 'Est.\u00A02026 · Bengaluru\u00A0560038 · Vol.\u00A01',
   title: 'The Indiranagar Move-In Guide',
   byline: 'by M',
-  promise: 'Who to call · where to go · what to install',
+  promise: 'who to call, where to go, what to install',
   searchPlaceholder: 'Search places or categories…',
   searchLabel: 'Search places and categories',
   saved: 'Saved',
@@ -47,6 +49,8 @@ export const COPY = {
   featuredBlurb: 'M runs kitchens end to end: setting up, groceries, a cook, meal plans and the washing-up.',
   copied: 'Copied',
   copyLabel: 'Copy number',
+  topRated: 'Top rated!',
+  openLabel: 'Open',
   saveLabel: 'Save',
   savedLabel: 'Saved',
   copyFailed: 'Couldn’t copy. Select the number instead.',

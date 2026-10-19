@@ -20,45 +20,52 @@ data/play-store.json          Google Play pages for the App Store listings, merg
 scripts/build-listings.mjs    converts data/guide.md → src/data/listings.json   (npm run data)
 scripts/fetch-fonts.sh        re-downloads the self-hosted fonts                (npm run fonts)
 scripts/ink-art.mjs           turns black-and-white art into a 4-tone ink PNG with transparent paper
-public/img/spot-auto-*.png    the one ink spot drawing on the cover (an auto rickshaw), 240 and 480 wide
-public/fonts/                 Archivo Narrow, Oswald, Caveat (latin woff2, OFL)
-design/                       the spot drawing source (Figma AI) and the store icon SVGs
+scripts/pixel-cursors.mjs     draws the 1-bit cursors as crisp SVGs (npm run cursors prints the CSS tokens)
+public/fonts/                 Archivo Narrow, Fraunces with its SOFT axis (latin woff2, OFL)
+design/                       the store icon SVGs and the cursor SVGs
 src/
   index.css                   theme tokens (@theme) + base + the few component classes
   fonts.css                   @font-face rules for the self-hosted fonts
   types.ts                    Listing / Section types
   data/listings.json          generated; { sections: [{ id, number, title, listings: [...] }] }
   data/ui.ts                  UI copy, chapter labels / icons / tones, featured card, storage key
-  lib/                        phone formatting, search matching, clipboard
+  lib/                        phone formatting, search matching, clipboard, group-by-category
   hooks/                      useLocalStorage (try/catch), useActiveSection, useToast, useUrlState
   components/
-    Header                    phone-book cover masthead: imprint, double rules, set-type title, by M, promise, ink spot
+    Header                    the masthead: the title in type, then "by M — who to call, where to go, what to install"
     PaperTexture              paper relief (SVG normal map, soft-light) + printed ink voids (lighten), over the document
     SearchBar                 live search across name + category
     ChapterChips              the index: numbered chapter tabs + Saved, in a sticky bar
-    ChapterSection            numbered chapter header, category filters, two-column listings
-    ListingCard               NAME ······ number, category · rating; tap the name to unfold copy / open / save
-    OpenLink, icons           website / map / App Store / Play Store / contact links and line icons
-    SavedView, EmptyState     saved places, and the empty states
+    ChapterSection            chapter header, then category headings with one directory line per place
+    DirectoryEntry            NAME ······ number ⧉ / ★ rating · Top rated! · map-web-store icons · ♡
+    FeaturedCard              M's own entry, set as a boxed display ad
+    OpenLink, icons           website / map / App Store / Play Store / contact links and their marks
+    SavedView, EmptyState     saved places (same directory lines, with chapter · category), empty states
+    PaperTexture              paper relief (SVG normal map) + printed ink voids, over the document
     Footer, Toast, Highlight
 ```
 
 ## Design
 
-A printed directory page, set calmly: directory-yellow paper, condensed grotesk (Archivo Narrow)
-for every entry, heavy condensed display (Oswald) for the masthead and chapter titles, bold
-uppercase names with dotted leaders running to local phone numbers (no +91, the tel: link keeps
-it), dotted hairlines between entries, two columns with a rule from tablet up, numbered black
-index tabs, a double masthead rule, and one boxed "display ad" for M. Each entry is two lines of
-print; tapping the name unfolds its actions (copy number, map / website / stores, save) as small
-caps text, and a copy icon sits right after every number. App Store and Google Play links use
-the real store marks, set in the page ink. The paper has tooth: an SVG normal map (a noise height
-field run through feDiffuseLighting) laid in soft-light, plus sparse specks of the paper colour in
-lighten mode that knock tiny voids out of every printed line and letter. Both scroll with the page.
-The masthead is a phone-book cover set in real type: the imprint line, double rules, the title in
-Oswald, "by M", the one-line promise, and one small linocut-style ink spot of an auto rickshaw. It
-takes about a third of the first screen. Red only for saved hearts.
-Nothing handwritten, no textures, no cards.
+A printed phone-book page in directory yellow and ink, built so nobody has to think or click
+more than once. Nothing decorative that doesn't help someone act: no imprint line, no ornamental
+rules. The masthead is just type: the title in Fraunces set soft and chunky, then one quiet line,
+"by M — who to call, where to go, what to install". Each chapter opens on a
+numbered ink tab and a soft-serif title, then lists its places under black category bars, like a
+phone book.
+
+Every place is one directory line, with everything visible:
+
+    WAKEFIT ································ 98833 33123 ⧉
+    ★ 4.6  Top rated!                               ◎  ♡
+
+Tap the number to call, ⧉ to copy it, the icon for the map / website / app stores, ♡ to save.
+Places without a number put their one action (Website, App Store and Play Store, Contact M) where
+the number would be. M's own entry is a boxed display ad. Places rated 4.9 or more carry a red
+"Top rated!" tag. On a mouse or trackpad the cursors are the vintage 1-bit set: the classic Mac arrow, the
+HyperCard pointing hand over anything you can tap, and the pixel I-beam in search; each directory line lights up under the
+pointer so the eye stays on the right number. The paper has tooth (an SVG normal map in soft-light) and the ink has printed
+voids (lighten).
 
 Every colour and font is a token in the `@theme` block at the top of `src/index.css`.
 
@@ -67,7 +74,7 @@ Every colour and font is a token in the `@theme` block at the top of `src/index.
 - Search filters every chapter live and highlights matches; chapters with no match are hidden.
 - Chapter chips jump to the chapter (the sticky bar keeps them in reach); the current chapter is
   highlighted as you scroll.
-- Category filters narrow a chapter; they are hidden while searching.
+- Category headings inside each chapter replace filters; search narrows everything at once.
 - The heart saves a place to this phone (`localStorage`, every access wrapped in try/catch);
   removing shows an Undo. The Saved chip switches to a view of saved places.
 - Phone numbers are `tel:` links printed without the country code; "Copy number" copies the full
@@ -94,7 +101,3 @@ and M's row reworded from "trained home cook" to kitchen management.
   printed directory page (condensed type, leaders, numbered tabs, the M ad box) on the same
   calm structure.
 
-### Regenerating the spot drawing
-
-Crop the white space off `design/spot-auto.png` (sips or any editor), resize to 240 and 480 wide,
-then `node scripts/ink-art.mjs <in.png> public/img/spot-auto-<w>.png '#1c1a17'`.

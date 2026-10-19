@@ -26,7 +26,6 @@ const INITIAL = readUrlState();
 export default function App() {
   const [query, setQuery] = useState(INITIAL.query);
   const [view, setView] = useState<'all' | 'saved'>(INITIAL.view);
-  const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>({});
   const [savedIds, setSavedIds] = useLocalStorage<string[]>(STORAGE_KEYS.favorites, []);
   const { toast, show: notify, dismiss: dismissToast } = useToast();
 
@@ -37,14 +36,11 @@ export default function App() {
 
   const chapters = useMemo(
     () =>
-      data.sections.map((section) => {
-        const category = searching ? null : (categoryFilters[section.id] ?? null);
-        const listings = section.listings.filter(
-          (listing) => matchesQuery(listing, query) && (category === null || listing.category === category),
-        );
-        return { section, listings };
-      }),
-    [query, searching, categoryFilters],
+      data.sections.map((section) => ({
+        section,
+        listings: section.listings.filter((listing) => matchesQuery(listing, query)),
+      })),
+    [query],
   );
   const visibleChapters = searching ? chapters.filter((chapter) => chapter.listings.length > 0) : chapters;
   const resultCount = chapters.reduce((count, chapter) => count + chapter.listings.length, 0);
@@ -132,8 +128,6 @@ export default function App() {
                 section={section}
                 listings={listings}
                 query={query}
-                selectedCategory={categoryFilters[section.id] ?? null}
-                onSelectCategory={(category) => setCategoryFilters((prev) => ({ ...prev, [section.id]: category }))}
                 saved={saved}
                 onToggleSaved={toggleSaved}
                 onNotify={notify}

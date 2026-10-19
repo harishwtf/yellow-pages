@@ -1,7 +1,7 @@
 import { COPY } from '../data/ui';
 import type { Listing } from '../types';
+import { DirectoryEntry } from './DirectoryEntry';
 import { EmptyState } from './EmptyState';
-import { ListingCard } from './ListingCard';
 
 export interface SavedItem {
   listing: Listing;
@@ -15,27 +15,27 @@ interface SavedViewProps {
   onNotify: (text: string) => void;
 }
 
+/** Saved places, as the same directory lines with their chapter and category in front. */
 export function SavedView({ items, query, onToggleSaved, onNotify }: SavedViewProps) {
   return (
     <section aria-labelledby="saved-heading">
-      <div className="rule-double" aria-hidden="true" />
-      <h2 id="saved-heading" className="mt-3 font-display text-[1.5rem] font-bold uppercase leading-none md:text-[1.8rem]">
+      <h2 id="saved-heading" className="font-display text-[1.6rem] font-extrabold leading-none md:text-[2rem]">
         {COPY.saved}
       </h2>
       <p className="mt-1 text-[0.95rem] text-muted">{COPY.savedIntro}</p>
       {items.length === 0 ? (
         <EmptyState icon="heart" title={COPY.savedEmpty} hint={COPY.savedEmptyHint} />
       ) : (
-        <ul className="directory mt-2">
+        <ul className="grouped mt-4">
           {items.map(({ listing, chapterLabel }) => (
-            <ListingCard
+            <DirectoryEntry
               key={listing.id}
               listing={listing}
               query={query}
               isSaved
               onToggleSaved={onToggleSaved}
               onNotify={onNotify}
-              chapterLabel={chapterLabel}
+              context={`${chapterLabel} · ${listing.category}`}
             />
           ))}
         </ul>
