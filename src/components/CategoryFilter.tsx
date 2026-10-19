@@ -5,11 +5,11 @@ interface CategoryFilterProps {
   sectionTitle: string;
 }
 
-/** Small text pills to narrow a chapter to one category. */
+/** A line of small-caps text to narrow a chapter to one category, like an index line. */
 export function CategoryFilter({ categories, selected, onSelect, sectionTitle }: CategoryFilterProps) {
   if (categories.length < 2) return null;
   return (
-    <div className="flex flex-wrap gap-1.5" role="group" aria-label={`Filter ${sectionTitle} by category`}>
+    <p className="filters" role="group" aria-label={`Filter ${sectionTitle} by category`}>
       <button type="button" className="filter" aria-pressed={selected === null} onClick={() => onSelect(null)}>
         All
       </button>
@@ -25,6 +25,6 @@ export function CategoryFilter({ categories, selected, onSelect, sectionTitle }:
           {category}
         </button>
       ))}
-    </div>
+    </p>
   );
 }

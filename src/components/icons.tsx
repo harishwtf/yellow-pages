@@ -1,67 +1,59 @@
 import { cn } from '../lib/cn';
 
-export type IconName =
-  | 'search'
-  | 'close'
-  | 'heart'
-  | 'copy'
-  | 'phone'
-  | 'globe'
-  | 'pin'
-  | 'apple'
-  | 'play'
-  | 'chat'
-  | 'bed'
-  | 'pot'
-  | 'bolt'
-  | 'shirt'
-  | 'leaf'
-  | 'cup';
+export type IconName = 'search' | 'close' | 'heart' | 'copy' | 'globe' | 'pin' | 'chat' | 'chevron';
 
 const PATHS: Record<IconName, string> = {
   search: 'M10.5 4a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13z M15.5 15.5 21 21',
   close: 'M6 6l12 12M18 6 6 18',
   heart: 'M12 20.5s-7.5-4.6-7.5-10A4 4 0 0 1 12 8a4 4 0 0 1 7.5 2.5c0 5.4-7.5 10-7.5 10z',
   copy: 'M9 9h10v11H9z M5 15V4h10',
-  phone: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z',
   globe: 'M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18z M3 12h18 M12 3a13.5 13.5 0 0 1 0 18 M12 3a13.5 13.5 0 0 0 0 18',
   pin: 'M12 21.5s-6.5-5.6-6.5-10.5a6.5 6.5 0 0 1 13 0c0 4.9-6.5 10.5-6.5 10.5z M12 13.4a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8z',
-  apple:
-    'M16.4 12.7c0-2.4 2-3.5 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9-.8 0-1.9-.9-3.1-.8-1.6 0-3.1.9-3.9 2.4-1.7 2.9-.4 7.2 1.2 9.6.8 1.2 1.7 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.4 0 1.9.8 3.1.8 1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.6-1-2.6-3.8zM14 5.6c.6-.8 1.1-1.9 1-3-.9 0-2.1.7-2.8 1.5-.6.7-1.1 1.8-1 2.8 1.1.1 2.1-.5 2.8-1.3z',
-  play: 'M5.5 3.4v17.2a.8.8 0 0 0 1.2.7l14.4-8.6a.8.8 0 0 0 0-1.4L6.7 2.7a.8.8 0 0 0-1.2.7z M5.9 3.1 15.6 12l-9.7 8.9',
-  chat: 'M4 6a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 6v8a2.5 2.5 0 0 1-2.5 2.5H9.5L4.5 20.5V6z M8.5 9h7 M8.5 12.5h4.5',
-  bed: 'M3 18V8h18v10 M3 12.5h18 M6.5 8V5h5v3 M3 15.5h18',
-  pot: 'M4 10h16v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z M2 10h20 M9 6.5c0-2 2-2 2 0 M13 6.5c0-2 2-2 2 0',
-  bolt: 'M13 2 4 14h7l-1 8 9-12h-7z',
-  shirt: 'M7.5 4 3.5 7l2 3 2-1v11h9V9l2 1 2-3-4-3-1.5 2h-4z',
-  leaf: 'M20 4c-9 0-14 5-14 12 7 0 12-5 14-12z M6 16c3-3 6-5 10-7 M6 16l-2 4',
-  cup: 'M4 8h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z M16 10h2a2 2 0 0 1 0 4h-2 M7 4.5c0 1 1 1 1 2 M11 4.5c0 1 1 1 1 2',
+  chat: 'M4 6a2.5 2.5 0 0 1 2.5-2.5h11A2.5 2.5 0 0 1 20 6v8a2.5 2.5 0 0 1-2.5 2.5H9.5L4.5 20.5V6z',
+  chevron: 'M8 10l4 4 4-4',
 };
-
-const FILLED: Partial<Record<IconName, true>> = { apple: true };
 
 interface IconProps {
   name: IconName;
   className?: string;
-  /** Fill the shape (used for the saved heart). */
   filled?: boolean;
 }
 
 /** One small line icon. Decorative: label the control that holds it. */
 export function Icon({ name, className, filled = false }: IconProps) {
-  const solid = FILLED[name] || filled;
   return (
     <svg
       aria-hidden="true"
       className={cn('h-5 w-5 shrink-0', className)}
       viewBox="0 0 24 24"
-      fill={solid ? 'currentColor' : 'none'}
-      stroke={solid && FILLED[name] ? 'none' : 'currentColor'}
+      fill={filled ? 'currentColor' : 'none'}
+      stroke="currentColor"
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
     >
       <path d={PATHS[name]} />
+    </svg>
+  );
+}
+
+/** The App Store mark (from design/apple-app-store-icon.svg), set in the page ink. */
+export function AppStoreMark({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={cn('h-5 w-5 shrink-0', className)} viewBox="0 0 333334 332780" fill="currentColor" fillRule="evenodd">
+      <path d="M67387 0h198559c37063 0 67387 30324 67387 67387v198005c0 37063-30324 67387-67387 67387H67387C30324 332779 0 302455 0 265392V67387C0 30324 30324 0 67387 0zm192804 188911c8471 0 15339 6868 15339 15339 0 8472-6868 15339-15339 15339h-13707l12369 21361c4186 7375 1601 16748-5774 20934-7376 4186-16748 1600-20933-5775l-21148-36520h-292l-18180-30679h707l-17948-30995 17460-31129 35974 62123h31472zM137016 91830c-4186-7376-1601-16748 5775-20934 7375-4186 16748-1601 20933 5774l3533 6102 3041-5232c4186-7375 13559-9960 20934-5774s9960 13559 5775 20933l-12043 20650 35 60-9218 15688-34881 59815h36634l17798 30678-71907 1-19809 34780c-4186 7375-13559 9960-20933 5774-7375-4186-9961-13558-5774-20934l11175-19619H73143c-8471 0-15339-6868-15339-15340 0-8471 6868-15339 15339-15339h32415l43922-75559-12464-21524z" />
+    </svg>
+  );
+}
+
+/** The Google Play mark (from design/google-play-store-icon.svg), its four facets set in four tints of the page ink. */
+export function PlayMark({ className }: { className?: string }) {
+  return (
+    <svg aria-hidden="true" className={cn('h-5 w-5 shrink-0', className)} viewBox="0 0 466 511.98" fill="currentColor">
+      <path d="M1.39 41.86c-1.39,4.18 -1.39,9.77 -1.39,15.34l0 397.64c0,5.57 0,9.76 1.4,15.34l216.27 -214.86 -216.28 -213.46z" />
+      <path fillOpacity={0.72} d="M199.42 273.45l129.85 -128.35 -241.37 -136.73c-8.37,-5.58 -19.54,-8.37 -30.7,-8.37 -26.5,0 -50.22,18.14 -55.8,41.86l198.02 231.59z" />
+      <path fillOpacity={0.5} d="M199.9 237.8l-198.5 232.37c7.22,24.57 30.16,41.81 55.8,41.81 11.16,0 20.93,-2.79 29.3,-8.37l244.16 -139.46 -130.76 -126.35z" />
+      <path fillOpacity={0.3} d="M433.91 205.1l-104.65 -60 -111.61 110.22 113.01 108.83 104.64 -58.6c18.14,-9.77 30.7,-29.3 30.7,-50.23 -1.4,-20.93 -13.95,-40.46 -32.09,-50.22z" />
     </svg>
   );
 }

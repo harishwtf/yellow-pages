@@ -9,3 +9,8 @@ export function splitPhone(phone: string): { primary: string; extra: string | nu
 export function telHref(phone: string): string {
   return `tel:${splitPhone(phone).primary.replace(/[^\d+]/g, '')}`;
 }
+
+/** The number as a local directory would print it: without the +91 country code. */
+export function localNumber(primary: string): string {
+  return primary.replace(/^\+91\s*/, '');
+}

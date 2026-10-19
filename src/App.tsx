@@ -4,6 +4,7 @@ import { ChapterSection } from './components/ChapterSection';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { PaperTexture } from './components/PaperTexture';
 import { SavedView, type SavedItem } from './components/SavedView';
 import { SearchBar } from './components/SearchBar';
 import { Toast } from './components/Toast';
@@ -96,16 +97,16 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="relative min-h-screen">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:font-semibold focus:text-bg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-ink focus:px-4 focus:py-2 focus:font-bold focus:uppercase focus:tracking-wider focus:text-bg"
       >
         Skip to places
       </a>
       <Header />
       <div className="sticky-bar">
-        <div className="mx-auto flex max-w-2xl flex-col gap-2.5 px-4 py-3">
+        <div className="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-2.5">
           <SearchBar value={query} onChange={setQuery} resultCount={view === 'saved' ? savedItems.length : resultCount} />
           <ChapterChips
             sections={data.sections}
@@ -118,13 +119,13 @@ export default function App() {
         </div>
       </div>
 
-      <main id="main" className="mx-auto max-w-2xl px-4 pt-6">
+      <main id="main" className="mx-auto max-w-4xl px-4 pt-8">
         {view === 'saved' ? (
           <SavedView items={savedItems} query={query} onToggleSaved={toggleSaved} onNotify={notify} />
         ) : visibleChapters.length === 0 ? (
           <EmptyState icon="search" title={`${COPY.noMatches} “${query.trim()}”`} hint={COPY.noMatchesHint} />
         ) : (
-          <div className="space-y-12">
+          <div className="space-y-14">
             {visibleChapters.map(({ section, listings }) => (
               <ChapterSection
                 key={section.id}
@@ -143,6 +144,7 @@ export default function App() {
       </main>
       <Footer />
       <Toast toast={toast} onDismiss={dismissToast} />
-    </>
+      <PaperTexture />
+    </div>
   );
 }

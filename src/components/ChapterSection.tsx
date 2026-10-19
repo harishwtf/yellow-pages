@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
-import { CHAPTER_META, COPY } from '../data/ui';
-import { cn } from '../lib/cn';
 import type { Listing, Section } from '../types';
 import { CategoryFilter } from './CategoryFilter';
-import { Icon } from './icons';
 import { ListingCard } from './ListingCard';
 
 interface ChapterSectionProps {
@@ -28,30 +25,28 @@ export function ChapterSection({
   onToggleSaved,
   onNotify,
 }: ChapterSectionProps) {
-  const meta = CHAPTER_META[section.id];
   const categories = useMemo(() => Array.from(new Set(section.listings.map((l) => l.category))), [section.listings]);
 
   return (
-    <section id={section.id} aria-labelledby={`heading-${section.id}`} className="scroll-mt-36">
-      <div className="mb-3 flex items-center gap-3">
-        <span className={cn('badge', meta?.tone)} aria-hidden="true">
-          <Icon name={meta?.icon ?? 'pin'} />
+    <section id={section.id} aria-labelledby={`heading-${section.id}`} className="scroll-mt-32">
+      <div className="rule-double" aria-hidden="true" />
+      <div className="mt-3 flex items-center gap-3">
+        <span className="num-tab" aria-hidden="true">
+          {section.number}
         </span>
         <div className="min-w-0">
-          <h2 id={`heading-${section.id}`} className="font-display text-[1.4rem] font-semibold leading-tight tracking-[-0.01em]">
+          <h2 id={`heading-${section.id}`} className="font-display text-[1.5rem] font-bold uppercase leading-none tracking-[-0.005em] md:text-[1.8rem]">
+            <span className="sr-only">Chapter {section.number}: </span>
             {section.title}
           </h2>
-          <p className="text-sm text-muted">
-            {listings.length} {COPY.places}
-          </p>
         </div>
       </div>
       {!query.trim() && (
-        <div className="mb-3">
+        <div className="mt-2.5">
           <CategoryFilter categories={categories} selected={selectedCategory} onSelect={onSelectCategory} sectionTitle={section.title} />
         </div>
       )}
-      <ul className="flex flex-col gap-3">
+      <ul className="directory mt-1">
         {listings.map((listing) => (
           <ListingCard
             key={listing.id}
