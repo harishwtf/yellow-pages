@@ -1,25 +1,22 @@
-import { COPY } from '../data/annotations';
-import { CoffeeRing } from './PaperTexture';
+import { COPY } from '../data/ui';
 
 export function Footer() {
   return (
-    <footer className="page-foot relative mx-auto max-w-6xl px-4 pt-10 text-sm text-ink-soft lg:pr-28">
-      <CoffeeRing className="-top-20 right-7 md:right-12 lg:right-36" />
-      <div className="rule-double mb-4" />
+    <footer className="mx-auto max-w-2xl px-4 pb-16 pt-12 text-sm text-muted">
       <p>
         Source:{' '}
         <a
           href={COPY.source.url}
           target="_blank"
           rel="noopener"
-          className="rounded px-0.5 font-bold text-ink underline decoration-2 underline-offset-2 hover:bg-ink/10 hover:decoration-pen-red"
+          className="font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-ink"
           translate="no"
         >
           {COPY.source.label}
         </a>
       </p>
-      <p className="mt-2 max-w-xl text-xs leading-relaxed">{COPY.smallPrint}</p>
-      <p className="mt-3 text-xs uppercase tracking-[0.15em]">{COPY.imprint}</p>
+      <p className="mt-2 max-w-prose text-pretty">{COPY.smallPrint}</p>
+      <p className="mt-4 text-[0.7rem] font-semibold uppercase tracking-[0.18em]">{COPY.imprint}</p>
     </footer>
   );
 }

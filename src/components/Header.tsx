@@ -1,37 +1,17 @@
-import { COPY } from '../data/annotations';
-import { HandUnderline } from './ink/HandUnderline';
-import { TornEdge } from './TornEdge';
+import { COPY } from '../data/ui';
 
-interface HeaderProps {
-  listingCount: number;
-  sectionCount: number;
-}
-
-/** Phone-book cover masthead with a torn bottom edge. */
-export function Header({ listingCount, sectionCount }: HeaderProps) {
+export function Header() {
   return (
-    <header className="cover relative bg-paper-deep pb-12 md:pb-16">
-      <div className="mx-auto max-w-6xl px-4 lg:pr-28">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-xs uppercase tracking-[0.18em] text-ink-soft md:text-sm">
-          <p>{COPY.imprint}</p>
-          <p>
-            {listingCount} listings · {sectionCount} chapters
-          </p>
-        </div>
-        <div className="rule-double my-3" />
-        <h1 className="font-display text-[clamp(2.7rem,11vw,7.5rem)] font-bold uppercase leading-[0.9] tracking-tight" translate="no">
-          <span className="block">The Indiranagar</span>
-          <span className="block">Move-In Guide</span>
-        </h1>
-        <div className="mt-4 flex flex-wrap items-end gap-x-6 gap-y-3">
-          <p className="hand relative inline-block -rotate-2 pr-2 text-[clamp(2rem,6vw,3.25rem)] leading-none text-pen-blue" translate="no">
-            — {COPY.byline}
-            <HandUnderline />
-          </p>
-          <p className="max-w-md text-pretty text-base leading-snug text-ink-soft md:text-lg">{COPY.tagline}</p>
-        </div>
-      </div>
-      <TornEdge edge="bottom" fill="var(--color-paper)" />
+    <header className="mx-auto max-w-2xl px-4 pb-5 pt-7 md:pt-12">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-muted">{COPY.imprint}</p>
+      <h1 className="mt-2 font-display text-[2rem] font-semibold leading-[1.1] tracking-[-0.01em] text-balance md:text-[2.5rem]">
+        {COPY.title}
+        <span className="font-hand ml-2 inline-block -rotate-3 align-baseline text-[1.5rem] font-semibold text-muted md:text-[1.8rem]">
+          {COPY.byline}
+        </span>
+      </h1>
+      <p className="mt-3 max-w-prose text-[1.02rem] leading-relaxed text-muted text-pretty">{COPY.intro}</p>
+      <div className="rule-double mt-5" aria-hidden="true" />
     </header>
   );
 }

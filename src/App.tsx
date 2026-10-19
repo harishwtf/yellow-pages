@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
-import { FavoritesDrawer, type FavoriteItem } from './components/FavoritesDrawer';
+import { ChapterChips } from './components/ChapterChips';
+import { ChapterSection } from './components/ChapterSection';
+import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-import { PaperTexture } from './components/PaperTexture';
+import { SavedView, type SavedItem } from './components/SavedView';
 import { SearchBar } from './components/SearchBar';
-import { SectionChapter } from './components/SectionChapter';
-import { SectionNav } from './components/SectionNav';
 import { Toast } from './components/Toast';
-import { COPY, SECTION_META, STORAGE_KEYS } from './data/annotations';
+import { CHAPTER_META, COPY, STORAGE_KEYS } from './data/ui';
 import listingsData from './data/listings.json';
 import { useActiveSection } from './hooks/useActiveSection';
 import { useLocalStorage } from './hooks/useLocalStorage';
@@ -20,61 +20,58 @@ const data = listingsData as GuideData;
 const ALL_LISTINGS: Listing[] = data.sections.flatMap((section) => section.listings);
 const LISTING_BY_ID = new Map(ALL_LISTINGS.map((listing) => [listing.id, listing]));
 const SECTION_OF = new Map(data.sections.flatMap((section) => section.listings.map((listing) => [listing.id, section.id])));
-const INITIAL_URL_STATE = readUrlState(data.sections);
+const INITIAL = readUrlState();
 
 export default function App() {
-  const [query, setQuery] = useState(INITIAL_URL_STATE.query);
-  const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>(INITIAL_URL_STATE.filters);
-  const [favoritesOpen, setFavoritesOpen] = useState(INITIAL_URL_STATE.myPage);
-  const [favoriteIds, setFavoriteIds] = useLocalStorage<string[]>(STORAGE_KEYS.favorites, []);
-  const [doneIds, setDoneIds] = useLocalStorage<string[]>(STORAGE_KEYS.checklist, []);
+  const [query, setQuery] = useState(INITIAL.query);
+  const [view, setView] = useState<'all' | 'saved'>(INITIAL.view);
+  const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>({});
+  const [savedIds, setSavedIds] = useLocalStorage<string[]>(STORAGE_KEYS.favorites, []);
   const { toast, show: notify, dismiss: dismissToast } = useToast();
 
-  useUrlSync({ query, filters: categoryFilters, myPage: favoritesOpen });
+  useUrlSync({ query, view });
 
-  const favorites = useMemo(() => new Set(favoriteIds), [favoriteIds]);
-  const done = useMemo(() => new Set(doneIds), [doneIds]);
+  const saved = useMemo(() => new Set(savedIds), [savedIds]);
   const searching = query.trim().length > 0;
 
   const chapters = useMemo(
     () =>
       data.sections.map((section) => {
-        const category = categoryFilters[section.id] ?? null;
+        const category = searching ? null : (categoryFilters[section.id] ?? null);
         const listings = section.listings.filter(
           (listing) => matchesQuery(listing, query) && (category === null || listing.category === category),
         );
         return { section, listings };
       }),
-    [query, categoryFilters],
+    [query, searching, categoryFilters],
   );
   const visibleChapters = searching ? chapters.filter((chapter) => chapter.listings.length > 0) : chapters;
   const resultCount = chapters.reduce((count, chapter) => count + chapter.listings.length, 0);
-  const activeId = useActiveSection(visibleChapters.map((chapter) => chapter.section.id));
+  const activeId = useActiveSection(view === 'all' ? visibleChapters.map((chapter) => chapter.section.id) : []);
 
-  const favoriteItems = useMemo<FavoriteItem[]>(
+  const savedItems = useMemo<SavedItem[]>(
     () =>
-      favoriteIds.flatMap((id) => {
+      savedIds.flatMap((id) => {
         const listing = LISTING_BY_ID.get(id);
-        if (!listing) return [];
-        const sectionId = SECTION_OF.get(id) ?? '';
-        return [{ listing, sectionLabel: SECTION_META[sectionId]?.short ?? '' }];
+        if (!listing || !matchesQuery(listing, query)) return [];
+        return [{ listing, chapterLabel: CHAPTER_META[SECTION_OF.get(id) ?? '']?.short ?? '' }];
       }),
-    [favoriteIds],
+    [savedIds, query],
   );
 
-  const toggleFavorite = useCallback(
+  const toggleSaved = useCallback(
     (listing: Listing) => {
-      const index = favoriteIds.indexOf(listing.id);
+      const index = savedIds.indexOf(listing.id);
       if (index === -1) {
-        setFavoriteIds((prev) => (prev.includes(listing.id) ? prev : [...prev, listing.id]));
-        notify(COPY.favoriteAdded);
+        setSavedIds((prev) => (prev.includes(listing.id) ? prev : [...prev, listing.id]));
+        notify(COPY.savedToast);
         return;
       }
-      setFavoriteIds((prev) => prev.filter((id) => id !== listing.id));
-      notify(COPY.favoriteRemoved, {
+      setSavedIds((prev) => prev.filter((id) => id !== listing.id));
+      notify(COPY.removedToast, {
         label: COPY.undo,
         onClick: () =>
-          setFavoriteIds((prev) => {
+          setSavedIds((prev) => {
             if (prev.includes(listing.id)) return prev;
             const next = [...prev];
             next.splice(Math.min(index, next.length), 0, listing.id);
@@ -82,77 +79,70 @@ export default function App() {
           }),
       });
     },
-    [favoriteIds, setFavoriteIds, notify],
+    [savedIds, setSavedIds, notify],
   );
 
-  const setSectionDone = (sectionId: string, isDone: boolean) => {
-    setDoneIds((prev) => (isDone ? [...prev.filter((id) => id !== sectionId), sectionId] : prev.filter((id) => id !== sectionId)));
-    if (isDone) notify(COPY.sectionDone);
-  };
-
-  const jumpToSection = (sectionId: string) => {
-    if (!visibleChapters.some((chapter) => chapter.section.id === sectionId)) setQuery('');
+  const jumpTo = (sectionId: string) => {
+    setView('all');
+    setQuery('');
     window.requestAnimationFrame(() => {
-      document.getElementById(`section-${sectionId}`)?.scrollIntoView({ block: 'start' });
+      document.getElementById(sectionId)?.scrollIntoView({ block: 'start' });
       try {
-        window.history.replaceState(window.history.state, '', `#section-${sectionId}`);
+        window.history.replaceState(window.history.state, '', `#${sectionId}`);
       } catch {
-        // History API unavailable: scrolling already happened.
+        // scrolling already happened
       }
     });
   };
 
-  const closeFavorites = useCallback(() => setFavoritesOpen(false), []);
-
   return (
-    <div className="min-h-screen">
+    <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded focus:bg-ink focus:px-3 focus:py-2 focus:font-bold focus:uppercase focus:tracking-wider focus:text-paper"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:font-semibold focus:text-bg"
       >
-        Skip to listings
+        Skip to places
       </a>
-      <PaperTexture />
-      <Header listingCount={ALL_LISTINGS.length} sectionCount={data.sections.length} />
-      <SectionNav
-        sections={data.sections}
-        activeId={activeId}
-        doneIds={done}
-        favoriteCount={favoriteIds.length}
-        favoritesOpen={favoritesOpen}
-        onSelect={jumpToSection}
-        onOpenFavorites={() => setFavoritesOpen(true)}
-      />
-
-      <main id="main" className="mx-auto max-w-6xl px-4 pt-6 lg:pr-28">
-        <SearchBar value={query} onChange={setQuery} resultCount={resultCount} total={ALL_LISTINGS.length} />
-
-        <div className="mt-8 space-y-14">
-          {visibleChapters.map(({ section, listings }) => (
-            <SectionChapter
-              key={section.id}
-              section={section}
-              listings={listings}
-              query={query}
-              selectedCategory={categoryFilters[section.id] ?? null}
-              onSelectCategory={(category) => setCategoryFilters((prev) => ({ ...prev, [section.id]: category }))}
-              done={done.has(section.id)}
-              onToggleDone={(isDone) => setSectionDone(section.id, isDone)}
-              favorites={favorites}
-              onToggleFavorite={toggleFavorite}
-              onNotify={notify}
-            />
-          ))}
+      <Header />
+      <div className="sticky-bar">
+        <div className="mx-auto flex max-w-2xl flex-col gap-2.5 px-4 py-3">
+          <SearchBar value={query} onChange={setQuery} resultCount={view === 'saved' ? savedItems.length : resultCount} />
+          <ChapterChips
+            sections={data.sections}
+            activeId={activeId}
+            view={view}
+            savedCount={savedIds.length}
+            onJump={jumpTo}
+            onToggleSaved={() => setView((current) => (current === 'saved' ? 'all' : 'saved'))}
+          />
         </div>
+      </div>
 
-        {searching && visibleChapters.length === 0 && (
-          <p className="hand mt-16 text-balance text-center text-4xl leading-tight text-pen-blue">{COPY.emptySearch}</p>
+      <main id="main" className="mx-auto max-w-2xl px-4 pt-6">
+        {view === 'saved' ? (
+          <SavedView items={savedItems} query={query} onToggleSaved={toggleSaved} onNotify={notify} />
+        ) : visibleChapters.length === 0 ? (
+          <EmptyState icon="search" title={`${COPY.noMatches} “${query.trim()}”`} hint={COPY.noMatchesHint} />
+        ) : (
+          <div className="space-y-12">
+            {visibleChapters.map(({ section, listings }) => (
+              <ChapterSection
+                key={section.id}
+                section={section}
+                listings={listings}
+                query={query}
+                selectedCategory={categoryFilters[section.id] ?? null}
+                onSelectCategory={(category) => setCategoryFilters((prev) => ({ ...prev, [section.id]: category }))}
+                saved={saved}
+                onToggleSaved={toggleSaved}
+                onNotify={notify}
+              />
+            ))}
+          </div>
         )}
       </main>
-
       <Footer />
-      <FavoritesDrawer open={favoritesOpen} items={favoriteItems} onClose={closeFavorites} onRemove={toggleFavorite} />
       <Toast toast={toast} onDismiss={dismissToast} />
-    </div>
+    </>
   );
 }

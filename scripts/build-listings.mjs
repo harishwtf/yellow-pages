@@ -1,12 +1,14 @@
 // Converts data/guide.md (the guide as markdown tables) into src/data/listings.json.
 // Rows are copied verbatim; "—" becomes null. Run with: npm run data
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const SOURCE = resolve(here, '../data/guide.md');
 const OUTPUT = resolve(here, '../src/data/listings.json');
+/** Google Play pages for the App Store listings, keyed by listing id. Every appstore row must have one. */
+const PLAY_STORE = resolve(here, '../data/play-store.json');
 
 const SECTION_IDS = { 1: 'settle-in', 2: 'kitchen', 3: 'utilities', 4: 'laundry', 5: 'plants', 6: 'corners' };
 const LINK_TYPES = { Website: 'website', Maps: 'maps', 'App Store': 'appstore', 'Contact M': 'contact' };
@@ -54,11 +56,17 @@ for (const rawLine of markdown.split('\n')) {
   });
 }
 
+const playStore = existsSync(PLAY_STORE) ? JSON.parse(readFileSync(PLAY_STORE, 'utf8')) : {};
 const seen = new Set();
 for (const section of sections) {
   for (const listing of section.listings) {
     if (seen.has(listing.id)) throw new Error(`Duplicate listing id: ${listing.id}`);
     seen.add(listing.id);
+    if (listing.linkType === 'appstore') {
+      const play = playStore[listing.id];
+      if (!play?.url) throw new Error(`No Google Play link for ${listing.id} in data/play-store.json`);
+      listing.androidUrl = play.url;
+    }
   }
 }
 

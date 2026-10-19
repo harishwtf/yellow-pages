@@ -1,8 +1,7 @@
 # The Indiranagar Move-In Guide — by M
 
-A single-page directory of trusted services for people moving into Indiranagar, Bengaluru,
-styled like an old printed phone book that a friend has scribbled tips all over.
-Source data: [indiranagar.tellm.co](https://indiranagar.tellm.co/).
+A calm, single-column directory of trusted services for people moving into Indiranagar, Bengaluru:
+who to call, where to go, what to install. Source data: [indiranagar.tellm.co](https://indiranagar.tellm.co/).
 
 React + Vite + TypeScript + Tailwind CSS v4. No backend.
 
@@ -17,67 +16,65 @@ npm run preview  # serve dist/
 
 ```
 data/guide.md                 the guide as markdown tables (the source of truth)
+data/play-store.json          Google Play pages for the App Store listings, merged in by the build
 scripts/build-listings.mjs    converts data/guide.md → src/data/listings.json   (npm run data)
 scripts/fetch-fonts.sh        re-downloads the self-hosted fonts                (npm run fonts)
-public/fonts/                 Archivo Narrow, Oswald, Caveat, Kalam (latin woff2, OFL)
+public/fonts/                 DM Sans, Fraunces, Caveat (latin woff2, OFL)
+design/                       postcard illustrations generated with Figma AI (not used by the app)
 src/
-  index.css                   theme tokens (@theme) + paper textures + component classes
+  index.css                   theme tokens (@theme) + base + the few component classes
   fonts.css                   @font-face rules for the self-hosted fonts
   types.ts                    Listing / Section types
   data/listings.json          generated; { sections: [{ id, number, title, listings: [...] }] }
-  data/annotations.ts         UI copy, thumb-tab labels, margin notes, featured card, storage keys
-  lib/                        phone formatting, search matching, clipboard, deterministic wobble
-  hooks/                      useLocalStorage (try/catch), useInView, useActiveSection, useToast, useUrlState
+  data/ui.ts                  UI copy, chapter labels / icons / tones, featured card, storage key
+  lib/                        phone formatting, search matching, clipboard
+  hooks/                      useLocalStorage (try/catch), useActiveSection, useToast, useUrlState
   components/
-    Header                    phone-book cover masthead with torn bottom edge
-    SectionNav                thumb-index tabs (sticky strip on mobile, right-edge stack on desktop)
+    Header                    title, "by M", one-line intro
     SearchBar                 live search across name + category
-    CategoryChips             per-section category filter
-    SectionChapter            chapter header, Done ✓ checkbox, chips, column layout
-    ListingCard               name · dotted leader · phone, rating, Copy / Open / ★ actions
-    FavoritesDrawer           "My Page": starred listings on a torn-out page
-    Footer                    source + small print, coffee ring
-    Toast, Highlight, TornEdge, PaperTexture
-    ink/                      HandCircle, HandCheck, HandArrow, HandUnderline, HandCheckbox
+    ChapterChips              chapter anchors with icons + the Saved view, in a sticky bar
+    ChapterSection            chapter header, category filters, cards
+    ListingCard               name → category · rating → number + copy / open / store, heart to save
+    OpenLink, icons           website / map / App Store / Play Store / contact links and line icons
+    SavedView, EmptyState     saved places, and the empty states
+    Footer, Toast, Highlight
 ```
 
-## Re-skinning
+## Design
 
-Every colour and font is a Tailwind theme token in the `@theme` block at the top of
-`src/index.css` (`--color-paper`, `--color-ink`, `--color-pen-red`, `--font-print`, …).
-Change them there and the whole app follows. Handwritten copy, thumb-tab labels and the
-per-chapter margin notes are in `src/data/annotations.ts`.
+A directory-yellow page with white rounded cards on it, like a white book on a yellow table: one
+reading order per card, a pastel badge per chapter, a double masthead rule and a tiny imprint
+line as the only Yellow Pages flourishes, butter yellow for the featured card and search
+highlights, and a pink heart for saved places. Fraunces for headings, DM Sans for everything
+else, Caveat only for the "by M" byline. No textures, no decoration that does not do a job.
 
-Textures are generated, not image files: SVG `feTurbulence` noise and fibre overlays,
-a CSS radial-gradient vignette and halftone, a CSS coffee ring and an SVG torn edge.
+Every colour and font is a token in the `@theme` block at the top of `src/index.css`; chapter
+tones are `--color-<chapter>` and `--color-<chapter>-ink`.
+
+## Behaviour
+
+- Search filters every chapter live and highlights matches; chapters with no match are hidden.
+- Chapter chips jump to the chapter (the sticky bar keeps them in reach); the current chapter is
+  highlighted as you scroll.
+- Category filters narrow a chapter; they are hidden while searching.
+- The heart saves a place to this phone (`localStorage`, every access wrapped in try/catch);
+  removing shows an Undo. The Saved chip switches to a view of saved places.
+- Phone numbers are `tel:` links with a copy icon; links open in a new tab. App Store rows also
+  carry a Google Play link (package ids checked against the store).
+- Search and the Saved view are in the query string (`?q=gas`, `?view=saved`), chapters are
+  `#anchors`, so any view can be shared.
 
 ## Data
 
 `src/data/listings.json` is generated from `data/guide.md`; edit the markdown and run
 `npm run data`. Rows are copied verbatim, "—" becomes `null`, and each listing gets a stable id
-of `<section>-<category>-<name>`. Nothing in the UI invents data: ratings, phones and links are
-shown exactly as listed, and a phone like "1533 (WhatsApp …)" dials the part before the bracket.
+of `<section>-<category>-<name>`. Two additions on request: Google Play links for App Store rows,
+and M's row reworded from "trained home cook" to kitchen management.
 
-## Linkable state
+## History
 
-Search, per-chapter category filters and the My Page drawer are mirrored into the query string
-(`?q=gas&kitchen=Gas&page=mine`), and the active chapter into the hash, so any view can be
-shared or bookmarked. Writes use `replaceState`, debounced, so typing never spams history.
-
-## Local state
-
-Favourites (`movein-guide:favorites`) and the chapter checklist (`movein-guide:checklist`)
-are stored in `localStorage`; every access is wrapped in try/catch so private mode or a full
-quota only loses persistence, never the page.
-
-## Versions
-
-- **v1** — first complete build: data pipeline, paper textures, annotations, search, favourites,
-  checklist, self-hosted fonts.
-- **v2** — audited against Vercel's Web Interface Guidelines (`web-design-guidelines` skill):
-  URL-linkable search, filters and drawer; Undo when a place is taken off My Page; hover and
-  thumb-tab motion on transform/opacity only; safe-area insets and `viewport-fit=cover`;
-  `touch-action: manipulation` and intentional tap highlight; `scroll-padding-top` so the sticky
-  tab strip never covers a focused element; `overscroll-behavior` on the drawer and desktop page;
-  `content-visibility: auto` per chapter; `text-balance` / `text-pretty`, curly quotes, non-breaking
-  spaces and `translate="no"` on names and numbers; modifier-clicks on thumb tabs left to the browser.
+- **v1** — first build, a printed Yellow Pages with handwritten annotations.
+- **v2** — Web Interface Guidelines pass (URL state, undo, safe areas, motion, typography).
+- Uncommitted after v2: cards, icons, a Seasoned-inspired restyle, a WebGL paper shader, a
+  book with bookmark tabs, an ink line-art pass. All of it judged a miss and replaced by this
+  clean single-column design.

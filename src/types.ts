@@ -8,6 +8,8 @@ export interface Listing {
   url: string;
   phone: string | null;
   rating: number | null;
+  /** Google Play page for listings whose link is an iOS App Store page. */
+  androidUrl?: string;
 }
 
 export interface Section {

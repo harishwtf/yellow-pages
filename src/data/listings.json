@@ -21,7 +21,8 @@
           "linkType": "appstore",
           "url": "https://apps.apple.com/in/app/ikea/id1452164827",
           "phone": null,
-          "rating": 4.7
+          "rating": 4.7,
+          "androidUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app"
         },
         {
           "id": "settle-in-furniture-rentomojo",
@@ -76,9 +77,9 @@
       "title": "Set up your kitchen",
       "listings": [
         {
-          "id": "kitchen-find-a-cook-m-trained-home-cook",
-          "category": "Find a cook",
-          "name": "M – trained home cook",
+          "id": "kitchen-kitchen-management-m-kitchen-management",
+          "category": "Kitchen management",
+          "name": "M – kitchen management",
           "linkType": "contact",
           "url": "https://app.tellm.co/q/mqYeNfEp",
           "phone": null,
@@ -136,7 +137,8 @@
           "linkType": "appstore",
           "url": "https://apps.apple.com/in/app/amazon-india-shop-pay-minitv/id1478350915",
           "phone": null,
-          "rating": 4.6
+          "rating": 4.6,
+          "androidUrl": "https://play.google.com/store/apps/details?id=in.amazon.mShop.android.shopping"
         },
         {
           "id": "kitchen-water-purifier-drinkprime",
@@ -172,7 +174,8 @@
           "linkType": "appstore",
           "url": "https://apps.apple.com/in/app/dmart-ready-online-grocery-app/id1121933197",
           "phone": null,
-          "rating": 4.8
+          "rating": 4.8,
+          "androidUrl": "https://play.google.com/store/apps/details?id=in.dmart"
         },
         {
           "id": "kitchen-kitchen-basics-ikea",
@@ -181,7 +184,8 @@
           "linkType": "appstore",
           "url": "https://apps.apple.com/in/app/ikea/id1452164827",
           "phone": null,
-          "rating": 4.7
+          "rating": 4.7,
+          "androidUrl": "https://play.google.com/store/apps/details?id=com.ingka.ikea.app"
         },
         {
           "id": "kitchen-fresh-produce-new-fruitland",
@@ -251,7 +255,8 @@
           "linkType": "appstore",
           "url": "https://apps.apple.com/in/app/myjio-for-everything-jio/id1074964262",
           "phone": "1800 896 9999",
-          "rating": 4.6
+          "rating": 4.6,
+          "androidUrl": "https://play.google.com/store/apps/details?id=com.jio.myjio"
         },
         {
           "id": "utilities-wi-fi-act-fibernet",

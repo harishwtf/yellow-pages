@@ -18,7 +18,7 @@ Source: [indiranagar.tellm.co](https://indiranagar.tellm.co/)
 
 | Category | Name | Link | Number | Rating |
 |---|---|---|---|---|
-| Find a cook | M – trained home cook | [Contact M](https://app.tellm.co/q/mqYeNfEp) | — | — |
+| Kitchen management | M – kitchen management | [Contact M](https://app.tellm.co/q/mqYeNfEp) | — | — |
 | Gas | Indane: Vasant Enterprises | [Maps](https://www.google.com/maps/search/?api=1&query=Vasant+Enterprises+Indane+30+5th+Cross+1st+Stage+Indiranagar+Bengaluru) | +91 88677 65456 | 3.4 |
 | Gas | Bharat Gas: Mahalakshmi Enterprises | [Maps](https://www.google.com/maps/search/?api=1&query=Mahalakshmi+Enterprises+Bharat+Gas+2153+17th+Main+HAL+2nd+Stage+Indiranagar+Bengaluru) | 080 2525 9498 | — |
 | Gas | HP Gas: Manrath Enterprises | [Maps](https://www.google.com/maps/search/?api=1&query=Manrath+Enterprises+HP+Gas+311+7th+Cross+Road+Domlur+Bengaluru) | 080 2535 2926 | 4.1 |

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-/** Renders `text` with every case-insensitive occurrence of `query` wrapped in a highlighter mark. */
+/** Renders `text` with every case-insensitive occurrence of `query` wrapped in a soft highlight. */
 export function Highlight({ text, query }: { text: string; query: string }) {
   const needle = query.trim().toLowerCase();
   if (!needle) return <>{text}</>;
@@ -13,7 +13,7 @@ export function Highlight({ text, query }: { text: string; query: string }) {
     if (at === -1) break;
     if (at > cursor) parts.push(text.slice(cursor, at));
     parts.push(
-      <mark key={at} className="marker">
+      <mark key={at} className="match">
         {text.slice(at, at + needle.length)}
       </mark>,
     );

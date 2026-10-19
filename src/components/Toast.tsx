@@ -1,28 +1,24 @@
 import type { ToastMessage } from '../hooks/useToast';
-import { cn } from '../lib/cn';
 
 interface ToastProps {
   toast: ToastMessage | null;
   onDismiss: () => void;
 }
 
-/** A handwritten status message near the bottom of the screen, with an optional action such as Undo. */
 export function Toast({ toast, onDismiss }: ToastProps) {
   return (
-    <div role="status" aria-live="polite" className="toast-region pointer-events-none fixed inset-x-0 z-[70] flex justify-center px-4">
+    <div
+      role="status"
+      aria-live="polite"
+      className="pointer-events-none fixed inset-x-0 bottom-[calc(1.25rem+env(safe-area-inset-bottom,0px))] z-50 flex justify-center px-4"
+    >
       {toast && (
-        <div
-          key={toast.id}
-          className={cn(
-            'toast-pop flex items-center gap-3 rounded bg-paper/95 px-3 py-1',
-            toast.action && 'toast-pop--sticky pointer-events-auto shadow-lift',
-          )}
-        >
-          <span className="hand inline-block -rotate-2 text-3xl leading-none text-pen-blue">{toast.text}</span>
-          {toast.action && (
+        <div key={toast.id} className="toast pointer-events-auto">
+          <span>{toast.text}</span>
+          {toast.action ? (
             <button
               type="button"
-              className="btn btn--solid"
+              className="toast__action"
               onClick={() => {
                 toast.action?.onClick();
                 onDismiss();
@@ -30,6 +26,8 @@ export function Toast({ toast, onDismiss }: ToastProps) {
             >
               {toast.action.label}
             </button>
+          ) : (
+            <span className="w-2" aria-hidden="true" />
           )}
         </div>
       )}

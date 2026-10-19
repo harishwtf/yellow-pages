@@ -14,19 +14,21 @@ for (const chunk of css.split(/(?=\/\*\s*[a-z-]+\s*\*\/)/)) {
   if (subset !== 'latin' || !chunk.includes('@font-face')) continue;
   const family = chunk.match(/font-family:\s*'([^']+)'/)[1];
   const style = chunk.match(/font-style:\s*(\w+)/)[1];
-  const weight = Number(chunk.match(/font-weight:\s*(\d+)/)[1]);
+  const weightMatch = chunk.match(/font-weight:\s*(\d+)(?:\s+(\d+))?/);
+  const weight = Number(weightMatch[1]);
+  const weightMax = weightMatch[2] ? Number(weightMatch[2]) : weight;
   const url = chunk.match(/url\(([^)]+)\)/)[1];
   const range = chunk.match(/unicode-range:\s*([^;]+);/)[1].trim();
   const tmp = `${dir}/.tmp-${faces.length}.woff2`;
   execFileSync('curl', ['-sL', url, '-o', tmp]);
-  faces.push({ family, style, weight, range, tmp, hash: createHash('md5').update(readFileSync(tmp)).digest('hex') });
+  faces.push({ family, style, weight, weightMax, range, tmp, hash: createHash('md5').update(readFileSync(tmp)).digest('hex') });
 }
 
 const groups = new Map();
 for (const face of faces) {
   const key = `${face.family}|${face.style}|${face.hash}`;
   if (!groups.has(key)) groups.set(key, { ...face, weights: [] });
-  groups.get(key).weights.push(face.weight);
+  groups.get(key).weights.push(face.weight, face.weightMax);
 }
 
 let out = '/* Self-hosted Google Fonts (SIL Open Font License), latin subset. Regenerate with: npm run fonts */\n';
@@ -35,7 +37,7 @@ for (const g of groups.values()) {
   const min = Math.min(...g.weights);
   const max = Math.max(...g.weights);
   const slug = g.family.toLowerCase().replace(/\s+/g, '-');
-  const file = `${slug}-${g.weights.length > 1 ? 'variable' : min}${g.style === 'italic' ? '-italic' : ''}.woff2`;
+  const file = `${slug}-${min === max ? min : 'variable'}${g.style === 'italic' ? '-italic' : ''}.woff2`;
   if (existsSync(`${dir}/${file}`)) unlinkSync(`${dir}/${file}`);
   renameSync(g.tmp, `${dir}/${file}`);
   keep.add(file);
