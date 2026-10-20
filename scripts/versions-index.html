@@ -140,7 +140,7 @@
       box.className = 'frame';
       if (state.mode === 'all') box.innerHTML = `<p class="frame__label"><b>${esc(v.name)}</b><span>${esc(tagText(v))}</span></p>`;
       const f = document.createElement('iframe');
-      f.src = `/${v.id}/`;
+      f.src = `${v.id}/index.html`;
       f.title = v.name;
       box.append(f);
       return box;
@@ -155,7 +155,7 @@
       captionEl.innerHTML = state.mode === 'all'
         ? `<b>All versions</b><span>scroll sideways to compare</span>`
         : `<span class="tag ${current.draft ? 'tag--draft' : ''}">${esc(tagText(current))}</span><b>${esc(current.name)}</b><span>${esc(current.note)}</span>`;
-      openEl.href = `/${state.id}/`;
+      openEl.href = `${state.id}/index.html`;
       openEl.textContent = `Open ${current.name} ↗`;
       framesEl.className = `frames ${state.mode}`;
       framesEl.replaceChildren(...(state.mode === 'all' ? versions.map(frame) : [frame(current)]));

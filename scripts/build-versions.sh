@@ -13,7 +13,8 @@ rm -rf "$out"
 mkdir -p "$out"
 
 build() { # <id> <source dir>
-  (cd "$2" && npx vite build --base="/$1/" --outDir "$out/$1" --emptyOutDir --logLevel error)
+  # Relative paths, so the folder works from any address: the local server, or uploaded as a whole.
+  (cd "$2" && npx vite build --base=./ --outDir "$out/$1" --emptyOutDir --logLevel error)
   echo "built $1"
 }
 json() { node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "$1"; }
@@ -24,9 +25,9 @@ for tag in $(git -C "$root" tag --list 'v*' --sort=version:refname); do
   mkdir -p "$src"
   git -C "$root" archive "$tag" | tar -x -C "$src"
   ln -s "$root/node_modules" "$src/node_modules"
-  # Image paths written straight into components skip Vite's base rewrite.
+  # Image paths written straight into components skip Vite's base rewrite: make them relative too.
   for file in $(grep -rlE "[\"' ]/img/" "$src/src" || true); do
-    sed -i '' -E "s#([\"' ])/img/#\\1/$tag/img/#g" "$file"
+    sed -i '' -E "s#([\"' ])/img/#\\1./img/#g" "$file"
   done
   build "$tag" "$src"
   message="$(git -C "$root" tag --list "$tag" --format='%(contents:subject)')"
