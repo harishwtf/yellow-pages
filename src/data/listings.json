@@ -77,9 +77,9 @@
       "title": "Set up your kitchen",
       "listings": [
         {
-          "id": "kitchen-kitchen-management-m-kitchen-management",
-          "category": "Kitchen management",
-          "name": "M – kitchen management",
+          "id": "kitchen-find-a-cook-m-trained-home-cook",
+          "category": "Find a cook",
+          "name": "M – trained home cook",
           "linkType": "contact",
           "url": "https://app.tellm.co/q/mqYeNfEp",
           "phone": null,
@@ -464,12 +464,12 @@
       ]
     },
     {
-      "id": "corners",
+      "id": "neighbourhood",
       "number": 6,
       "title": "Cafes, gyms and favorite corners",
       "listings": [
         {
-          "id": "corners-gym-aurum-luxury-fitness-club",
+          "id": "neighbourhood-gym-aurum-luxury-fitness-club",
           "category": "Gym",
           "name": "Aurum Luxury Fitness Club",
           "linkType": "maps",
@@ -478,7 +478,7 @@
           "rating": 4.8
         },
         {
-          "id": "corners-gym-vault",
+          "id": "neighbourhood-gym-vault",
           "category": "Gym",
           "name": "VAULT",
           "linkType": "maps",
@@ -487,7 +487,7 @@
           "rating": 4.8
         },
         {
-          "id": "corners-gym-volt-fitness",
+          "id": "neighbourhood-gym-volt-fitness",
           "category": "Gym",
           "name": "Volt Fitness",
           "linkType": "maps",
@@ -496,7 +496,7 @@
           "rating": 4.3
         },
         {
-          "id": "corners-gym-crossfit-9one",
+          "id": "neighbourhood-gym-crossfit-9one",
           "category": "Gym",
           "name": "CrossFit 9one",
           "linkType": "maps",
@@ -505,7 +505,7 @@
           "rating": 5
         },
         {
-          "id": "corners-classes-academy-of-strength",
+          "id": "neighbourhood-classes-academy-of-strength",
           "category": "Classes",
           "name": "Academy of Strength",
           "linkType": "maps",
@@ -514,7 +514,7 @@
           "rating": 4.7
         },
         {
-          "id": "corners-classes-my-third-space",
+          "id": "neighbourhood-classes-my-third-space",
           "category": "Classes",
           "name": "My Third Space",
           "linkType": "maps",
@@ -523,7 +523,7 @@
           "rating": 4.9
         },
         {
-          "id": "corners-classes-fit-district",
+          "id": "neighbourhood-classes-fit-district",
           "category": "Classes",
           "name": "Fit District",
           "linkType": "website",
@@ -532,7 +532,7 @@
           "rating": null
         },
         {
-          "id": "corners-pilates-purple-pilates",
+          "id": "neighbourhood-pilates-purple-pilates",
           "category": "Pilates",
           "name": "Purple Pilates",
           "linkType": "maps",
@@ -541,7 +541,7 @@
           "rating": 4.8
         },
         {
-          "id": "corners-pilates-the-pilates-studio-namrata-purohit",
+          "id": "neighbourhood-pilates-the-pilates-studio-namrata-purohit",
           "category": "Pilates",
           "name": "The Pilates Studio (Namrata Purohit)",
           "linkType": "maps",
@@ -550,7 +550,7 @@
           "rating": 4.1
         },
         {
-          "id": "corners-pilates-tone30-pilates",
+          "id": "neighbourhood-pilates-tone30-pilates",
           "category": "Pilates",
           "name": "Tone30 Pilates",
           "linkType": "maps",
@@ -559,7 +559,7 @@
           "rating": 5
         },
         {
-          "id": "corners-yoga-studio-oura",
+          "id": "neighbourhood-yoga-studio-oura",
           "category": "Yoga",
           "name": "Studio Oura",
           "linkType": "maps",
@@ -568,7 +568,7 @@
           "rating": null
         },
         {
-          "id": "corners-coffee-araku-coffee",
+          "id": "neighbourhood-coffee-araku-coffee",
           "category": "Coffee",
           "name": "ARAKU Coffee",
           "linkType": "maps",
@@ -577,7 +577,7 @@
           "rating": 4.1
         },
         {
-          "id": "corners-coffee-subkotree",
+          "id": "neighbourhood-coffee-subkotree",
           "category": "Coffee",
           "name": "SubkoTree",
           "linkType": "website",
@@ -586,7 +586,7 @@
           "rating": 4.3
         },
         {
-          "id": "corners-coffee-still-coffee",
+          "id": "neighbourhood-coffee-still-coffee",
           "category": "Coffee",
           "name": "Still Coffee",
           "linkType": "maps",
@@ -595,7 +595,7 @@
           "rating": 4.5
         },
         {
-          "id": "corners-coffee-kink-coffee",
+          "id": "neighbourhood-coffee-kink-coffee",
           "category": "Coffee",
           "name": "Kink Coffee",
           "linkType": "maps",
@@ -604,7 +604,7 @@
           "rating": 4.7
         },
         {
-          "id": "corners-coffee-tribal-brew-coffee",
+          "id": "neighbourhood-coffee-tribal-brew-coffee",
           "category": "Coffee",
           "name": "Tribal Brew Coffee",
           "linkType": "maps",
@@ -613,7 +613,7 @@
           "rating": 4.8
         },
         {
-          "id": "corners-coffee-nerlu-cafe",
+          "id": "neighbourhood-coffee-nerlu-cafe",
           "category": "Coffee",
           "name": "Nerlu Cafe",
           "linkType": "maps",

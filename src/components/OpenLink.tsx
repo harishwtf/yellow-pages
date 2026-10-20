@@ -4,8 +4,6 @@ import { AppStoreMark, Icon, PlayMark } from './icons';
 
 interface OpenLinkProps {
   listing: Listing;
-  /** `mark`: just the icon, 44px target. `text`: small uppercase text action. */
-  variant: 'mark' | 'text';
   store?: 'ios' | 'android';
 }
 
@@ -17,30 +15,23 @@ function mark(listing: Listing, android: boolean) {
   return <Icon name="globe" />;
 }
 
-/** Opens the listing's website, map search, App Store / Google Play page or contact form in a new tab. */
-export function OpenLink({ listing, variant, store = 'ios' }: OpenLinkProps) {
+/** Opens the listing's website, map search, App Store / Google Play page or contact form in a new tab: just its icon,
+ *  with a 44px target. */
+export function OpenLink({ listing, store = 'ios' }: OpenLinkProps) {
   const android = store === 'android';
   const href = android ? listing.androidUrl : listing.url;
   if (!href) return null;
   const label = android ? PLAY_STORE_LABEL : OPEN_LABELS[listing.linkType];
-  const shared = {
-    href,
-    target: '_blank',
-    rel: 'noopener',
-    'aria-label': `${label}: ${listing.name} (opens in a new tab)`,
-  } as const;
-
-  if (variant === 'mark') {
-    return (
-      <a {...shared} className="mark-btn" title={label}>
-        {mark(listing, android)}
-      </a>
-    );
-  }
   return (
-    <a {...shared} className="action">
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener"
+      aria-label={`${label}: ${listing.name} (opens in a new tab)`}
+      className="mark-btn"
+      title={label}
+    >
       {mark(listing, android)}
-      {label}
     </a>
   );
 }

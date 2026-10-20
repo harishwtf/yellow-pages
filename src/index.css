@@ -4,12 +4,15 @@
 /* ── Theme tokens: re-skin here ─────────────────────────── */
 @theme {
   --color-bg: #f5d85a;           /* the page: directory yellow */
-  --color-surface: #fbeaa0;      /* a lighter yellow for fields and the boxed ad */
   --color-ink: #1c1a17;          /* print */
   --color-muted: #574f44;        /* secondary print (AA on the yellow) */
-  --color-accent: #c2372b;       /* directory red: saved, the odd emphasis */
+  --color-accent: #c2372b;       /* directory red: the odd emphasis */
   --color-highlight: #fff6c2;    /* search matches */
   --color-focus: #2d4a8a;
+  /* process inks, one per chapter: its index tab and its number */
+  --color-cyan: #00aeef;          /* takes ink text (6.9:1) */
+  --color-magenta: #c8007a;       /* takes white text (5.6:1) */
+  --color-process-yellow: #fff200; /* takes ink text (14.8:1); outlined, being close to the page */
 
   --font-display: "Oswald", "Arial Narrow", Impact, sans-serif;
   --font-body: "Archivo Narrow", "Arial Narrow", "Roboto Condensed", sans-serif;
@@ -55,8 +58,20 @@
   }
 }
 
+/* the cards' reveal progress (see .reveal below); registered so it can be transitioned */
+@property --reveal {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
 @layer components {
   /* ── Paper ────────────────────────────────────────────── */
+  /* the paper's two texture images, shared by the full-page layers below and the sticky bar's own copy */
+  :root {
+    --paper-relief-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='p' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='4' stitchTiles='stitch' result='tooth'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.055 0.16' numOctaves='3' seed='9' stitchTiles='stitch' result='fibre'/%3E%3CfeComposite in='tooth' in2='fibre' operator='arithmetic' k2='0.8' k3='0.28' result='height'/%3E%3CfeDiffuseLighting in='height' surfaceScale='2.2' diffuseConstant='1' lighting-color='%23fff'%3E%3CfeDistantLight azimuth='225' elevation='52'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.64'/%3E%3CfeFuncG type='linear' slope='0.64'/%3E%3CfeFuncB type='linear' slope='0.64'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+    --ink-voids-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='v' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.6 0 0 0 -0.35'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 0 0.55 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
+  }
   .paper-relief,
   .ink-voids {
     position: absolute;
@@ -69,7 +84,7 @@
     opacity: 0.7;
     mix-blend-mode: soft-light;
     background-size: 320px 320px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='p' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='4' stitchTiles='stitch' result='tooth'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.055 0.16' numOctaves='3' seed='9' stitchTiles='stitch' result='fibre'/%3E%3CfeComposite in='tooth' in2='fibre' operator='arithmetic' k2='0.8' k3='0.28' result='height'/%3E%3CfeDiffuseLighting in='height' surfaceScale='2.2' diffuseConstant='1' lighting-color='%23fff'%3E%3CfeDistantLight azimuth='225' elevation='52'/%3E%3C/feDiffuseLighting%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.64'/%3E%3CfeFuncG type='linear' slope='0.64'/%3E%3CfeFuncB type='linear' slope='0.64'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+    background-image: var(--paper-relief-image);
   }
   /* ink voids: sparse specks in the paper colour (from the token), knocked out of the ink with lighten */
   .ink-voids {
@@ -77,8 +92,8 @@
     mix-blend-mode: lighten;
     -webkit-mask-size: 180px 180px;
     mask-size: 180px 180px;
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='v' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.6 0 0 0 -0.35'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 0 0.55 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
-    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='v' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.25' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1.6 0 0 0 -0.35'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 0 0 0 0 0.55 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23v)'/%3E%3C/svg%3E");
+    -webkit-mask-image: var(--ink-voids-mask);
+    mask-image: var(--ink-voids-mask);
   }
 
   /* ── Cover masthead ───────────────────────────────────── */
@@ -86,12 +101,14 @@
     padding-top: calc(1.4rem + env(safe-area-inset-top, 0px));
     padding-bottom: 1.25rem;
   }
+  /* phone: the drawing, then the title and the promise; wider: title and promise beside the drawing */
   .cover__body {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     grid-template-areas:
-      "title title"
-      "promise spot";
+      "scene"
+      "title"
+      "promise";
     align-items: end;
     column-gap: 1rem;
     row-gap: 0.5rem;
@@ -99,44 +116,148 @@
   }
   .cover__title {
     grid-area: title;
-    font-size: clamp(2.3rem, 10vw, 4.6rem);
-    line-height: 0.92;
-    letter-spacing: -0.012em;
+    font-size: clamp(1.9rem, 7.5vw, 3rem);
+    line-height: 0.95;
+    letter-spacing: -0.005em;
   }
   .cover__promise {
     grid-area: promise;
     align-self: center;
-    font-size: 0.74rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    max-width: 30rem;
+    font-size: 0.98rem;
+    font-weight: 500;
+    line-height: 1.35;
     color: var(--color-muted);
     text-wrap: balance;
   }
-  .cover__spot {
-    grid-area: spot;
-    display: block;
-    width: 6.5rem;
-    height: auto;
-  }
   @media (width >= 48rem) {
     .cover__body {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
       grid-template-areas:
-        "title spot"
-        "promise spot";
+        "title scene"
+        "promise scene";
       column-gap: 2rem;
       padding: 1.25rem 0 1.4rem;
     }
     .cover__title {
-      font-size: clamp(3rem, 6.6vw, 4.6rem);
+      font-size: clamp(2.4rem, 4.4vw, 3.2rem);
     }
     .cover__promise {
       align-self: start;
-      font-size: 0.82rem;
+      font-size: 1.08rem;
     }
-    .cover__spot {
-      width: 13rem;
+  }
+
+  /* the masthead drawing: a landmark in ink, captioned like a printed guide's plate */
+  .cover__scene {
+    grid-area: scene;
+    margin: 0;
+  }
+  .cover__scene img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .cover__scene figcaption {
+    margin-top: 0.35rem;
+    font-family: var(--font-hand);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    text-align: right;
+  }
+
+  /* "Did you know?": one fact about the neighbourhood, set like a boxed aside at the foot of the page */
+  .trivia {
+    display: grid;
+    gap: 0.5rem 2rem;
+    /* one steady width, so the box doesn't change size when "Another one" brings a longer or shorter fact */
+    width: min(100%, 52rem);
+    margin-bottom: 2.5rem;
+    padding: 1.2rem 1.3rem 1.1rem;
+    border-radius: 3px;
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+  .trivia__label {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .trivia__text {
+    font-size: 1.15rem;
+    line-height: 1.38;
+    text-wrap: pretty;
+  }
+  .trivia__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1.25rem;
+    margin-top: 0.6rem;
+  }
+  .trivia__source {
+    font-size: 0.78rem;
+    color: color-mix(in srgb, var(--color-bg) 78%, var(--color-ink));
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  @media (width >= 48rem) {
+    /* label in its own column so the fact runs across the box instead of leaving an empty right half */
+    .trivia {
+      grid-template-columns: 8.5rem minmax(0, 1fr);
+      align-items: start;
+      padding: 1.5rem 1.75rem 1.35rem;
     }
+    .trivia__label {
+      font-size: 2rem;
+    }
+    .trivia__text {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* a button printed in paper on an ink panel (trivia, M's ad) */
+  .paper-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    border: 0;
+    border-radius: 3px;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .paper-btn svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .paper-btn:hover {
+    background: color-mix(in srgb, var(--color-bg) 85%, white);
+  }
+  /* the two ink panels sit above the paper texture: its specks read as print on a thin bar but as static across a
+     whole panel and its text */
+  .trivia,
+  .plug {
+    position: relative;
+    z-index: 81;
+  }
+  /* focus rings in paper on the ink panels, where the blue ring would disappear */
+  .trivia :focus-visible,
+  .plug :focus-visible {
+    outline-color: var(--color-bg);
+    outline-offset: 3px;
   }
 
   /* copy icon right after a number */
@@ -172,14 +293,36 @@
     border-top: 1px solid color-mix(in srgb, var(--color-ink) 35%, transparent);
   }
 
+  /* stacking, bottom to top: the page, its texture (80), the ink panels lifted clear of it (81), this bar (90), the
+     toast and skip link (95) */
   .sticky-bar {
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 90;
     background: color-mix(in srgb, var(--color-bg) 92%, transparent);
     backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--color-ink);
     padding-top: env(safe-area-inset-top, 0px);
+  }
+  /* above the page texture, so it carries its own copy: relief, then ink voids, blended within the bar */
+  .sticky-bar::before,
+  .sticky-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .sticky-bar::before {
+    opacity: 0.7;
+    mix-blend-mode: soft-light;
+    background: var(--paper-relief-image) 0 0 / 320px 320px;
+  }
+  .sticky-bar::after {
+    background: var(--color-bg);
+    mix-blend-mode: lighten;
+    -webkit-mask: var(--ink-voids-mask) 0 0 / 180px 180px;
+    mask: var(--ink-voids-mask) 0 0 / 180px 180px;
   }
 
   .search {
@@ -231,8 +374,7 @@
   .tab:hover {
     background: color-mix(in srgb, var(--color-ink) 8%, transparent);
   }
-  .tab[aria-current],
-  .tab[aria-pressed="true"] {
+  .tab[aria-current] {
     background: var(--color-ink);
     color: var(--color-bg);
   }
@@ -242,37 +384,26 @@
     line-height: 1;
     letter-spacing: 0;
   }
-  .tab__count {
-    display: inline-grid;
-    place-items: center;
-    min-width: 1.2rem;
-    height: 1.2rem;
-    padding: 0 0.3rem;
-    border-radius: 999px;
-    background: var(--color-accent);
-    color: white;
-    font-size: 0.7rem;
-    letter-spacing: 0;
-  }
 
   /* category filters: an index line of small caps, the chosen one underlined */
   .filters {
     display: flex;
     flex-wrap: wrap;
-    column-gap: 0.1rem;
-    row-gap: 0.1rem;
-    font-size: 0.78rem;
+    column-gap: 0.3rem;
+    row-gap: 0.3rem;
+    font-size: 0.72rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--color-muted);
+    color: var(--color-ink);
   }
   .filter {
     display: inline-block;
     max-width: 14rem;
-    min-height: 2rem;
-    padding: 0.35rem 0.35rem;
-    border: 0;
+    min-height: 1.7rem;
+    padding: 0.2rem 0.5rem;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 3px;
     background: transparent;
     font: inherit;
     color: inherit;
@@ -284,17 +415,72 @@
     text-overflow: ellipsis;
     cursor: pointer;
   }
-  .filter + .filter::before {
-    content: "·";
-    margin-right: 0.45rem;
-    color: color-mix(in srgb, var(--color-ink) 45%, transparent);
+  /* phones: the chips run in one line you can swipe, instead of wrapping into a block */
+  @media (width < 48rem) {
+    .filters {
+      flex-wrap: nowrap;
+      margin: -4px -1rem;
+      padding: 4px 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filters::-webkit-scrollbar {
+      display: none;
+    }
+    .filter {
+      flex: none;
+      max-width: min(14rem, 70vw);
+    }
   }
   .filter:hover {
-    color: var(--color-ink);
+    background: color-mix(in srgb, var(--color-ink) 8%, transparent);
   }
   .filter[aria-pressed="true"] {
-    color: var(--color-ink);
-    text-decoration: underline;
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+
+  /* chapter inks: cyan, magenta, process yellow, key */
+  [data-ink='cyan'] {
+    --ink-bg: var(--color-cyan);
+    --ink-fg: var(--color-ink);
+    --ink-edge: var(--color-cyan);
+  }
+  [data-ink='magenta'] {
+    --ink-bg: var(--color-magenta);
+    --ink-fg: #fff;
+    --ink-edge: var(--color-magenta);
+  }
+  [data-ink='yellow'] {
+    --ink-bg: var(--color-process-yellow);
+    --ink-fg: var(--color-ink);
+    --ink-edge: var(--color-ink);
+  }
+  [data-ink='key'] {
+    --ink-bg: var(--color-ink);
+    --ink-fg: var(--color-bg);
+    --ink-edge: var(--color-ink);
+  }
+  /* the tab's number sits in a square of its chapter's ink; the open chapter's tab fills with it */
+  .tab--ink .tab__num {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.45rem;
+    height: 1.45rem;
+    margin-left: -0.1rem;
+    border-radius: 2px;
+    background: var(--ink-bg);
+    color: var(--ink-fg);
+    box-shadow: inset 0 0 0 1.5px var(--ink-edge);
+  }
+  .tab--ink[aria-current] {
+    background: var(--ink-bg);
+    color: var(--ink-fg);
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 1.5px var(--color-ink);
+  }
+  .tab--ink[aria-current] .tab__num {
+    box-shadow: inset 0 0 0 1.5px currentColor;
   }
 
   /* section number, set like a thumb tab */
@@ -313,6 +499,137 @@
     line-height: 1;
   }
 
+  .num-tab--ink {
+    background: var(--ink-bg, var(--color-ink));
+    color: var(--ink-fg, var(--color-bg));
+    box-shadow: inset 0 0 0 2px var(--ink-edge, var(--color-ink));
+  }
+
+  /* M's plug: a display ad between chapters, reversed out of the ink with a second rule around it */
+  .plug {
+    display: grid;
+    justify-items: start;
+    gap: 0.45rem;
+    max-width: 36rem;
+    margin-inline: auto;
+    padding: 1.3rem 1.4rem 1.25rem;
+    border-radius: 3px;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    outline: 1.5px solid var(--color-ink);
+    outline-offset: 4px;
+  }
+  .plug__title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .plug__text {
+    font-size: 1rem;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+  .plug__kicker {
+    font-weight: 700;
+  }
+  .plug__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0.3rem 0 0.15rem;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.28rem 0.6rem 0.28rem 0.85rem;
+    border: 1.5px solid var(--color-bg);
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+  .pill svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .plug__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem 1.25rem;
+    width: 100%;
+    margin-top: 0.45rem;
+  }
+  .plug__tell {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  /* the chapter's plain-language line under its heading */
+  .chapter__subtitle {
+    margin-top: 0.3rem;
+    font-size: 0.98rem;
+    line-height: 1.3;
+    color: var(--color-muted);
+    text-wrap: balance;
+  }
+
+  /* the sign-off: a closing note to the reader, above the trivia at the foot of the page */
+  .signoff {
+    display: grid;
+    justify-items: start;
+    gap: 0.4rem;
+    max-width: 38rem;
+    margin-bottom: 2.5rem;
+  }
+  .signoff__text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-ink);
+    text-wrap: pretty;
+  }
+
+  /* motion: each card fades and slides up the first time it scrolls into view (ease-out cubic), cards arriving a
+     beat apart. Driven by one registered number, --reveal (0 → 1), that opacity and translate read: the browser
+     repaints the card in place instead of lifting it onto its own layer, so the full-page paper texture above it
+     never has to be re-blended over dozens of layers while you scroll. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .motion .reveal {
+      opacity: var(--reveal);
+      translate: 0 calc((1 - var(--reveal)) * 1.25rem);
+      transition: --reveal 0.55s cubic-bezier(0.33, 1, 0.68, 1) var(--reveal-delay, 0ms);
+    }
+    .motion .reveal:not([data-in]) {
+      --reveal: 0;
+    }
+  }
+
+  /* a category inside a chapter: a printed bar, like a directory's sub-heading */
+  .group {
+    break-inside: avoid;
+    padding-bottom: 1.1rem;
+  }
+  .subhead {
+    padding: 0.28rem 0.55rem 0.26rem;
+    border-radius: 2px;
+    background: var(--color-ink);
+    color: var(--color-bg);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+  .subhead mark.match {
+    color: var(--color-ink);
+  }
+
   /* listings: typographic rows on the paper, 2 columns from md */
   .directory {
     column-gap: 2.5rem;
@@ -324,19 +641,89 @@
     }
   }
   .row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.85rem;
+    align-items: start;
     break-inside: avoid;
     padding: 0.7rem 0 0.6rem;
     border-bottom: 1px dotted color-mix(in srgb, var(--color-ink) 45%, transparent);
   }
-  .leader-row {
+
+  /* the place's mark: its logo printed in the same ink as the type, or its initials in a stamped ring */
+  .brand {
     display: flex;
-    flex-wrap: wrap;
-    align-items: last baseline;
-    gap: 0.45rem 0.5rem;
+    align-items: center;
+    justify-content: center;
+    width: 6em;
+    height: 2.5em;
+    font-size: 0.8125rem;
   }
-  .leader-row > h3 {
-    flex: 0 1 auto;
-    min-width: 0;
+  @media (width >= 48rem) {
+    .brand {
+      font-size: 1rem;
+    }
+  }
+  .brand__logo {
+    max-width: 100%;
+    height: auto;
+    max-height: 100%;
+  }
+  .brand__monogram {
+    display: grid;
+    place-items: center;
+    width: 2.3em;
+    height: 2.3em;
+    border: 1.5px solid var(--color-ink);
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 1em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+  /* A row's print: the name, the dotted leader and the number on one line, then the rating. A long name wraps inside
+     its own column, so the leader fills its last line and the number stays on the right. */
+  .row__body {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) minmax(1.25rem, 1fr) auto;
+    grid-template-areas:
+      'name leader end'
+      'meta meta meta';
+    align-items: last baseline;
+    column-gap: 0.5rem;
+  }
+  .row__body > .leader-row {
+    display: contents;
+  }
+  .row__body .name {
+    grid-area: name;
+  }
+  .row__body .leader {
+    grid-area: leader;
+  }
+  .row__body .leader-row > :last-child {
+    grid-area: end;
+  }
+  /* icons have no text baseline: the group is one text line tall and centred on it, and the 44px tap targets overflow
+     it, so they never push the rating down (negative margins would, at the top of a column, where they are dropped) */
+  .row__body .marks {
+    align-self: center;
+    height: 1.25rem;
+  }
+  .row__body > .meta {
+    grid-area: meta;
+  }
+  /* On a phone the mark takes the width a number would need: every row is two lines, the name alone on the first,
+     then the rating, the dotted leader and the number, so numbers always line up on the right. */
+  @media (width < 48rem) {
+    .row__body {
+      grid-template-columns: auto minmax(1.25rem, 1fr) auto;
+      grid-template-areas:
+        'name name name'
+        'meta leader end';
+    }
   }
   .leader {
     flex: 1 1 1.25rem;
@@ -351,23 +738,6 @@
     line-height: 1.2;
     letter-spacing: 0.02em;
     text-transform: uppercase;
-  }
-  .name__toggle {
-    display: inline;
-    padding: 0.2rem 0; /* 24px hit box even on one line */
-    border: 0;
-    background: transparent;
-    font: inherit;
-    letter-spacing: inherit;
-    text-transform: inherit;
-    text-align: left;
-    color: inherit;
-    cursor: pointer;
-  }
-  .name__toggle:hover {
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.2em;
   }
   .num {
     display: inline-flex;
@@ -398,17 +768,6 @@
   .mark-btn:hover {
     background: color-mix(in srgb, var(--color-ink) 8%, transparent);
   }
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 1rem;
-    row-gap: 0.25rem;
-    padding: 0.35rem 0 0.2rem;
-  }
-  .actions[hidden] {
-    display: none;
-  }
   .action {
     display: inline-flex;
     align-items: center;
@@ -435,16 +794,6 @@
   .action:hover {
     text-decoration-color: var(--color-ink);
   }
-  .action--on {
-    color: var(--color-accent);
-  }
-  .row--open {
-    background: color-mix(in srgb, var(--color-ink) 4%, transparent);
-    margin: 0 -0.5rem;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    border-radius: 3px;
-  }
 
   .icon-btn {
     display: inline-grid;
@@ -467,9 +816,6 @@
   .icon-btn:hover {
     background: color-mix(in srgb, var(--color-ink) 8%, transparent);
     color: var(--color-ink);
-  }
-  .icon-btn--heart[aria-pressed="true"] {
-    color: var(--color-accent);
   }
 
   /* text buttons, uppercase condensed, like directory small ads */
@@ -506,15 +852,6 @@
     background: color-mix(in srgb, var(--color-ink) 85%, var(--color-bg));
   }
 
-  /* the one boxed "display ad": M */
-  .ad {
-    break-inside: avoid;
-    margin: 0.5rem 0 0.9rem;
-    padding: 0.9rem 1rem 1rem;
-    border: 3px solid var(--color-ink);
-    border-radius: 4px;
-    background: var(--color-surface);
-  }
 
   mark.match {
     background: var(--color-highlight);
@@ -530,7 +867,7 @@
     align-items: center;
     gap: 0.75rem;
     min-height: 2.75rem;
-    padding: 0 0.5rem 0 1rem;
+    padding: 0 1rem;
     border-radius: 3px;
     background: var(--color-ink);
     color: var(--color-bg);
@@ -540,19 +877,6 @@
     text-transform: uppercase;
     box-shadow: 0 8px 24px -10px rgba(28, 26, 23, 0.5);
     animation: toast-in 0.2s ease-out both;
-  }
-  .toast__action {
-    min-height: 2rem;
-    padding: 0 0.7rem;
-    border: 1.5px solid var(--color-bg);
-    border-radius: 3px;
-    background: transparent;
-    color: var(--color-bg);
-    font-weight: 700;
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    cursor: pointer;
   }
   @keyframes toast-in {
     from {

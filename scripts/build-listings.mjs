@@ -10,7 +10,7 @@ const OUTPUT = resolve(here, '../src/data/listings.json');
 /** Google Play pages for the App Store listings, keyed by listing id. Every appstore row must have one. */
 const PLAY_STORE = resolve(here, '../data/play-store.json');
 
-const SECTION_IDS = { 1: 'settle-in', 2: 'kitchen', 3: 'utilities', 4: 'laundry', 5: 'plants', 6: 'corners' };
+const SECTION_IDS = { 1: 'settle-in', 2: 'kitchen', 3: 'utilities', 4: 'laundry', 5: 'plants', 6: 'neighbourhood' };
 const LINK_TYPES = { Website: 'website', Maps: 'maps', 'App Store': 'appstore', 'Contact M': 'contact' };
 
 const slug = (text) =>

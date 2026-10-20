@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-
+/** Guarded localStorage access: private windows and blocked site data fall back quietly. */
 export function readStorage<T>(key: string, fallback: T): T {
   try {
     const raw = window.localStorage.getItem(key);
@@ -15,13 +14,4 @@ export function writeStorage<T>(key: string, value: T): void {
   } catch {
     // Private mode or quota exceeded: keep the value in memory only.
   }
-}
-
-/** useState backed by localStorage. Every storage access is guarded. */
-export function useLocalStorage<T>(key: string, initial: T) {
-  const [value, setValue] = useState<T>(() => readStorage(key, initial));
-  useEffect(() => {
-    writeStorage(key, value);
-  }, [key, value]);
-  return [value, setValue] as const;
 }

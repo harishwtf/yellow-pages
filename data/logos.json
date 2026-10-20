@@ -1,0 +1,389 @@
+{
+  "academy-of-strength": {
+    "name": "Academy of Strength",
+    "kind": "logo",
+    "file": "academy-of-strength.png",
+    "source": "https://static.wixstatic.com/media/d0f7b3_6107dbeb545c40fd814b49f759b59325~mv2.png",
+    "note": "Header logo of academyofstrength.in, the Indiranagar gym's own Wix site; the file is the full original on the Wix CDN ('AoS logo SELECT new-02.png'). 452x399 with transparency: a red 'S' in a white ring, symbol only. The site shows no separate wordmark image."
+  },
+  "act-fibernet": {
+    "name": "ACT Fibernet",
+    "kind": "logo",
+    "file": "act-fibernet.svg",
+    "source": "https://www.actcorp.in/sites/default/files/2023-09/footer-logo.svg",
+    "note": "The 'ACT' wordmark from actcorp.in, taken from the footer version: 3 paths, all fill white, 131x48. The header version (/themes/custom/actcorp/logo.svg, red #EE2C49) has the same shape but includes a white background rect, so I used the footer one. The art is white, so it must be recoloured to show on paper."
+  },
+  "amazon-india": {
+    "name": "Amazon India",
+    "kind": "logo",
+    "file": "amazon-india.svg",
+    "source": "https://www.aboutamazon.in/",
+    "note": "amazon.in returned an AWS WAF bot challenge (HTTP 202), and its nav logo is a white sprite. So I saved the inline header SVG (data-testid=icon-AmazonLogo, class amazon-logo) from aboutamazon.in, Amazon's own India corporate site. It is the 'amazon' wordmark with the smile arrow: text #161D26, smile #FF6200, 99x33 viewBox. The only white fill is the clipPath rect, not a background. It has no '.in' suffix. Validated: 3 paths."
+  },
+  "araku-coffee": {
+    "name": "ARAKU Coffee",
+    "kind": "logo",
+    "file": "araku-coffee.svg",
+    "source": "https://www.arakucoffee.in/cdn/shop/files/logo-araku.svg?v=1686736125",
+    "note": "Header logo of arakucoffee.in. Serif 'araku' wordmark, 5 paths fill=black, viewBox 805x160. A white version exists for the transparent header (logo-araku_1_3.svg)."
+  },
+  "aurum-luxury-fitness-club": {
+    "name": "Aurum Luxury Fitness Club",
+    "kind": "monogram",
+    "note": "I found no official website, only third-party directory listings (e.g. LyfSkills). aurumfitness.in does not resolve, and aurumfitness.com is a parked lander page. Use a monogram."
+  },
+  "bbmp-bswml": {
+    "name": "BBMP / BSWML",
+    "kind": "logo",
+    "file": "bbmp-bswml.png",
+    "source": "https://bbmp.gov.in/gba_tower.png",
+    "note": "site.bbmp.gov.in timed out. bbmp.gov.in now serves the Greater Bengaluru Authority (GBA), which replaced BBMP. This is the Kempegowda-tower emblem, the old BBMP mark, from that site's image config ('tower'). 413x604, dark green plus light highlight fills on transparent, so luminance-key it rather than alpha-fill it. BSWML's own site (bswml.karnataka.gov.in) shows no BSWML logo, only the Karnataka state seal and a GBA seal. The state seal was deliberately not used. Alternative: https://bbmp.gov.in/file.png (navy tower on a yellow disc, 494px, the site icon). Use a monogram instead if the emblem feels off for a civic listing."
+  },
+  "beruru": {
+    "name": "Beruru",
+    "kind": "logo",
+    "file": "beruru.png",
+    "source": "https://beruru.com/cdn/shop/files/Asset_3_2.png?v=1782200639",
+    "note": "Header logo of beruru.com, which lists an Indiranagar location. A white serif 'beruru' with a registered mark and the tagline 'THE GARDEN RESERVE'. 886x267 RGBA with a transparent background. The art is white, so it must be recoloured."
+  },
+  "bescom-24x7": {
+    "name": "BESCOM 24x7",
+    "kind": "logo",
+    "file": "bescom-24x7.png",
+    "source": "https://bescom.karnataka.gov.in/uploads/dept_photo1743674869.png",
+    "note": "The BESCOM mark: a blue 'B' with a power line, Kannada text above and 'BESCOM' below. Shown as the department logo on the official site. 192x263, palette PNG with a white background (not transparent) and low resolution, so it needs a white-to-transparent pass before recolouring. The site's other header logo (dept_logo...png) is the Karnataka state emblem, not BESCOM's, so it was not used."
+  },
+  "bharat-gas-mahalakshmi-enterprises": {
+    "name": "Bharat Gas: Mahalakshmi Enterprises",
+    "kind": "logo",
+    "file": "bharat-gas-mahalakshmi-enterprises.png",
+    "source": "https://www.ebharatgas.com/ebharat/images/logo.png",
+    "note": "The distributor (Mahalakshmi Enterprises) has no website, so this is the parent brand Bharatgas (BPCL), taken from the header of BPCL's own ebharatgas.com (loaded via /ebharat/include/header.html). It is a small, opaque 237x70 lockup: the 'Bharatgas' wordmark and flame on a yellow box, the BPCL emblem, and a blue 'COOK FOOD. SERVE LOVE.' band. None of BPCL's sites (my.ebharatgas.com, bharatpetroleum.in) has a transparent or vector version; all are small opaque yellow boxes. It will recolour poorly to one ink, so a monogram fallback is probably better in practice."
+  },
+  "cobbler-shoe-bag-repair-shop": {
+    "name": "Cobbler, Shoe bag repair Shop",
+    "kind": "monogram",
+    "note": "Roadside cobbler known only from Google Maps. No website."
+  },
+  "crossfit-9one": {
+    "name": "CrossFit 9one",
+    "kind": "logo",
+    "file": "crossfit-9one.png",
+    "source": "https://www.crossfit9one.in/images/logo/logo.png",
+    "note": "Header logo and favicon of crossfit9one.in; the site address matches the listing (473, 3rd Floor, 10th Main Rd, HAL 3rd Stage). 1979x1979 RGBA, transparent outside the circle. It is a detailed badge: a fist holding a kettlebell stamped 'CROSSFIT 9 ONE CROSSFIT', in charcoal and white on an orange gradient disc. As a solid fill it becomes a filled circle, so a luminance or posterise step is needed, and it may read poorly at small sizes."
+  },
+  "dmart-ready": {
+    "name": "DMart Ready",
+    "kind": "logo",
+    "file": "dmart-ready.svg",
+    "source": "https://cdn.dmart.in/images/icons/dmart_ready_logo.svg",
+    "note": "The listing was an App Store link. dmartready.com redirects to dmart.in, whose page references this logo on DMart's official CDN. Green 'DMart' over an orange 'ready' wordmark with the small tree mark, 190x76, 6 paths."
+  },
+  "door-to-door-laundry-service": {
+    "name": "Door-to-Door Laundry Service",
+    "kind": "monogram",
+    "note": "Local laundry known only from Google Maps. No official site found."
+  },
+  "dream-garden-botanicals": {
+    "name": "Dream garden botanicals",
+    "kind": "monogram",
+    "note": "Local gardener. Its Google Maps listing (24/2, 3rd Cross, HAL 3rd Stage, Kodihalli) has no website. dreamgardenbotanicals.com is only a generic 'Coming Soon' page that cannot be tied to this business and has no logo. Nothing downloaded."
+  },
+  "drinkprime": {
+    "name": "DrinkPrime",
+    "kind": "logo",
+    "file": "drinkprime.svg",
+    "source": "https://drinkprime.in/",
+    "note": "The header uses <use href='#dp-white'>. The <symbol id='dp-white'> (viewBox 0 0 141 32) was pulled from the homepage's JSON-escaped sprite and saved as a standalone SVG with 14 paths. Fills are near-white (#FDFDFD / #EEF1FF), so it is invisible on light backgrounds until recoloured. Shows the 'dp' symbol plus the 'drinkprime' wordmark."
+  },
+  "fit-district": {
+    "name": "Fit District",
+    "kind": "logo",
+    "file": "fit-district.png",
+    "source": "https://images.squarespace-cdn.com/content/v1/693be65e5411f87cbb933ca2/b55a4182-d200-498a-9d24-77984c400c83/FIT+DISTRICT+LOGO.png?format=original",
+    "note": "Header logo of fitdistrict.co (an Indiranagar, Bengaluru 560038 studio), served from the site's own Squarespace CDN. A dark green 'FIT DISTRICT' wordmark between chevron brackets. 1350x190 RGBA with a transparent background. Requested with format=original, Accept image/png, so I got the PNG rather than WebP."
+  },
+  "furlenco": {
+    "name": "Furlenco",
+    "kind": "logo",
+    "file": "furlenco.png",
+    "source": "https://assets.furlenco.com/s3-furlenco-images/yoda/furlenco-logo.png",
+    "note": "Header logo (alt 'Furlenco Logo'). Teal on transparent, 562x60, small but clean. The CDN negotiates the format, so it was fetched with Accept: image/png to get the original PNG and not AVIF. A square F emblem also exists (grogu/Furlenco2.0_LOGO-EMBLEM-LOW-25.png, 3027px) but it is not the main horizontal mark."
+  },
+  "garden-villa": {
+    "name": "Garden Villa",
+    "kind": "monogram",
+    "note": "Local plant shop known only from Google Maps. gardenvilla.in is an unrelated Hyderabad homestay. No official site found."
+  },
+  "herbal-pest-controls": {
+    "name": "Herbal Pest Controls",
+    "kind": "logo",
+    "file": "herbal-pest-controls.png",
+    "source": "https://herbalpestcontrols.com/wp-content/uploads/2026/03/WhatsApp_Image_2026-03-08_at_4.34.55_PM-removebg-preview.png",
+    "note": "Header image of herbalpestcontrols.com; the site address matches the listing (13th Main, 100 Feet Road, Indiranagar). Black art: a hand holding a globe with leaves, the script text 'Herbal pest control', and the tagline 'PEACEFUL HOME, NATURALLY PROTECTED'. 716x300 RGBA with a transparent background; the art fills about (83,80)-(698,228), so trim the padding. Edges are a bit soft from background removal."
+  },
+  "hp-gas-manrath-enterprises": {
+    "name": "HP Gas: Manrath Enterprises",
+    "kind": "logo",
+    "file": "hp-gas-manrath-enterprises.png",
+    "source": "https://www.hindustanpetroleum.com/images/logo.png",
+    "note": "Judgement call: Manrath Enterprises is a local HP Gas distributor with no site of its own. This is the parent brand's header logo from HPCL's official site: the HP emblem plus the bilingual Hindi/English 'Hindustan Petroleum Corporation Limited (A Maharatna Company)' text. 416x79, small and busy. Use a monogram if the distributor's own mark is wanted. Another option is the emblem alone, https://www.hindustanpetroleum.com/images/hpcl_og_logo.jpg (346x407), but it is a JPG with a white background. myhpgas.in only has a 'My HPgas.in' banner (logo_gas.png, no transparency), which is not suitable."
+  },
+  "ikea": {
+    "name": "IKEA",
+    "kind": "logo",
+    "file": "ikea.svg",
+    "source": "https://www.ikea.com/global/assets/logos/brand/ikea.svg",
+    "note": "Official brand SVG linked as rel=icon from ikea.com/in. 3 paths: blue box (#0058a3, the whole 98x40 canvas), yellow oval, blue IKEA letters. The box is part of the mark, so a flat one-ink fill gives a solid block. To recolour: box in ink, oval in paper, letters in ink (or drop the box and keep only the letters)."
+  },
+  "indane-vasant-enterprises": {
+    "name": "Indane: Vasant Enterprises",
+    "kind": "logo",
+    "file": "indane-vasant-enterprises.gif",
+    "source": "https://www.iocl.com/iocl-logo-types/logos/gif/IndianOilLogo1024x768.gif",
+    "note": "Vasant Enterprises is a local Indane distributor with no site, and indane.co.in no longer resolves. Indane is IndianOil's LPG brand. Neither iocl.com's Indane pages nor the Indane customer portal (cx.indianoil.in) publish a separate Indane logo: both use the IndianOil corporate logo. This file comes from IOCL's official logo download page (iocl.com/corporate-logo): 1024x768 GIF on opaque white. It shows the orange roundel, a navy ring and band with Devanagari 'इंडियनऑयल', and 'IndianOil' below. It is multi-tone, so it needs a white-key or luminance recolour, and the roundel may come out as a mid-tone disc. Switch to a monogram if a parent-brand mark is not wanted."
+  },
+  "james-bond-dry-cleaners": {
+    "name": "James Bond Dry Cleaners",
+    "kind": "logo",
+    "file": "james-bond-dry-cleaners.jpg",
+    "source": "https://jamesbonddrycleaners.com/logo/logo.jpg",
+    "note": "The only logo on jamesbonddrycleaners.com, which lists the HAL 3rd Stage branch at 483, 10th Main Road, Jeevan Bima Nagar. An opaque 300x191 JPEG: a white hanger and bow tie, 'Since 1970', and 'JAMES BOND' in white with 'DRY CLEANERS' in yellow, all on a solid red (#E91E24) box. Low resolution with no transparency. A one-ink recolour would need the red treated as background (luminance key), so a monogram may work better."
+  },
+  "jiofiber": {
+    "name": "JioFiber",
+    "kind": "logo",
+    "file": "jiofiber.svg",
+    "source": "https://myjiostatic.cdn.jio.com/jiocom/static/images/jio.svg",
+    "note": "Standard Jio roundel from Jio's own static CDN, in the same folder as the live header asset. One evenodd path (fill #3535F3) with the letters J-i-o knocked out, so a flat one-ink recolour works well. The jio.com header currently shows a 'Jio 10' anniversary variant (jio10.svg), which was not used. There is no separate JioFiber logo: the fibre product now sits under 'JioHome' on jio.com, and its icon is only a generic house glyph."
+  },
+  "kink-coffee": {
+    "name": "Kink Coffee",
+    "kind": "logo",
+    "file": "kink-coffee.svg",
+    "source": "https://kinkcoffee.in/",
+    "note": "Inline <svg> from the kinkcoffee.in site header (the home link), saved as-is. Script 'kink' wordmark, viewBox 800x300, 3 paths styled .st0{fill:#FFFFFF}, so it is white until recoloured. The official site lists an Indiranagar branch. The circular Icon.svg on the site is a secondary mark."
+  },
+  "klorophyl": {
+    "name": "Klorophyl",
+    "kind": "logo",
+    "file": "klorophyl.png",
+    "source": "https://www.klorophyl.net/fin_klo_die_symbol.png",
+    "note": "The Google Maps listing at 329 7th Main, HAL 2nd Stage names klorophyl.net as its website (klorophyl.com is a parked domain). The site offers no wordmark, only a stacked 'klo' symbol. This file is the black-on-transparent version (alt 'Klorophyl Logo', 495x689, portrait). The header uses the same symbol on a green box (fin_klo_greenbg_symbol.png). The portrait shape may need a narrower slot."
+  },
+  "kpn-fresh-indiranagar": {
+    "name": "KPN Fresh Indiranagar",
+    "kind": "logo",
+    "file": "kpn-fresh-indiranagar.svg",
+    "source": "https://www.kpnfresh.com/_next/static/media/KPN-Logo.617524a1.svg",
+    "note": "Header and footer logo on kpnfresh.com (alt 'KPN Fresh'): green 'KPN' with orange 'fresh', 8 paths, 81x14.6 viewBox. This is the chain's logo, not one specific to the Indiranagar branch."
+  },
+  "laundrymate": {
+    "name": "LaundryMate",
+    "kind": "logo",
+    "file": "laundrymate.png",
+    "source": "https://www.laundrymate.in/assets/images/shared/branding/Logo.png",
+    "note": "Brand logo, 2823x829, single blue (#0572bb-ish) on transparent. The header uses the same art as Logo.webp. The lockup includes a slash and the tagline 'It's about time.' on the right. For just the symbol and 'Laundry Mate' wordmark, crop to about x<1600px of 2823."
+  },
+  "m-trained-home-cook": {
+    "name": "M – trained home cook",
+    "kind": "monogram",
+    "note": "M's own service, so it gets the same ink M monogram as other places without a logo, not a highlighted ad (team feedback: don't highlight M strongly)."
+  },
+  "my-chicken-and-more": {
+    "name": "My Chicken and More",
+    "kind": "logo",
+    "file": "my-chicken-and-more.png",
+    "source": "https://framerusercontent.com/images/BMltex0AOnvKDo75SxyyldNKU.png",
+    "note": "Header logo (alt 'My Chicken and More Logo') of mychickenandmore.com, served from the Framer site's official asset CDN. The site lists the Indiranagar store at 628-2, 11th Cross Rd. Red script 'My Chicken' with a yellow underline swoosh and 'AND MORE'. 955x209 palette PNG with a transparent background."
+  },
+  "my-third-space": {
+    "name": "My Third Space",
+    "kind": "logo",
+    "file": "my-third-space.png",
+    "source": "https://mythirdspace.fit/wp-content/uploads/2023/12/M3S-logo-white-1.png",
+    "note": "The Google Maps listing at MSK Plaza names mythirdspace.fit as its website: a strength and fitness studio. Do not confuse it with mythirdspace.co, an unrelated hobby-rental site. This file is the header logo: a rounded-outline 'M3S' badge over 'MY THIRD SPACE', white on transparent, 679x357. It was fetched with Accept: image/png because the server otherwise returns WebP. The white fill is the ink."
+  },
+  "namdhari-s-fresh": {
+    "name": "Namdhari's Fresh",
+    "kind": "logo",
+    "file": "namdhari-s-fresh.svg",
+    "source": "https://www.namdharifresh.com/_nuxt/img/namdharis_logo.4e1a074.svg",
+    "note": "Official site is namdharifresh.com (footer says Namdhari Exports Pvt. Ltd.; namdharisfresh.com does not resolve). The logo is referenced from the site's Nuxt bundle: a 'namdhari's fresh' two-line wordmark, fill #003B2D, 150x47. The two fill='white' elements are <mask> definitions; leave them when recolouring. Validated: 14 paths."
+  },
+  "nandu-s": {
+    "name": "Nandu's",
+    "kind": "logo",
+    "file": "nandu-s.svg",
+    "source": "https://staging.nandus.com/my-assets/image/blogo/logo_nandus.svg",
+    "note": "nandus.com is an Angular app. Its production main.js points the nav logo at this SVG, which is hosted on Nandus' own staging.nandus.com subdomain. 'Nandu's' wordmark in red #AB2527, with a green heart for the apostrophe and a TM mark, viewBox 170x33, 9 paths. Raster equivalents on www.nandus.com: assets/images/logo/logo.png (1474x259) and 'Nandus_Logo 2.png'."
+  },
+  "nerlu-cafe": {
+    "name": "Nerlu Cafe",
+    "kind": "monogram",
+    "note": "Covered only in press and aggregator pages (Better India, Outlook Traveller, Swiggy). nerlu.in, nerlu.com, nerlucafe.com and similar domains don't resolve. No official site found."
+  },
+  "new-frostys": {
+    "name": "New Frostys",
+    "kind": "monogram",
+    "note": "Local meat shop known only from Google Maps. frostys.com is an unrelated US tavern. No official site found."
+  },
+  "new-fruitland": {
+    "name": "New Fruitland",
+    "kind": "monogram",
+    "note": "Small local fruit and vegetable shop. Its Google Maps listing (582, 9th A Main, Defence Colony) has no website, and newfruitland.com does not resolve. Nothing downloaded."
+  },
+  "pressto": {
+    "name": "Pressto",
+    "kind": "logo",
+    "file": "pressto.png",
+    "source": "https://www.presstoindia.com/static/media/logo.15682fe785b43d8f22d5.png",
+    "note": "Header logo from the site's React bundle: teal 'pressto' italic wordmark with a grey drop shadow and a yellow swoosh. 255x56, the largest version on the site. The og:image /logo.png is only 170x37. No SVG found. The drop shadow and multiple colours may recolour messily."
+  },
+  "pronto": {
+    "name": "Pronto",
+    "kind": "logo",
+    "file": "pronto.png",
+    "source": "https://www.withpronto.com/brand/green-logo.png",
+    "note": "Header logo of withpronto.com: a green 'Pronto' wordmark, 360x132 RGBA with a transparent background. This is the original file; Next.js serves no larger version and there is no SVG (/brand/*.svg returns 404). A white variant also exists at /brand/white-logo.png."
+  },
+  "purple-pilates": {
+    "name": "Purple Pilates",
+    "kind": "logo",
+    "file": "purple-pilates.png",
+    "source": "https://www.purplepilates.in/assets/pplogo5-Ct0YUMpg.png",
+    "note": "Navbar logo of purplepilates.in: a thin-line 'P' mark plus 'PURPLE PILATES'. 847x408, white on transparent, so it is invisible on light backgrounds until recoloured. Lines are thin. Caveat: the official site lists only the HSR Layout studio (Instagram @purplepilatesblr). It does not mention the Binnamangala/Indiranagar address in the listing, so confirm it is the same brand."
+  },
+  "r-k-nursery-and-pottery-house": {
+    "name": "R K Nursery and Pottery House",
+    "kind": "monogram",
+    "note": "Small local nursery. I found no website; it seems to exist only on Google Maps. Use a monogram."
+  },
+  "renewrite": {
+    "name": "RenewRite",
+    "kind": "logo",
+    "file": "renewrite.png",
+    "source": "https://renewrite.in/new-image/logo/renewrite-logo-all.png",
+    "note": "Header logo of renewrite.in; the site lists an Indiranagar branch. A gold/white circular 'R' arrow symbol, the 'RENEWRITE' wordmark, and the tagline 'PREMIUM SHOE & BAG REPAIR SERVICES', mostly white, on a transparent background. Small: 244x79. A text-only version (no symbol) is in logos/parts/renewrite-fontlogo.png. The art is white, so it must be recoloured."
+  },
+  "rentomojo": {
+    "name": "RentoMojo",
+    "kind": "logo",
+    "file": "rentomojo.svg",
+    "source": "https://www.rentomojo.com/dWeb/rentomojo-logo.BIIQ89hL.svg",
+    "note": "Built from the two official header pieces on rentomojo.com: the red 'rm' rounded-square symbol (an inline data-URI SVG, img.rm-header__logo, fill #D83427) and the 'rentomojo' wordmark SVG (fill #737373) at the sourceUrl. I placed them side by side (wordmark at x=54, y=9) in a 168x40 viewBox, close to the header layout. The 'rm' letters are cut out of the square, so a single ink colour recolours it cleanly. The two original pieces are in logos/parts/. Validated: 2 paths, no rects or images."
+  },
+  "shasi-enterprises": {
+    "name": "Shasi Enterprises",
+    "kind": "monogram",
+    "note": "Local key-duplication shop known only from Google Maps. No official website found."
+  },
+  "snabbit": {
+    "name": "Snabbit",
+    "kind": "logo",
+    "file": "snabbit.svg",
+    "source": "https://www.snabbit.com/snabbit-logo.svg",
+    "note": "Header logo, pink #FF2E6D wordmark, viewBox 792x167. The only <rect> is inside a clipPath, so there is no background fill."
+  },
+  "spin-cycles": {
+    "name": "Spin Cycles",
+    "kind": "logo",
+    "file": "spin-cycles.png",
+    "source": "https://www.spincycles.in/assets/images/logo/logo-W-200x68.png",
+    "note": "Header primary logo, white on transparent, 200x68 (small), with the tagline 'Dry clean & premium laundry'. Google Maps shows the listed store as 'SPIN CYCLES - Dry Clean & Premium Laundry', which matches. A larger 600x200 version exists but sits on an opaque purple background: https://www.spincycles.in/storage/Spin-cycles-images/Spin-Cycles-Logo_Final_BGP_W1_e9FYPyAd2.png (white art, easy to key out if more resolution is needed)."
+  },
+  "still-coffee": {
+    "name": "Still Coffee",
+    "kind": "monogram",
+    "note": "Not found online apart from the Maps listing. stillcoffee.co is a GoDaddy 'Launching Soon' page with no logo, and nothing ties it to this cafe."
+  },
+  "studio-oura": {
+    "name": "Studio Oura",
+    "kind": "logo",
+    "file": "studio-oura.png",
+    "source": "https://studiooura.in/wp-content/uploads/2025/12/Logo-2.png",
+    "note": "Official site studiooura.in, which describes itself as a Pilates and yoga studio in Indiranagar. Logo-2.png, 400x171: a dark olive 'Studio' with rules over a serif 'oura', transparent. It is the same design as the header's logo-light.png, which is peach and only 200x80. No SVG found. The site's 2025/05 logo-*.svg/webp files are theme demo placeholders ('WellnessBliss'), not used."
+  },
+  "subkotree": {
+    "name": "SubkoTree",
+    "kind": "logo",
+    "file": "subkotree.png",
+    "source": "https://www.subko.coffee/cdn/shop/files/subko_png_logo_2x_cfb73125-bccc-4011-b894-b8d9dec6d340.png?v=1676363945",
+    "note": "Header logo of subko.coffee (Shopify CDN on the brand's own domain). 'SubkoTree' is the store's name; the brand logo is Subko. Black serif 'SUBKO' with Devanagari and Urdu script lines, a divider, and 'SPECIALTY COFFEE ROASTERS & BAKEHOUSE'. 3826x889 palette PNG with a transparent background. No SVG found. To show only the mark, crop to the left part (about x < 2200)."
+  },
+  "sunshine-s-nest-gardens": {
+    "name": "Sunshine's Nest & Gardens",
+    "kind": "logo",
+    "file": "sunshine-s-nest-gardens.png",
+    "source": "https://sunshinesnest.com/wp-content/uploads/2019/01/logo-1.png",
+    "note": "Header logo of sunshinesnest.com, a Bangalore landscaping business that calls itself 'Sunshine's Nest and Gardens'. 716x294 RGBA: a colourful twig-nest emblem with a tree, plus the 'sunshine's nest & gardens / Rays of joy for the Soul' wordmark. The footer_logo.png version has a white background, so it was not used. The emblem is photographic and multicolour, so a one-ink recolour will look like a silhouette."
+  },
+  "the-pilates-studio-namrata-purohit": {
+    "name": "The Pilates Studio (Namrata Purohit)",
+    "kind": "logo",
+    "file": "the-pilates-studio-namrata-purohit.png",
+    "source": "https://pilatesaltitude.com/assets/front/images/logo.png",
+    "note": "Header logo of pilatesaltitude.com, titled 'The Pilates Studio by Namrata Purohit | India - Official Website', which lists Bengaluru. 604x428 RGBA, but the background is about 77% opaque white, so treat it as white-background. The art: black script 'Pilates' and 'THE', a blue 'STUDIO' bar, small 'BY NAMRATA PUROHIT' text, and light grey decorative circles. Luminance-key it, and expect the grey circles to come out faint."
+  },
+  "tone30-pilates": {
+    "name": "Tone30 Pilates",
+    "kind": "logo",
+    "file": "tone30-pilates.jpg",
+    "source": "https://tone30.in/wp-content/uploads/2024/10/WhatsApp-Image-2024-10-05-at-4.01.55-PM-e1728124459400.jpeg",
+    "note": "Official site is tone30.in ('Pilates classes in Indiranagar, Bengaluru'); tone30pilates.com does not resolve. The header has no logo, so this is the organisation logo named in the site's schema.org data, also used as the hero image. An opaque 1042x758 JPEG on white: three orange circles with white Pilates silhouettes, 'TONE30' (charcoal with orange 30), and 'PILATES'. The white background and silhouettes need a luminance key to recolour; the layout is stacked, not horizontal."
+  },
+  "tribal-brew-coffee": {
+    "name": "Tribal Brew Coffee",
+    "kind": "monogram",
+    "note": "Its domain, tribalbrew.coffee (named in job listings), is effectively down: the apex has an expired SSL certificate and redirects to www, which fails to connect. tribalbrew.in and tribalbrewcoffee.com do not resolve. With no reachable official site, use a monogram."
+  },
+  "uc-native-ro-purifier": {
+    "name": "UC Native RO purifier",
+    "kind": "logo",
+    "file": "uc-native-ro-purifier.png",
+    "source": "https://www.urbancompany.com/img/images/supply/customer-app-supply/1648471968852-1f2b01.png?bucket=urbanclap-prod",
+    "note": "The Native product page (urbancompany.com/native-ro-water-purifier) has no separate 'Native' logo. Its schema.org logo and nav logo are the Urban Company mark. This file is that Urban Company logo, taken from the Native page: 445x128, black on transparent, the same design as urban-company.png."
+  },
+  "ugaoo-store": {
+    "name": "Ugaoo Store",
+    "kind": "logo",
+    "file": "ugaoo-store.svg",
+    "source": "https://www.ugaoo.com/cdn/shop/files/Group.svg?v=1779536181",
+    "note": "Official Ugaoo mark as a vector (alt 'Ugaoo', on the ugaoo.com homepage). It is the same design as the header raster logo.png: an 'ugaoo' wordmark with a leaf sprouting from the u. 6 paths, all fill=\"white\", so it renders invisible on a white page until recoloured."
+  },
+  "urban-company": {
+    "name": "Urban Company",
+    "kind": "logo",
+    "file": "urban-company.png",
+    "source": "https://www.urbancompany.com/img/images/supply/partner-training/1628575858610-5b0ae4.png?bucket=urbanclap-prod",
+    "note": "Site header logo (ucHeaderLogo) and the schema.org Organization logo. Black on transparent, 487x144. The UC glyph is a rounded black square with the letters 'uc' knocked out. No SVG on the site: the icon font only has an outdated UrbanClap glyph."
+  },
+  "vault": {
+    "name": "VAULT",
+    "kind": "logo",
+    "file": "vault.webp",
+    "source": "https://vaultbyviratkohli.com/wp-content/uploads/2024/09/Main-logo-black-webp.webp",
+    "note": "'Main logo black' from the official VAULT by Virat Kohli site: a four-point star symbol plus 'VAULT / BY VIRAT KOHLI'. 6780x2234 with transparency, black. Other versions on the site: white (Asset-23.webp), symbol-only (Black-Logo-Icon.webp), and a stacked footer logo."
+  },
+  "vishal-mega-mart": {
+    "name": "Vishal Mega Mart",
+    "kind": "logo",
+    "file": "vishal-mega-mart.svg",
+    "source": "https://www.vishalmegamart.com/on/demandware.static/Sites-vishalmegamart-Site/-/default/dwac39898c/images/logo.svg",
+    "note": "Header logo of vishalmegamart.com (156x34): a blue V chevron (#0070AE) and a magenta panel (#EB008B), with 'VISHAL MEGA MART' reversed out in white (#FFF) paths. There is no page background, but to recolour to one ink, map #0070AE and #EB008B to the ink and make the #FFF lettering paper-coloured or transparent. If everything becomes ink, the text disappears. Some paths use a mask (fill #fff inside <mask>), which must be left alone. Validated: 8 paths."
+  },
+  "volt-fitness": {
+    "name": "Volt Fitness",
+    "kind": "logo",
+    "file": "volt-fitness.png",
+    "source": "https://voltfitness.in/images/logo.png",
+    "note": "voltfitness.in is confirmed by address: 2986 12th Main, HAL 2nd Stage, Indiranagar (operated with cult.fit). The file is the transparent variant of the header logo: red 'VOLT / FITNESS', only 129x67. The other header and footer versions are JPGs with white text on a red box. Low resolution: fine at directory size, soft if enlarged."
+  },
+  "wakefit": {
+    "name": "Wakefit",
+    "kind": "logo",
+    "file": "wakefit.svg",
+    "source": "https://www.wakefit.co/",
+    "note": "Saved from the inline <svg> in the desktop header (a href='/'). curl got a Cloudflare challenge page (403), so the markup was read from a normal browser load of the homepage. No challenge was solved. Fill is currentColor, which shows black on its own. The site's colour is #E48281. Two paths: a house symbol plus the 'wakefit' wordmark."
+  }
+}

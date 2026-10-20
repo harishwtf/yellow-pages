@@ -1,23 +1,22 @@
 import { useEffect, useRef } from 'react';
 
-/** Search and the Saved view live in the query string (?q=gas, ?view=saved); chapters are plain #anchors. */
+/** Search lives in the query string (?q=gas); chapters are plain #anchors. */
 export interface UrlState {
   query: string;
-  view: 'all' | 'saved';
 }
 
 export function readUrlState(): UrlState {
-  if (typeof window === 'undefined') return { query: '', view: 'all' };
+  if (typeof window === 'undefined') return { query: '' };
   try {
     const params = new URLSearchParams(window.location.search);
-    return { query: params.get('q') ?? '', view: params.get('view') === 'saved' ? 'saved' : 'all' };
+    return { query: params.get('q') ?? '' };
   } catch {
-    return { query: '', view: 'all' };
+    return { query: '' };
   }
 }
 
 /** Mirrors the state into the URL with replaceState, debounced so typing never floods history. */
-export function useUrlSync({ query, view }: UrlState, delay = 200) {
+export function useUrlSync({ query }: UrlState, delay = 200) {
   const skipFirst = useRef(true);
   useEffect(() => {
     if (skipFirst.current) {
@@ -28,7 +27,6 @@ export function useUrlSync({ query, view }: UrlState, delay = 200) {
       try {
         const params = new URLSearchParams();
         if (query.trim()) params.set('q', query.trim());
-        if (view === 'saved') params.set('view', 'saved');
         const search = params.toString();
         const next = `${window.location.pathname}${search ? `?${search}` : ''}${window.location.hash}`;
         const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
@@ -38,5 +36,5 @@ export function useUrlSync({ query, view }: UrlState, delay = 200) {
       }
     }, delay);
     return () => window.clearTimeout(handle);
-  }, [query, view, delay]);
+  }, [query, delay]);
 }

@@ -1,38 +1,42 @@
-import { useCallback, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ChapterChips } from './components/ChapterChips';
 import { ChapterSection } from './components/ChapterSection';
 import { EmptyState } from './components/EmptyState';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
+import { MPlug } from './components/MPlug';
 import { PaperTexture } from './components/PaperTexture';
-import { SavedView, type SavedItem } from './components/SavedView';
 import { SearchBar } from './components/SearchBar';
 import { Toast } from './components/Toast';
-import { CHAPTER_META, COPY, STORAGE_KEYS } from './data/ui';
+import { COPY } from './data/ui';
 import listingsData from './data/listings.json';
 import { useActiveSection } from './hooks/useActiveSection';
-import { useLocalStorage } from './hooks/useLocalStorage';
 import { useToast } from './hooks/useToast';
 import { readUrlState, useUrlSync } from './hooks/useUrlState';
 import { matchesQuery } from './lib/search';
-import type { GuideData, Listing } from './types';
+import type { GuideData } from './types';
 
 const data = listingsData as GuideData;
-const ALL_LISTINGS: Listing[] = data.sections.flatMap((section) => section.listings);
-const LISTING_BY_ID = new Map(ALL_LISTINGS.map((listing) => [listing.id, listing]));
-const SECTION_OF = new Map(data.sections.flatMap((section) => section.listings.map((listing) => [listing.id, section.id])));
 const INITIAL = readUrlState();
+/** M's own listing (the one that opens M's contact form): its plug follows the Kitchen chapter. */
+const M_LISTING = data.sections
+  .flatMap((section) => section.listings)
+  .find((listing) => listing.linkType === 'contact');
 
 export default function App() {
   const [query, setQuery] = useState(INITIAL.query);
-  const [view, setView] = useState<'all' | 'saved'>(INITIAL.view);
   const [categoryFilters, setCategoryFilters] = useState<Record<string, string | null>>({});
-  const [savedIds, setSavedIds] = useLocalStorage<string[]>(STORAGE_KEYS.favorites, []);
-  const { toast, show: notify, dismiss: dismissToast } = useToast();
+  const { toast, show: notify } = useToast();
 
-  useUrlSync({ query, view });
+  useUrlSync({ query });
 
-  const saved = useMemo(() => new Set(savedIds), [savedIds]);
+  // The chapters only exist once React has drawn them, after the browser has tried the #hash: go there now.
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    const id = hash === 'corners' ? 'neighbourhood' : hash;
+    if (id) document.getElementById(id)?.scrollIntoView({ block: 'start' });
+  }, []);
+
   const searching = query.trim().length > 0;
 
   const chapters = useMemo(
@@ -48,43 +52,9 @@ export default function App() {
   );
   const visibleChapters = searching ? chapters.filter((chapter) => chapter.listings.length > 0) : chapters;
   const resultCount = chapters.reduce((count, chapter) => count + chapter.listings.length, 0);
-  const activeId = useActiveSection(view === 'all' ? visibleChapters.map((chapter) => chapter.section.id) : []);
-
-  const savedItems = useMemo<SavedItem[]>(
-    () =>
-      savedIds.flatMap((id) => {
-        const listing = LISTING_BY_ID.get(id);
-        if (!listing || !matchesQuery(listing, query)) return [];
-        return [{ listing, chapterLabel: CHAPTER_META[SECTION_OF.get(id) ?? '']?.short ?? '' }];
-      }),
-    [savedIds, query],
-  );
-
-  const toggleSaved = useCallback(
-    (listing: Listing) => {
-      const index = savedIds.indexOf(listing.id);
-      if (index === -1) {
-        setSavedIds((prev) => (prev.includes(listing.id) ? prev : [...prev, listing.id]));
-        notify(COPY.savedToast);
-        return;
-      }
-      setSavedIds((prev) => prev.filter((id) => id !== listing.id));
-      notify(COPY.removedToast, {
-        label: COPY.undo,
-        onClick: () =>
-          setSavedIds((prev) => {
-            if (prev.includes(listing.id)) return prev;
-            const next = [...prev];
-            next.splice(Math.min(index, next.length), 0, listing.id);
-            return next;
-          }),
-      });
-    },
-    [savedIds, setSavedIds, notify],
-  );
+  const activeId = useActiveSection(visibleChapters.map((chapter) => chapter.section.id));
 
   const jumpTo = (sectionId: string) => {
-    setView('all');
     setQuery('');
     window.requestAnimationFrame(() => {
       document.getElementById(sectionId)?.scrollIntoView({ block: 'start' });
@@ -100,50 +70,47 @@ export default function App() {
     <div className="relative min-h-screen">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-ink focus:px-4 focus:py-2 focus:font-bold focus:uppercase focus:tracking-wider focus:text-bg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[95] focus:rounded-sm focus:bg-ink focus:px-4 focus:py-2 focus:font-bold focus:uppercase focus:tracking-wider focus:text-bg"
       >
         Skip to places
       </a>
       <Header />
       <div className="sticky-bar">
-        <div className="mx-auto flex max-w-4xl flex-col gap-2 px-4 py-2.5">
-          <SearchBar value={query} onChange={setQuery} resultCount={view === 'saved' ? savedItems.length : resultCount} />
-          <ChapterChips
-            sections={data.sections}
-            activeId={activeId}
-            view={view}
-            savedCount={savedIds.length}
-            onJump={jumpTo}
-            onToggleSaved={() => setView((current) => (current === 'saved' ? 'all' : 'saved'))}
-          />
+        <div className="mx-auto flex max-w-[68rem] flex-col gap-2 px-4 py-2.5">
+          <SearchBar value={query} onChange={setQuery} resultCount={resultCount} />
+          <ChapterChips sections={data.sections} activeId={activeId} onJump={jumpTo} />
         </div>
       </div>
 
-      <main id="main" className="mx-auto max-w-4xl px-4 pt-8">
-        {view === 'saved' ? (
-          <SavedView items={savedItems} query={query} onToggleSaved={toggleSaved} onNotify={notify} />
-        ) : visibleChapters.length === 0 ? (
+      <main id="main" className="mx-auto max-w-[68rem] px-4 pt-8">
+        {visibleChapters.length === 0 ? (
           <EmptyState icon="search" title={`${COPY.noMatches} “${query.trim()}”`} hint={COPY.noMatchesHint} />
         ) : (
           <div className="space-y-14">
             {visibleChapters.map(({ section, listings }) => (
-              <ChapterSection
-                key={section.id}
-                section={section}
-                listings={listings}
-                query={query}
-                selectedCategory={categoryFilters[section.id] ?? null}
-                onSelectCategory={(category) => setCategoryFilters((prev) => ({ ...prev, [section.id]: category }))}
-                saved={saved}
-                onToggleSaved={toggleSaved}
-                onNotify={notify}
-              />
+              <Fragment key={section.id}>
+                <ChapterSection
+                  section={section}
+                  listings={listings}
+                  query={query}
+                  filter={{
+                    selected: categoryFilters[section.id] ?? null,
+                    onSelect: (category) =>
+                      setCategoryFilters((prev) => ({
+                        ...prev,
+                        [section.id]: category,
+                      })),
+                  }}
+                  onNotify={notify}
+                />
+                {section.id === 'kitchen' && !searching && M_LISTING && <MPlug listing={M_LISTING} />}
+              </Fragment>
             ))}
           </div>
         )}
       </main>
-      <Footer />
-      <Toast toast={toast} onDismiss={dismissToast} />
+      <Footer contactUrl={M_LISTING?.url ?? undefined} />
+      <Toast toast={toast} />
       <PaperTexture />
     </div>
   );
