@@ -12,7 +12,8 @@
     "fonts": "bash scripts/fetch-fonts.sh",
     "cursors": "node scripts/pixel-cursors.mjs",
     "versions": "bash scripts/build-versions.sh",
-    "versions:serve": "python3 -m http.server 4180 --directory versions"
+    "versions:serve": "python3 -m http.server 4180 --directory versions",
+    "share": "npm run versions && node scripts/build-share.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",

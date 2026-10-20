@@ -25,3 +25,6 @@ dist-ssr
 
 # Built copies of every saved version (npm run versions)
 versions
+
+# Self-contained review files for people outside the organization (npm run share)
+share

@@ -132,6 +132,14 @@
     let versions = [];
     let state = { id: null, mode: window.innerWidth < 860 ? 'phone' : 'desktop' };
 
+    // In the single-file build (npm run share) every version is built into this page; otherwise each one is a folder.
+    const embedded = window.PEELA_VERSIONS;
+    const blobs = {};
+    const srcFor = (id) => {
+      if (!embedded) return `${id}/index.html`;
+      blobs[id] ??= URL.createObjectURL(new Blob([embedded.html[id]], { type: 'text/html' }));
+      return blobs[id];
+    };
     const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
     const tagText = (v) => (v.draft ? 'Not saved' : `Version ${v.label}`);
 
@@ -140,7 +148,7 @@
       box.className = 'frame';
       if (state.mode === 'all') box.innerHTML = `<p class="frame__label"><b>${esc(v.name)}</b><span>${esc(tagText(v))}</span></p>`;
       const f = document.createElement('iframe');
-      f.src = `${v.id}/index.html`;
+      f.src = srcFor(v.id);
       f.title = v.name;
       box.append(f);
       return box;
@@ -155,7 +163,7 @@
       captionEl.innerHTML = state.mode === 'all'
         ? `<b>All versions</b><span>scroll sideways to compare</span>`
         : `<span class="tag ${current.draft ? 'tag--draft' : ''}">${esc(tagText(current))}</span><b>${esc(current.name)}</b><span>${esc(current.note)}</span>`;
-      openEl.href = `${state.id}/index.html`;
+      openEl.href = srcFor(state.id);
       openEl.textContent = `Open ${current.name} ↗`;
       framesEl.className = `frames ${state.mode}`;
       framesEl.replaceChildren(...(state.mode === 'all' ? versions.map(frame) : [frame(current)]));
@@ -187,7 +195,7 @@
       indexEl.querySelector(`[data-id="${state.id}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
     });
 
-    fetch('versions.json', { cache: 'no-store' }).then((r) => r.json()).then((list) => {
+    (embedded ? Promise.resolve(embedded.list) : fetch('versions.json', { cache: 'no-store' }).then((r) => r.json())).then((list) => {
       versions = list;
       const section = (title, items, extra) => {
         if (!items.length) return;
