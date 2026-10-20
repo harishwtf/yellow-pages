@@ -7,6 +7,9 @@ export const OPEN_VH = 0.9;
 export const TURN_VH = 0.75;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+/** Where the first spread rests, and the length of one turn, in whole pixels so resting points are exact. */
+const turnStart = (h: number) => Math.round(h * OPEN_VH);
+const turnLength = (h: number) => Math.round(h * TURN_VH);
 
 /** Maps the page's scroll position to the book: --p (cover, 0 → 1) and --f (the leaf turning, 0 → 1) on
  *  the stage, plus `step`, the spread or page the book rests on. With reduced motion nothing animates:
@@ -33,8 +36,12 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       frame = 0;
       const h = window.innerHeight;
       const scrolled = -(track.current?.getBoundingClientRect().top ?? 0);
-      let p = clamp(scrolled / (h * OPEN_VH), 0, 1);
-      const t = clamp((scrolled - h * OPEN_VH) / (h * TURN_VH), 0, turns);
+      let p = clamp(scrolled / turnStart(h), 0, 1);
+      if (p > 0.995) p = 1;
+      let t = clamp((scrolled - turnStart(h)) / turnLength(h), 0, turns);
+      // Within a few pixels of a page is on that page: a smooth scroll can stop a hair short, and the
+      // book must not treat that as a turn still in progress (which shows the unclickable turning copy).
+      if (Math.abs(t - Math.round(t)) * turnLength(h) < 3) t = Math.round(t);
       let k = Math.min(Math.floor(t), turns);
       // How far the drawn spread's leaf has turned (0 → 1), even if scroll has already reached the next one.
       let f = clamp(t - drawn.current, 0, 1);
@@ -82,8 +89,8 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     if (!el) return;
     const h = window.innerHeight;
     const k = clamp(target, -1, turns);
-    const offset = k < 0 ? 0 : h * OPEN_VH + k * h * TURN_VH;
-    const top = el.getBoundingClientRect().top + window.scrollY + offset;
+    const offset = k < 0 ? 0 : turnStart(h) + k * turnLength(h);
+    const top = Math.round(el.getBoundingClientRect().top + window.scrollY + offset);
     window.scrollTo({ top, behavior: instant || reduced ? 'auto' : 'smooth' });
   };
   const goToRef = useRef(goTo);
@@ -101,11 +108,9 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     const el = track.current;
     if (!el) return;
     let busyUntil = 0;
-    let lastEvent = 0;
-    let lastSize = 0;
-    let peak = 0;
+    let lastInput = -Infinity;
     let pending = 0;
-    /** This gesture has already turned its page; the rest of it is ignored. */
+    /** This gesture has already turned its page; the rest of it (trackpad momentum included) is ignored. */
     let spent = false;
 
     /** Whether the book is on screen (the track covers the viewport). */
@@ -117,7 +122,7 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       const { open: isOpen, step: at } = latest.current;
       const target = !isOpen ? (dir > 0 ? 0 : -1) : at + dir;
       if (target < -1 || target > turns) return;
-      busyUntil = performance.now() + (reduced ? 120 : 700);
+      busyUntil = performance.now() + (reduced ? 120 : 600);
       goToRef.current(target);
     };
 
@@ -133,24 +138,18 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       }
       if (event.ctrlKey || !inBook()) return; // pinch-zoom, or outside the book
       event.preventDefault();
-      const now = performance.now();
       const size = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-      // A new gesture: after a real pause, or a clear new push once the last flick has died down to under a
-      // third of its peak. A flick speeding up, or its momentum jittering, never counts as a second scroll.
-      const magnitude = Math.abs(size);
-      const faded = peak > 0 && lastSize < peak * 0.3;
-      const fresh = now - lastEvent > 220 || (faded && magnitude > 40 && magnitude > lastSize * 3);
-      lastEvent = now;
-      lastSize = magnitude;
-      if (fresh) {
-        pending = 0;
+      // A new gesture starts after a real pause in the input. The gap is measured from when the input
+      // happened (event.timeStamp), not when it was handled: right after a turn the page is busy drawing the
+      // new spread, events queue up, and a late handler must not mistake that delay for a fresh scroll.
+      if (event.timeStamp - lastInput > 200) {
         spent = false;
-        peak = 0;
+        pending = 0;
       }
-      peak = Math.max(peak, magnitude);
-      if (spent || now < busyUntil) return;
+      lastInput = event.timeStamp;
+      if (spent || performance.now() < busyUntil) return;
       pending += size;
-      if (Math.abs(pending) < 12) return;
+      if (Math.abs(pending) < 4) return;
       const dir = pending > 0 ? 1 : -1;
       pending = 0;
       spent = true;
@@ -201,8 +200,8 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
   }, [track, turns, reduced]);
 
   /** The track's height and its snap points, in px. */
-  const openPx = vh * OPEN_VH;
-  const turnPx = vh * TURN_VH;
+  const openPx = turnStart(vh);
+  const turnPx = turnLength(vh);
   const snaps = [0, ...Array.from({ length: turns + 1 }, (_, k) => openPx + k * turnPx)];
   const height = vh + openPx + turns * turnPx;
 
