@@ -7,7 +7,9 @@
   --color-desk: #f3f0e3; /* the page the folder sits on */
   --color-kraft: #cfae93;
   --color-kraft-deep: #a98670;
-  --color-cover: #f4c430; /* tapes, Call buttons, the back cover */
+  --color-cover: #e8c35a; /* the phone-book cover and its accents: a softer, warmer yellow */
+  --color-cover-deep: #d2ad4c; /* the cover stock's edge and inside */
+  --color-cover-light: #ecd27e; /* type reversed out of the cover's dark band */
   --color-paper: #fbf4dc; /* the pulled-out page */
   --color-cream: #fffaeb;
   --color-ink: #3a342c; /* dark brown, like old printer's ink (9.4:1 on the page) */
@@ -15,7 +17,7 @@
   --color-rule: rgb(58 52 44 / 0.15);
   --color-red-pen: #c23b2e; /* on paper and cream: 4.8:1 */
   --color-red-ink: #7a1e14; /* the same red, deep enough for text on kraft (4.8:1) */
-  --color-highlighter: rgb(244 196 48 / 0.62);
+  --color-highlighter: rgb(232 195 90 / 0.6);
   --color-page: #f0e2b0; /* directory pages: aged, beige-yellow paper */
   --color-tag: #a8281e; /* "Top rated!" — deep enough for cream text (6:1) */
 
@@ -36,8 +38,8 @@
   --board-relief: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='f' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.03' numOctaves='5' seed='7' stitchTiles='stitch'/%3E%3CfeDiffuseLighting lighting-color='%23a7a7a7' surfaceScale='4'%3E%3CfeDistantLight azimuth='235' elevation='50'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   --board-flecks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='2' seed='13' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.22 0 0 0 0 0.09 0 0 0 8 -6.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   --board-fibres: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.035 .45' numOctaves='2' seed='17' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.36 0 0 0 0 0.12 0 0 0 6 -5.0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-  --ink-voids-cover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='1' seed='41' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.933 0 0 0 0 0.741 0 0 0 0 0.184 0 0 0 10 -7.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
-  --ink-worn-cover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.933 0 0 0 0 0.741 0 0 0 0 0.184 0 0 0 14 -12.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --ink-voids-cover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='1' seed='41' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.91 0 0 0 0 0.765 0 0 0 0 0.353 0 0 0 10 -7.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --ink-worn-cover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.42' numOctaves='2' seed='23' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.91 0 0 0 0 0.765 0 0 0 0 0.353 0 0 0 14 -12.4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   --ink-worn-page: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.5' numOctaves='2' seed='27' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.98 0 0 0 0 0.906 0 0 0 0 0.612 0 0 0 14 -12.6'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
   --cover-edge: radial-gradient(140% 110% at 50% 45%, transparent 60%, rgb(120 72 0 / 0.13) 100%);
   /* A torn bottom edge for the label tapes. */
@@ -196,12 +198,16 @@
     scale: calc(0.9 + 0.1 * var(--p, 0));
   }
 
-  /* Boards and the thick block of pages a phone book is known for. */
+  /* A paperback: thin cover stock, barely wider than the block of pages it wraps. */
+  .book {
+    /* How much the soft cover bends as it swings: 0 at rest, most at halfway (4p(1 − p)). */
+    --bend: calc(4 * var(--p, 0) * (1 - var(--p, 0)));
+  }
   .book__board {
     position: absolute;
     top: 0;
     bottom: 0;
-    background-color: #e2b02a;
+    background-color: var(--color-cover-deep);
     background-image: var(--board-flecks), var(--board-relief);
     background-blend-mode: multiply, soft-light;
     box-shadow: 0 24px 46px -22px rgb(70 45 25 / 0.55);
@@ -209,18 +215,18 @@
   .book__board--right {
     left: 50%;
     right: 0;
-    border-radius: 0 8px 8px 0;
+    border-radius: 0 4px 4px 0;
   }
   .book__board {
     box-shadow:
-      0 24px 46px -22px rgb(70 45 25 / 0.55),
-      inset 0 0 0 1px rgb(125 92 35 / 0.35);
+      0 16px 34px -20px rgb(70 45 25 / 0.45),
+      inset 0 0 0 1px rgb(125 92 35 / 0.25);
   }
   /* The left board shows only once the cover has landed on it; while it swings, the cover is the board. */
   .book__board--left {
     left: 0;
     right: 50%;
-    border-radius: 8px 0 0 8px;
+    border-radius: 4px 0 0 4px;
     visibility: hidden;
   }
   .stage[data-full='true'] .book__board--left {
@@ -250,13 +256,13 @@
     pointer-events: none;
   }
   .sheet--right {
-    inset: 8px 10px 8px 50%;
+    inset: 3px 3px 3px 50%;
     z-index: 1;
     border-radius: 0 4px 4px 0;
     box-shadow: inset 22px 0 26px -22px rgb(90 60 10 / 0.45);
   }
   .sheet--left {
-    inset: 8px 50% 8px 10px;
+    inset: 3px 50% 3px 3px;
     z-index: 1;
     border-radius: 4px 0 0 4px;
     box-shadow: inset -22px 0 26px -22px rgb(90 60 10 / 0.45);
@@ -298,7 +304,7 @@
     top: 0;
     bottom: 0;
     z-index: 4;
-    width: calc(10px + 1.5rem);
+    width: calc(3px + 1.5rem);
   }
   .turn-zone--prev {
     left: 0;
@@ -680,7 +686,8 @@
     z-index: 4;
     transform-origin: left center;
     transform-style: preserve-3d;
-    transform: rotateY(calc(var(--p, 0) * -180deg));
+    /* A soft cover droops a little at its free edge as it swings over, then lies flat again. */
+    transform: rotateY(calc(var(--p, 0) * -180deg)) skewY(calc(var(--bend) * 1.6deg));
   }
   .stage.is-spread[data-full='true'] .cover {
     visibility: hidden;
@@ -693,9 +700,18 @@
   }
   .cover__front {
     overflow: hidden;
-    border-radius: 3px 10px 9px 3px;
-    background-color: #eebd2f;
+    border-radius: 2px 5px 5px 2px;
+    background-color: var(--color-cover);
     background-image:
+      /* light running across the cover as it curves mid-swing */
+      linear-gradient(
+        90deg,
+        rgb(70 45 25 / calc(var(--bend) * 0.16)) 0%,
+        transparent 28%,
+        rgb(255 246 214 / calc(var(--bend) * 0.3)) 56%,
+        transparent 80%,
+        rgb(70 45 25 / calc(var(--bend) * 0.22)) 100%
+      ),
       radial-gradient(circle at 100% 0, rgb(150 112 55 / 0.55), transparent 3.5%),
       radial-gradient(circle at 100% 100%, rgb(150 112 55 / 0.6), transparent 4%),
       radial-gradient(circle at 0 100%, rgb(150 112 55 / 0.35), transparent 3%),
@@ -703,11 +719,11 @@
       linear-gradient(180deg, rgb(120 82 20 / 0.2), transparent 2.5%, transparent 96.5%, rgb(120 82 20 / 0.3)),
       radial-gradient(60% 18% at 70% 72%, rgb(255 244 200 / 0.18), transparent),
       var(--board-flecks), var(--board-fibres), var(--board-relief);
-    background-blend-mode: normal, normal, normal, multiply, multiply, screen, multiply, multiply, soft-light;
+    background-blend-mode: normal, normal, normal, normal, multiply, multiply, screen, multiply, multiply, soft-light;
     box-shadow:
-      0 24px 46px -22px rgb(70 45 25 / 0.6),
-      inset 0 0 0 1.5px rgb(125 92 35 / 0.4),
-      inset 0 0 8px rgb(110 75 15 / 0.25);
+      0 16px 34px -20px rgb(70 45 25 / 0.5),
+      inset 0 0 0 1px rgb(125 92 35 / 0.3),
+      inset 0 0 6px rgb(110 75 15 / 0.15);
     cursor: pointer;
     container-type: inline-size;
   }
@@ -720,7 +736,7 @@
     left: 3.6cqw;
     z-index: 1;
     width: 1.6cqw;
-    background: linear-gradient(90deg, transparent, rgb(95 62 5 / 0.28) 40%, rgb(255 238 180 / 0.35) 62%, transparent);
+    background: linear-gradient(90deg, transparent, rgb(95 62 5 / 0.16) 40%, rgb(255 238 180 / 0.24) 62%, transparent);
     pointer-events: none;
   }
   .cover__front::after {
@@ -734,11 +750,11 @@
   }
   /* The first page rides on the inside of the cover as it swings: it fills the cover's back. */
   .cover__back > .sheet--left {
-    inset: 8px 0 8px 10px;
+    inset: 3px 0 3px 3px;
   }
   .cover__back {
-    border-radius: 10px 3px 3px 9px;
-    background-color: #e2b02a;
+    border-radius: 5px 2px 2px 5px;
+    background-color: var(--color-cover-deep);
     background-image: var(--board-flecks), var(--board-relief);
     background-blend-mode: multiply, soft-light;
     transform: rotateY(180deg);
@@ -749,9 +765,9 @@
     display: flex;
     flex-direction: column;
     padding: 6cqw 7cqw 7cqw 8.5cqw;
-    color: #201b15;
+    color: var(--color-ink);
     filter: url(#press);
-    text-shadow: 0 0 0.5px rgb(32 27 21 / 0.55);
+    text-shadow: 0 0 0.5px rgb(58 52 44 / 0.5);
   }
   .pb-cover__top {
     display: flex;
@@ -804,8 +820,8 @@
     margin-top: auto;
     padding: 4cqw 5cqw 4.5cqw;
     border-radius: 0.6cqw 1cqw 0.8cqw 1.2cqw;
-    background: #221d17;
-    color: #f1c232;
+    background: var(--color-ink);
+    color: var(--color-cover-light);
     text-shadow: none;
   }
   .pb-cover__inside {
@@ -841,7 +857,7 @@
   .pb-cover__count {
     margin-top: 3.5cqw;
     padding-top: 2.4cqw;
-    border-top: 0.3cqw solid rgb(244 196 48 / 0.5);
+    border-top: 0.3cqw solid rgb(236 210 126 / 0.45);
     font-size: 3cqw;
     font-weight: 600;
   }
@@ -938,7 +954,7 @@
   /* ---------- The turning leaf: --f runs 0 → 1 as you scroll ---------- */
   .leaf {
     position: absolute;
-    inset: 8px 10px 8px 50%;
+    inset: 3px 3px 3px 50%;
     z-index: 3;
     transform-origin: left center;
     transform-style: preserve-3d;
