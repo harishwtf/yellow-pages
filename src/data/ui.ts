@@ -31,7 +31,7 @@ export const COPY = {
   sectionsWord: 'sections',
   notes: 'Notes',
   continued: 'cont.',
-  topRated: 'Top rated!',
+  topRated: 'top rated',
   previousPage: 'Previous page',
   nextPage: 'Next page',
   bookmarksLabel: 'Bookmarks',
@@ -58,7 +58,7 @@ export const COPY = {
   /** The note from the top of the current site, kept as small print. */
   about:
     'A practical list for people moving into Indiranagar, Bengaluru. Curated by M (tellm.co). Most picks have 100+ ratings and a rating above 4.5 (Google Maps for local businesses, App Store or Play Store for apps). Official utilities, helplines, and a few user picks are included even when they do not meet that bar. Ratings checked October 2026; details can change.',
-  smallPrint: 'Map links open a Google Maps search for the listed address. App links point to the iOS App Store.',
+  smallPrint: 'Map links open a Google Maps search for the listed address. App links open the App Store or Google Play.',
   sourceLabel: 'Source:',
   sourceName: 'indiranagar.tellm.co',
 } as const;
@@ -73,11 +73,14 @@ export const LINKS = {
 } as const;
 
 export const ACTION_LABELS: Record<LinkType, string> = {
-  app: 'App',
+  app: 'App Store',
   maps: 'Map',
   website: 'Website',
   contact: 'Contact M',
 };
+
+/** The Google Play link beside an App Store link. */
+export const PLAY_LABEL = 'Google Play';
 
 /** Ratings at or above this get the red-pen circle. */
 export const TOP_RATED_FROM = 4.8;

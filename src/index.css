@@ -494,40 +494,9 @@
     gap: 0.15rem 0.5rem;
     min-width: 0;
   }
-  .de__rating {
-    color: var(--color-ink);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-  .de__top {
-    padding: 0.02rem 0.4rem 0.08rem;
-    border-radius: 999px;
-    background: var(--color-tag);
-    color: #fff8e6;
-    font-family: var(--font-serif);
-    font-variation-settings: 'SOFT' 100;
-    font-weight: 800;
-    font-size: 0.7rem;
-  }
   .de__note {
     color: var(--color-ink);
     font-weight: 600;
-  }
-  .de__link {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    gap: 0.12rem;
-    color: var(--color-ink);
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 2px;
-    white-space: nowrap;
-  }
-  .de__line > .de__link {
-    margin-left: auto;
   }
   .de--featured {
     margin: 0.2rem 0;
@@ -1205,18 +1174,6 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  .le__go {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.15rem;
-    margin-left: auto;
-    font-size: 0.92rem;
-    font-weight: 700;
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    white-space: nowrap;
-  }
   .le__copy {
     display: grid;
     place-items: center;
@@ -1244,7 +1201,6 @@
     color: var(--color-muted);
     font-size: 0.86rem;
   }
-  .le__link,
   .le__note {
     display: inline-flex;
     align-items: center;
@@ -1256,13 +1212,6 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
-  }
-  .le__link {
-    flex: none;
-    margin-right: -0.4rem;
-    padding: 0 0.4rem;
-    font-size: 0.92rem;
-    white-space: nowrap;
   }
   .le__note {
     font-weight: 600;
@@ -1580,6 +1529,93 @@
   .le > :not(.place-flash) {
     position: relative;
     z-index: 1;
+  }
+}
+
+@layer components {
+  /* ---------- Ratings: top ones circled in red pen ---------- */
+  .rating {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    color: var(--color-ink);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .rating__num {
+    position: relative;
+    padding: 0 0.12rem;
+  }
+  .rating__num--top {
+    margin: 0 0.3rem 0 0.15rem;
+  }
+  .pen-ring {
+    position: absolute;
+    left: -0.42rem;
+    top: -0.3rem;
+    width: calc(100% + 0.84rem);
+    height: calc(100% + 0.58rem);
+    overflow: visible;
+    pointer-events: none;
+  }
+  .pen-ring path {
+    fill: none;
+    stroke: var(--color-red-pen);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* ---------- Links as ink icons (Version 3) ---------- */
+  .marks {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.1rem;
+    margin-left: auto;
+  }
+  .mark {
+    display: inline-grid;
+    place-items: center;
+    border-radius: 4px;
+    color: var(--color-ink);
+    text-decoration: none;
+  }
+  .mark:hover {
+    background: rgb(58 52 44 / 0.09);
+  }
+  /* On the book pages the icons sit inside the small second line without making it taller. */
+  .mark--book {
+    width: 1.6rem;
+    height: 1.5rem;
+    margin: -0.3rem 0;
+  }
+  .mark--phone {
+    width: 44px;
+    height: 44px;
+    margin: -6px 0;
+  }
+  .mark--text {
+    display: inline-flex;
+    gap: 0.35rem;
+    width: auto;
+    padding: 0 0.4rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+  }
+  .mark--phone.mark--text {
+    font-size: 0.92rem;
+  }
+  .marks:last-child .mark:last-child {
+    margin-right: -0.35rem;
+  }
+  .le__main--links {
+    align-items: center;
+    padding-block: 0.45rem 0.1rem;
   }
 }
 

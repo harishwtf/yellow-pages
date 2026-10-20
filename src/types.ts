@@ -10,6 +10,8 @@ export interface Listing {
   verified?: boolean;
   linkType: LinkType;
   url: string;
+  /** Google Play page for listings whose link is an App Store page. */
+  androidUrl?: string;
   phone: string | null;
   /** Extra contact detail kept as written, e.g. "WhatsApp +91 94481 97197". */
   phoneNote?: string;

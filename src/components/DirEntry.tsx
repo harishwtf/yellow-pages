@@ -1,31 +1,23 @@
-import { ACTION_LABELS, COPY, TOP_RATED_FROM } from '../data/ui';
+import { COPY } from '../data/ui';
 import { cn } from '../lib/cn';
 import { localNumber, telHref, whatsappHref } from '../lib/phone';
 import type { Listing } from '../types';
-import { ArrowUpRight, CopyIcon, VerifiedMark } from './icons';
+import { CopyIcon, VerifiedMark } from './icons';
+import { LinkMarks } from './LinkMarks';
+import { Rating } from './Rating';
 
 interface DirEntryProps {
   listing: Listing;
   onCopy: (phone: string) => void;
 }
 
-/** One directory line, as in the v5 directory:
+/** One directory line:
  *  NAME ··········· 98833 33123 ⧉        (tap the number to call, ⧉ to copy)
- *  ★ 4.8  Top rated!                Website ↗ */
+ *  ★ (4.8)                          ◎       (top ratings circled in red pen; the link as an icon)
+ *  A place with no number shows its link icons where the number would be. */
 export function DirEntry({ listing, onCopy }: DirEntryProps) {
-  const { name, phone, phoneNote, rating, url, linkType } = listing;
-  const top = rating !== null && rating >= TOP_RATED_FROM;
+  const { name, phone, phoneNote, rating } = listing;
   const whatsapp = phoneNote ? whatsappHref(phoneNote) : null;
-  const link = (
-    <a href={url} target="_blank" rel="noopener noreferrer" className="de__link">
-      {ACTION_LABELS[linkType]}
-      <span className="sr-only">
-        {' '}
-        for {name} ({COPY.newTab})
-      </span>
-      <ArrowUpRight size={12} />
-    </a>
-  );
 
   return (
     <div className={cn('de', listing.featured && 'de--featured')}>
@@ -50,19 +42,13 @@ export function DirEntry({ listing, onCopy }: DirEntryProps) {
             </button>
           </span>
         ) : (
-          link
+          <LinkMarks listing={listing} size="book" />
         )}
       </div>
       {(rating !== null || phoneNote || phone) && (
         <div className="de__meta">
           <span className="de__facts">
-            {rating !== null && (
-              <span className="de__rating">
-                <span aria-hidden="true">★</span>
-                <span className="sr-only">Rated </span> {rating.toFixed(1)}
-              </span>
-            )}
-            {top && <span className="de__top">{COPY.topRated}</span>}
+            {rating !== null && <Rating rating={rating} />}
             {phoneNote &&
               (whatsapp ? (
                 <a href={whatsapp} target="_blank" rel="noopener noreferrer" className="de__note">
@@ -73,7 +59,7 @@ export function DirEntry({ listing, onCopy }: DirEntryProps) {
                 <span className="de__note">{phoneNote}</span>
               ))}
           </span>
-          {phone && link}
+          {phone && <LinkMarks listing={listing} size="book" />}
         </div>
       )}
     </div>
