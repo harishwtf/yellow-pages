@@ -147,7 +147,7 @@
     }
 
     function render() {
-      const current = versions.find((v) => v.id === state.id) ?? versions.filter((v) => !v.draft).at(-1) ?? versions[0];
+      const current = versions.find((v) => v.id === state.id) ?? versions.find((v) => !v.draft) ?? versions[0];
       state.id = current.id;
       try { history.replaceState(null, '', `#${state.id}/${state.mode}`); } catch {}
       indexEl.querySelectorAll('.entry').forEach((b) => b.setAttribute('aria-current', String(b.dataset.id === state.id)));
