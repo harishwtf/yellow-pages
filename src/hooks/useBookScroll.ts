@@ -8,6 +8,9 @@ export const OPEN_VH = 0.9;
 export const TURN_VH = 0.75;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+/** Chrome on macOS flags every trackpad and Magic Mouse glide (WheelEvent.momentum), so the flag can be trusted
+ *  from the very first gesture. Elsewhere the wheel reader starts trusting it once it has seen a flagged event. */
+const flagsGlides = typeof WheelEvent !== 'undefined' && 'momentum' in WheelEvent.prototype && /Mac/i.test(navigator.platform);
 /** Where the first spread rests, and the length of one turn, in whole pixels so resting points are exact. */
 const turnStart = (h: number) => Math.round(h * OPEN_VH);
 const turnLength = (h: number) => Math.round(h * TURN_VH);
@@ -132,14 +135,24 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
   useEffect(() => {
     const el = track.current;
     if (!el) return;
+    /** When the last scroll reached its destination. Chrome reports that scroll's end (scrollend) 30-70ms
+     *  later, and by then a new press may be heading on: that late scrollend isn't the new scroll's. */
+    let arrivedAt = -Infinity;
     const check = () => {
       if (dest.current === null) return;
       const h = window.innerHeight;
       const scrolled = -el.getBoundingClientRect().top;
       const at = dest.current < 0 ? 0 : turnStart(h) + dest.current * turnLength(h);
-      if (Math.abs(scrolled - at) < 3) dest.current = null;
+      if (Math.abs(scrolled - at) < 3) {
+        dest.current = null;
+        arrivedAt = performance.now();
+      }
     };
-    const ended = () => (dest.current = null);
+    // A scroll that ended without arriving (say, the scrollbar was dragged) leaves the book wherever it is.
+    const ended = () => {
+      if (performance.now() - arrivedAt < 300) arrivedAt = -Infinity;
+      else dest.current = null;
+    };
     window.addEventListener('scroll', check, { passive: true });
     window.addEventListener('scrollend', ended);
     return () => {
@@ -152,7 +165,7 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
   /** One gesture turns one page: a wheel or trackpad swipe, a key press, a touch swipe. The wheel stream is
    *  read by createWheelGesture (glides ignored, new swipes always counted). Its memory lives in a ref and
    *  the listeners are registered once, so re-measuring the pages can't reset a swipe halfway through. */
-  const wheel = useRef(createWheelGesture());
+  const wheel = useRef(createWheelGesture({ trustFlag: flagsGlides }));
   useEffect(() => {
     const el = track.current;
     if (!el) return;
@@ -175,15 +188,28 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
 
     // A frame clock while wheel input is coming in: a gap in the input only counts as a pause if the page
     // kept drawing frames through it (if it didn't, the page was busy and the browser bunched the events).
+    // While the page works through a backlog every frame delivers another event, so the frame must also have
+    // come after the page finished with the event before the gap; and an event handled long after it
+    // happened says the page is behind, so its gap can't be trusted either.
     let lastFrame = -Infinity;
     let lastWheel = -Infinity;
+    let prevWheel = -Infinity;
+    let late = false;
     let ticking = false;
     const tick = (now: number) => {
       lastFrame = now;
       if (now - lastWheel < 1000) window.requestAnimationFrame(tick);
       else ticking = false;
     };
-    const frameAfter = (t: number) => lastFrame > t;
+    const frameAfter = (t: number) => !late && lastFrame > t && lastFrame > prevWheel;
+
+    // One axis per swipe: on a diagonal swipe the larger of deltaX and deltaY can swap from event to event,
+    // and with opposite signs that would read as the swipe reversing. The axis only changes on a clear switch.
+    let axis: 'x' | 'y' | null = null;
+    let ax = 0;
+    let ay = 0;
+    let axisT = -Infinity;
+    let axisMomentum = false;
 
     const onWheel = (event: WheelEvent) => {
       if (inPanel(event)) {
@@ -193,15 +219,29 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       }
       if (event.ctrlKey || !inBook()) return; // pinch-zoom, or outside the book
       event.preventDefault();
+      prevWheel = lastWheel;
       lastWheel = performance.now();
+      late = lastWheel - event.timeStamp > 100;
       if (!ticking) {
         ticking = true;
         window.requestAnimationFrame(tick);
       }
       // Lines and pages (some mice, Firefox) in pixels.
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
-      const d = (Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX) * unit;
       const momentum = 'momentum' in event ? Boolean((event as WheelEvent & { momentum?: boolean }).momentum) : undefined;
+      // A new swipe: a pause, or fresh fingers after a glide.
+      if (event.timeStamp - axisT > 120 || (axisMomentum && momentum !== true)) {
+        axis = null;
+        ax = ay = 0;
+      }
+      axisT = event.timeStamp;
+      axisMomentum = momentum === true;
+      ax = ax * 0.8 + Math.abs(event.deltaX * unit);
+      ay = ay * 0.8 + Math.abs(event.deltaY * unit);
+      if (!axis) {
+        if (Math.max(ax, ay) >= 4) axis = ay >= ax ? 'y' : 'x';
+      } else if (axis === 'y' ? ax > 3 * ay : ay > 3 * ax) axis = axis === 'y' ? 'x' : 'y';
+      const d = ((axis ?? (ay >= ax ? 'y' : 'x')) === 'y' ? event.deltaY : event.deltaX) * unit;
       const dir = wheel.current({ t: event.timeStamp, d, momentum }, frameAfter);
       if (dir) navRef.current.turnBy(dir);
     };
@@ -224,12 +264,18 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       if (Math.abs(along) > 40) navRef.current.turnBy(along > 0 ? 1 : -1);
     };
 
+    // Whether focus last moved with a pointer. Chrome leaves a clicked button focused, but Space after a click
+    // still means "turn the page"; once Tab moves focus, Space presses the focused button again.
+    let pointerFocus = false;
+    const onPointerDown = () => (pointerFocus = true);
+
     const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') pointerFocus = false;
       if (event.altKey || event.ctrlKey || event.metaKey || !inBook() || inPanel(event)) return;
       const target = event.target as HTMLElement | null;
       if (target?.closest('input, textarea, select')) return;
-      // Space on a focused button or link presses it rather than turning the page.
-      if (event.key === ' ' && target?.closest('button, a, [role="button"]')) return;
+      // Space on a button focused from the keyboard presses it rather than turning the page.
+      if (event.key === ' ' && !pointerFocus && target?.closest('button, [role="button"]')) return;
       const forward = ['ArrowDown', 'PageDown', 'ArrowRight'].includes(event.key) || (event.key === ' ' && !event.shiftKey);
       const backward = ['ArrowUp', 'PageUp', 'ArrowLeft'].includes(event.key) || (event.key === ' ' && event.shiftKey);
       if (!forward && !backward) return;
@@ -244,6 +290,7 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('touchend', onTouchEnd, { passive: true });
     window.addEventListener('keydown', onKey);
+    window.addEventListener('pointerdown', onPointerDown, true);
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', measure);
@@ -252,6 +299,7 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('keydown', onKey);
+      window.removeEventListener('pointerdown', onPointerDown, true);
     };
   }, [track]);
 

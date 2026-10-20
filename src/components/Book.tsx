@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { COPY } from '../data/ui';
 import { useBookScroll } from '../hooks/useBookScroll';
 import { usePagination } from '../hooks/usePagination';
 import { cn } from '../lib/cn';
-import { bookPages, sectionItems, sectionStarts } from '../lib/pages';
+import { type Page, bookPages, sectionItems, sectionStarts } from '../lib/pages';
 import type { Section } from '../types';
 import { BookPage, type Flash, PageItem } from './BookPage';
 import { Bookmarks } from './Bookmarks';
@@ -80,6 +80,28 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
     goTo(toStep(at));
   };
 
+  // Re-measuring the pages (a resize, a zoom, the fonts arriving) moves every page break and resting point.
+  // Keep the reader on the spread that now holds what they were reading, not wherever the old scroll lands.
+  const anchor = useRef<string | null>(null);
+  const laidOut = useRef({ pages, height });
+  useLayoutEffect(() => {
+    const was = laidOut.current;
+    laidOut.current = { pages, height };
+    if (was.pages !== pages || was.height !== height) {
+      const at =
+        anchor.current === 'start'
+          ? 0
+          : anchor.current === 'end'
+            ? pages.length - 1
+            : pages.findIndex((p) => p.kind === 'section' && p.items.some((i) => i.key === anchor.current));
+      if (open && anchor.current && at >= 0) goTo(toStep(at), true);
+      return;
+    }
+    // What the spread opens with: its first listing or heading (a "continued" label moves with the page breaks).
+    const first = (p?: Page) => (p?.kind === 'section' ? p.items.find((i) => !(i.kind === 'cat' && i.cont))?.key : undefined);
+    anchor.current = first(pages[step * 2]) ?? first(pages[step * 2 + 1]) ?? (step === 0 ? 'start' : step >= turns ? 'end' : null);
+  }, [pages, height, step, open, turns, goTo]);
+
   // A link to a section (#kitchen) opens the book there, once the pages are laid out.
   const linked = useRef(false);
   useEffect(() => {
@@ -132,8 +154,8 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
 
   return (
     <div ref={trackRef} className="track" style={{ height }}>
-      {snaps.map((top) => (
-        <span key={top} className="snap" style={{ top }} aria-hidden="true" />
+      {snaps.map((top, i) => (
+        <span key={i} className="snap" style={{ top }} aria-hidden="true" />
       ))}
       <div ref={stageRef} className={cn('stage', 'is-spread', open && 'is-open', reduced && 'is-reduced')}>
         <HomeLink

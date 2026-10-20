@@ -76,15 +76,16 @@ export function Bookmarks({ sections, startStep, step, turns, readingByStep, cur
           aria-current={open && i === currentSection ? 'page' : undefined}
           onPointerDown={(event) => {
             // Answer on press: during a turn the slip slides along with the page, and a click (press and
-            // release on the same element) could miss it.
-            if (event.button !== 0 || event.pointerType === 'touch') return;
+            // release on the same element) could miss it. Control-click is the Mac's right click: no jump.
+            if (event.button !== 0 || event.ctrlKey || event.pointerType === 'touch') return;
             event.preventDefault();
             onPick(i);
           }}
           onClick={(event) => {
             event.stopPropagation();
-            // Keyboard (Enter/Space) and touch taps arrive as clicks.
-            if (event.detail === 0 || (event.nativeEvent as PointerEvent).pointerType === 'touch') onPick(i);
+            // Keyboard (Enter/Space) and touch taps arrive as clicks, and so does control-click where it isn't a
+            // right click (Windows, Linux).
+            if (event.detail === 0 || event.ctrlKey || (event.nativeEvent as PointerEvent).pointerType === 'touch') onPick(i);
           }}
         >
           <span className="bookmark__paper" aria-hidden="true">
