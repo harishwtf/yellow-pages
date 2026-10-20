@@ -7,7 +7,33 @@ export const COPY = {
   pinPlace: 'Bengaluru',
   pinCode: '560038',
   openBook: 'Open the book',
-  openHint: 'Scroll or tap to open',
+  openHint: 'Scroll to open',
+  coverPlace: 'Indiranagar',
+  coverBrand: 'peela pages',
+  siteName: 'peela.pages',
+  search: 'Search',
+  searchLabel: 'Search the guide',
+  searchPlaceholder: 'What do you need? Try gas, wifi, coffee…',
+  closeSearch: 'Close search',
+  quickSearches: 'Quick searches',
+  emptyBefore: 'Nothing in the directory for that. Try ',
+  emptyBetween: ' or ',
+  emptyAfter: '.',
+  results: (n: number) => (n === 1 ? '1 place' : `${n} places`),
+  openPage: 'Open page',
+  byline: 'by M',
+  homeLabel: 'peela.pages by M, back to the cover',
+  coverSub: 'The move-in guide',
+  edition: 'Oct 2026',
+  inside: 'Inside',
+  promise: 'Who to call, where to go, what to install.',
+  contents: 'Contents',
+  sectionsWord: 'sections',
+  notes: 'Notes',
+  continued: 'cont.',
+  topRated: 'Top rated!',
+  previousPage: 'Previous page',
+  nextPage: 'Next page',
   bookmarksLabel: 'Bookmarks',
   bookLabel: 'The guide, open at',
   previous: 'Previous section',
@@ -25,13 +51,6 @@ export const COPY = {
   copyFailed: "Couldn't copy. Long-press the number instead.",
   verified: 'Verified',
   newTab: 'opens in a new tab',
-  ad: {
-    label: 'Advertisement',
-    lead: "It's not easy to set up a new kitchen in a new home.",
-    body: "Good thing there's M. M runs your kitchen end-to-end. From planning the meals, to providing a certified cook, to ordering groceries, M takes care of all of it.",
-    close: 'You just show up and eat :)',
-    cta: 'Get Access to M',
-  },
   closing: {
     note: "Moving into a new neighborhood can be intimidating. Hope this little guide helps you find your feet. It won't be long before you belong.",
     cta: 'Need a hand?',
@@ -47,7 +66,7 @@ export const COPY = {
 export const LINKS = {
   /** Where the M wave logo goes, as on the current site. */
   home: 'https://tellm.co/',
-  /** "Get Access to M" and "Need a hand?". The current site hides these behind its sign-up form, so they use
+  /** "Need a hand?" on the closing page. The current site hides this behind its sign-up form, so it uses
    *  the guide's own Contact M link until we have the real one. */
   m: 'https://app.tellm.co/q/mqYeNfEp',
   source: 'https://indiranagar.tellm.co/',
@@ -63,5 +82,14 @@ export const ACTION_LABELS: Record<LinkType, string> = {
 /** Ratings at or above this get the red-pen circle. */
 export const TOP_RATED_FROM = 4.8;
 
-/** The M classified ad runs at the end of this section's pages. */
-export const AD_AFTER_SECTION = 'kitchen';
+
+/** Where a long section name may break on its bookmark (a soft hyphen, shown only if it breaks). */
+export const BOOKMARK_BREAKS: Record<string, string> = {
+  neighbourhood: 'Neighbour­hood',
+};
+
+/** Quick searches under the search box: each one runs that search. */
+export const QUICK_SEARCHES = ['Gas', 'Wi-Fi', 'Cook', 'Laundry', 'Coffee'] as const;
+
+/** Suggestions offered when a search finds nothing. */
+export const EMPTY_SUGGESTIONS = ['gas', 'coffee'] as const;

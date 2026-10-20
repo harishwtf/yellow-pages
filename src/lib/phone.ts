@@ -6,3 +6,6 @@ export function whatsappHref(note: string): string | null {
   const match = note.match(/^WhatsApp\s+(\+?[\d\s]+)$/i);
   return match ? `https://wa.me/${match[1].replace(/\D/g, '')}` : null;
 }
+
+/** The number as a local directory prints it, without the +91 (the tel: link keeps it). */
+export const localNumber = (phone: string): string => phone.replace(/^\+91\s*/, '');
