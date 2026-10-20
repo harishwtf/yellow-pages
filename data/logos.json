@@ -187,8 +187,9 @@
   },
   "m-trained-home-cook": {
     "name": "M – trained home cook",
-    "kind": "monogram",
-    "note": "M's own service, so it gets the same ink M monogram as other places without a logo, not a highlighted ad (team feedback: don't highlight M strongly)."
+    "kind": "logo",
+    "source": "tellm.co m-logo, redrawn as a single ink stroke (MWave in src/components/icons.tsx, the same mark Peela Pages uses)",
+    "note": "M's own logo, in the page ink and sized like every other logo, so it reads as one more listing rather than a highlighted ad (team feedback: don't highlight M strongly; owner: use M's logo)."
   },
   "my-chicken-and-more": {
     "name": "My Chicken and More",

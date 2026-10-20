@@ -15,9 +15,21 @@
     "width": 1200,
     "height": 739
   },
+  "humming-tree": {
+    "width": 1200,
+    "height": 800
+  },
   "indiranagar-metro-station": {
     "width": 1200,
     "height": 753
+  },
+  "kfc-signal": {
+    "width": 1200,
+    "height": 748
+  },
+  "rameshwaram-cafe": {
+    "width": 1200,
+    "height": 779
   },
   "toit": {
     "width": 1200,

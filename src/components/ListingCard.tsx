@@ -38,7 +38,7 @@ export function ListingCard({ listing, query, onNotify }: ListingCardProps) {
 
   return (
     <li ref={reveal} className="row reveal">
-      <BrandMark name={listing.name} />
+      <BrandMark name={listing.name} wave={listing.linkType === 'contact'} />
       <div className="row__body">
         <div className="leader-row">
           <h4 className="name min-w-0 text-pretty" translate="no">

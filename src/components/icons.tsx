@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { cn } from '../lib/cn';
 
 export type IconName = 'search' | 'close' | 'copy' | 'globe' | 'pin' | 'chat' | 'chevron' | 'check';
@@ -68,6 +69,23 @@ export function PlayMark({ className }: { className?: string }) {
         fillOpacity={0.3}
         d="M433.91 205.1l-104.65 -60 -111.61 110.22 113.01 108.83 104.64 -58.6c18.14,-9.77 30.7,-29.3 30.7,-50.23 -1.4,-20.93 -13.95,-40.46 -32.09,-50.22z"
       />
+    </svg>
+  );
+}
+
+/** M's wave logo (the m-logo on tellm.co), redrawn as a single stroke in the page ink. */
+export function MWave({ className, style }: { className?: string; style?: CSSProperties }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      style={style}
+      viewBox="0 0 200 61"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={15}
+    >
+      <path d="M0 53.4C23.6 53.4 29.2 7.6 52.8 7.6S76.4 53.4 100 53.4s23.6-45.8 47.2-45.8 29.2 45.8 52.8 45.8" />
     </svg>
   );
 }

@@ -28,6 +28,9 @@ const ENTRIES: SceneEntry[] = [
   { id: 'bobs-bar', caption: 'Bob’s Bar, 100 Feet Road' },
   { id: 'indiranagar-metro-station', caption: 'Indiranagar metro station, CMH Road' },
   { id: 'chokkanathaswamy-temple', caption: 'Chokkanathaswamy Temple, Domlur' },
+  { id: 'kfc-signal', caption: 'KFC Signal, 100 Feet Road & CMH Road (KFC till 2025)' },
+  { id: 'humming-tree', caption: 'The Humming Tree, 100 Feet Road' },
+  { id: 'rameshwaram-cafe', caption: 'The Rameshwaram Cafe, 100 Feet Road' },
 ];
 
 export const SCENES: Scene[] = ENTRIES.flatMap((entry) => {
