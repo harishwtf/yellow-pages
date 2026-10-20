@@ -4,128 +4,219 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>peela.pages versions</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f5d85a'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-weight='800' font-size='20' text-anchor='middle' fill='%231c1a17'%3Ep.%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23f4c430'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-weight='800' font-size='20' text-anchor='middle' fill='%231c1b18'%3Ep.%3C/text%3E%3C/svg%3E" />
   <style>
-    :root { --bg: #f5d85a; --paper: #fbeaa0; --ink: #1c1a17; --muted: #574f44; --keyline: rgb(28 26 23 / 0.4); }
+    @font-face { font-family: 'Archivo'; font-weight: 100 900; font-stretch: 62% 125%; font-display: swap; src: url('fonts/archivo-variable.woff2') format('woff2'); }
+    @font-face { font-family: 'Fraunces'; font-weight: 400 900; font-display: swap; src: url('fonts/fraunces-variable.woff2') format('woff2'); }
+
+    :root {
+      --desk: #f3f0e3; --page: #fae79c; --cover: #f4c430; --ink: #1c1b18; --muted: #5e5a50;
+      --rule: rgb(28 27 24 / 0.15);
+      --serif: 'Fraunces', Georgia, serif;
+      --sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .11 0 0 0 0 .1 0 0 0 0 .08 2 0 0 0 -.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.16'/%3E%3C/svg%3E");
+    }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
-    body { display: flex; flex-direction: column; background: var(--bg); color: var(--ink);
-      font: 15px/1.35 "Archivo Narrow", "Helvetica Neue", Arial, sans-serif; }
-    header { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 16px;
-      border-bottom: 1px solid var(--keyline); }
-    h1 { margin: 0; font: 800 18px/1 Georgia, serif; letter-spacing: -0.01em; }
-    h1 span { font: 400 14px/1 "Archivo Narrow", Arial, sans-serif; color: var(--muted); margin-left: 6px; }
-    nav { order: 3; flex-basis: 100%; display: flex; gap: 8px; overflow-x: auto; padding: 2px 4px 6px 2px; }
-    button, a.open { font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--ink);
-      border-radius: 4px; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
-    button:hover, a.open:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
-    button:focus-visible, a.open:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-    .ver { flex: none; display: flex; flex-direction: column; align-items: flex-start; width: 170px; padding: 6px 10px; text-align: left; }
-    .ver b { font: 800 16px/1.1 Georgia, serif; }
-    .ver small { max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; color: var(--muted); }
-    .ver[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-    .ver[aria-pressed="true"] small { color: var(--paper); opacity: 0.8; }
-    .modes { display: flex; gap: 6px; align-items: center; margin-left: auto; }
-    .modes button { padding: 6px 10px; }
-    .modes button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-    a.open { padding: 6px 10px; text-decoration: none; white-space: nowrap; }
-    main { flex: 1; min-height: 0; display: flex; justify-content: center; padding: 16px; overflow: auto; }
-    .frame { display: flex; flex-direction: column; gap: 6px; flex: none; }
-    .frame p { margin: 0; font-size: 13px; color: var(--muted); }
-    .frame p b { color: var(--ink); font: 800 15px Georgia, serif; margin-right: 4px; }
-    iframe { display: block; border: 1px solid var(--ink); border-radius: 6px; background: var(--paper);
-      box-shadow: 4px 4px 0 var(--ink); height: 100%; }
-    .single .frame { height: 100%; }
-    .single.phone iframe { width: 390px; max-width: calc(100vw - 32px); }
-    .single.desktop .frame { width: 100%; }
-    .single.desktop iframe { width: 100%; }
-    .all { justify-content: flex-start; gap: 20px; }
-    .all .frame { height: 100%; }
-    .all iframe { width: 390px; flex: 1; }
-    .hint { font-size: 12px; color: var(--muted); }
+    body {
+      display: grid; grid-template-rows: auto 1fr; min-width: 320px;
+      background: var(--desk) var(--grain); color: var(--ink);
+      font: 15px/1.4 var(--sans); -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; border-radius: 4px; }
+
+    /* ---------- Top bar ---------- */
+    .bar {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 12px 18px; border-bottom: 2px solid var(--ink);
+    }
+    .brand { display: flex; flex-direction: column; line-height: 1.05; margin-right: auto; }
+    .brand b { font: 800 1.2rem var(--serif); font-variation-settings: 'SOFT' 100; letter-spacing: -0.01em; }
+    .brand span { color: var(--muted); font-size: 0.82rem; font-weight: 600; }
+    .modes { display: flex; border: 1.5px solid var(--ink); border-radius: 6px; overflow: hidden; }
+    .modes button { min-height: 40px; padding: 0 14px; border: 0; border-left: 1.5px solid var(--ink); background: transparent; font-weight: 700; font-size: 0.9rem; }
+    .modes button:first-child { border-left: 0; }
+    .modes button[aria-pressed='true'] { background: var(--ink); color: var(--cover); }
+    .open { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 14px; border: 1.5px solid var(--ink); border-radius: 6px; background: var(--cover); font-weight: 800; font-size: 0.9rem; text-decoration: none; color: var(--ink); }
+    .open:hover { background: #f7d25c; }
+
+    /* ---------- Layout: the index on the left, the version on the right ---------- */
+    .layout { display: grid; grid-template-columns: 300px 1fr; min-height: 0; }
+    .index { overflow-y: auto; padding: 18px 14px 24px 18px; border-right: 1px solid var(--rule); }
+    .index__head {
+      margin: 0 0 8px; padding: 3px 8px; border-radius: 2px;
+      background: var(--ink); color: var(--page);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .index__head--drafts { margin-top: 22px; }
+    .index ol { margin: 0; padding: 0; list-style: none; }
+    .entry {
+      display: grid; grid-template-columns: 34px 1fr; gap: 2px 10px; align-items: start;
+      width: 100%; padding: 10px 8px; border: 0; border-bottom: 1px solid var(--rule);
+      border-radius: 4px; background: transparent; text-align: left;
+    }
+    .entry:hover { background: rgb(28 27 24 / 0.05); }
+    .entry[aria-current='true'] { background: var(--page); box-shadow: inset 0 0 0 1.5px var(--ink); }
+    .tab {
+      grid-row: span 2; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 3px;
+      background: var(--ink); color: var(--page);
+      font: 800 1.1rem var(--serif); font-variation-settings: 'SOFT' 100;
+    }
+    .entry--draft .tab { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--muted); }
+    .name { font: 800 1.12rem/1.15 var(--serif); font-variation-settings: 'SOFT' 100; letter-spacing: -0.01em; }
+    .note { color: var(--muted); font-size: 0.86rem; line-height: 1.3; }
+    .hint { margin: 18px 8px 0; color: var(--muted); font-size: 0.78rem; }
+
+    /* ---------- The version itself ---------- */
+    .stage { min-width: 0; min-height: 0; display: flex; flex-direction: column; padding: 16px 20px 20px; gap: 10px; }
+    .caption { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+    .caption b { font: 800 1.5rem var(--serif); font-variation-settings: 'SOFT' 100; letter-spacing: -0.01em; }
+    .caption span { color: var(--muted); }
+    .caption .tag { padding: 1px 7px; border-radius: 3px; background: var(--ink); color: var(--page); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+    .caption .tag--draft { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1.5px var(--muted); }
+    .frames { flex: 1; min-height: 0; display: flex; justify-content: center; gap: 22px; }
+    .frame { display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+    .frame iframe {
+      flex: 1; display: block; border: 1.5px solid var(--ink); border-radius: 10px; background: #fff;
+      box-shadow: 0 18px 40px -20px rgb(28 27 24 / 0.45);
+    }
+    .phone .frame iframe { width: 390px; max-width: calc(100vw - 40px); border-radius: 22px; }
+    .desktop .frame { flex: 1; }
+    .desktop .frame iframe { width: 100%; }
+    .all { justify-content: flex-start; overflow-x: auto; padding-bottom: 6px; }
+    .all .frame { flex: none; }
+    .all .frame iframe { width: 390px; border-radius: 22px; }
+    .frame__label { display: flex; gap: 8px; align-items: baseline; }
+    .frame__label b { font: 800 1rem var(--serif); font-variation-settings: 'SOFT' 100; }
+    .frame__label span { color: var(--muted); font-size: 0.8rem; }
+
+    /* ---------- Phones: the index becomes a strip of tabs ---------- */
+    @media (max-width: 860px) {
+      .layout { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+      .index { display: flex; gap: 8px; overflow-x: auto; padding: 10px 12px; border-right: 0; border-bottom: 1px solid var(--rule); }
+      .index__head, .note, .hint { display: none; }
+      .index ol { display: contents; }
+      .entry { flex: none; grid-template-columns: 26px auto; width: auto; padding: 6px 12px 6px 6px; border: 1.5px solid var(--ink); align-items: center; }
+      .entry .tab { grid-row: auto; width: 26px; height: 26px; font-size: 0.9rem; }
+      .name { font-size: 0.95rem; white-space: nowrap; }
+      .stage { padding: 12px; }
+      .modes button[data-mode='all'] { display: none; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>peela.pages<span>every saved version</span></h1>
-    <nav id="versions" aria-label="Versions"></nav>
-    <div class="modes" role="group" aria-label="View">
-      <button data-mode="phone">Phone</button>
-      <button data-mode="desktop">Desktop</button>
-      <button data-mode="all">Side by side</button>
-      <a class="open" id="open" target="_blank" rel="noopener">Open on its own ↗</a>
+  <header class="bar">
+    <div class="brand"><b>peela.pages</b><span>every saved version</span></div>
+    <div class="modes" role="group" aria-label="Show as">
+      <button type="button" data-mode="phone">Phone</button>
+      <button type="button" data-mode="desktop">Desktop</button>
+      <button type="button" data-mode="all">All side by side</button>
     </div>
-    <span class="hint">← → to flip</span>
+    <a class="open" id="open" target="_blank" rel="noopener">Open on its own ↗</a>
   </header>
-  <main id="stage"></main>
-  <script>
-    const nav = document.getElementById('versions');
-    const stage = document.getElementById('stage');
-    const open = document.getElementById('open');
-    let versions = [];
-    let state = { id: null, mode: 'phone' };
 
-    const label = (v) => (v.id === 'now' ? 'Now' : v.id);
-    const frame = (v) => {
+  <div class="layout">
+    <nav class="index" aria-label="Versions" id="index"></nav>
+    <main class="stage">
+      <p class="caption" id="caption"></p>
+      <div class="frames" id="frames"></div>
+    </main>
+  </div>
+
+  <script>
+    const indexEl = document.getElementById('index');
+    const framesEl = document.getElementById('frames');
+    const captionEl = document.getElementById('caption');
+    const openEl = document.getElementById('open');
+    let versions = [];
+    let state = { id: null, mode: window.innerWidth < 860 ? 'phone' : 'desktop' };
+
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    const tagText = (v) => (v.draft ? 'Not saved' : `Version ${v.label}`);
+
+    function frame(v) {
       const box = document.createElement('div');
       box.className = 'frame';
-      box.innerHTML = `<p><b>${label(v)}</b>${v.note}</p>`;
+      if (state.mode === 'all') box.innerHTML = `<p class="frame__label"><b>${esc(v.name)}</b><span>${esc(tagText(v))}</span></p>`;
       const f = document.createElement('iframe');
       f.src = `/${v.id}/`;
-      f.title = `peela.pages ${label(v)}`;
+      f.title = v.name;
       box.append(f);
       return box;
-    };
+    }
 
     function render() {
-      const current = versions.find((v) => v.id === state.id) ?? versions[versions.length - 1];
+      const current = versions.find((v) => v.id === state.id) ?? versions.filter((v) => !v.draft).at(-1) ?? versions[0];
       state.id = current.id;
       try { history.replaceState(null, '', `#${state.id}/${state.mode}`); } catch {}
-      nav.querySelectorAll('.ver').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.id === state.id)));
+      indexEl.querySelectorAll('.entry').forEach((b) => b.setAttribute('aria-current', String(b.dataset.id === state.id)));
       document.querySelectorAll('[data-mode]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
-      open.href = `/${state.id}/`;
-      open.textContent = `Open ${label(current)} on its own ↗`;
-      stage.className = state.mode === 'all' ? 'all' : `single ${state.mode}`;
-      stage.replaceChildren(...(state.mode === 'all' ? versions.map(frame) : [frame(current)]));
-      if (state.mode === 'all') stage.children[versions.indexOf(current)].scrollIntoView({ inline: 'center', block: 'nearest' });
+      captionEl.innerHTML = state.mode === 'all'
+        ? `<b>All versions</b><span>scroll sideways to compare</span>`
+        : `<span class="tag ${current.draft ? 'tag--draft' : ''}">${esc(tagText(current))}</span><b>${esc(current.name)}</b><span>${esc(current.note)}</span>`;
+      openEl.href = `/${state.id}/`;
+      openEl.textContent = `Open ${current.name} ↗`;
+      framesEl.className = `frames ${state.mode}`;
+      framesEl.replaceChildren(...(state.mode === 'all' ? versions.map(frame) : [frame(current)]));
     }
 
     function step(by) {
       const i = versions.findIndex((v) => v.id === state.id);
       state.id = versions[(i + by + versions.length) % versions.length].id;
       render();
+      indexEl.querySelector(`[data-id="${state.id}"]`)?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }
-
-    document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => { state.mode = b.dataset.mode; render(); }));
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight') step(1);
-      if (e.key === 'ArrowLeft') step(-1);
-    });
-
-    fetch('versions.json').then((r) => r.json()).then((list) => {
-      versions = list;
-      for (const v of versions) {
-        const b = document.createElement('button');
-        b.className = 'ver';
-        b.dataset.id = v.id;
-        b.title = v.note;
-        b.innerHTML = `<b>${label(v)}</b><small>${v.note}</small>`;
-        b.addEventListener('click', () => { state.id = v.id; render(); });
-        nav.append(b);
-      }
-      readHash();
-      render();
-    });
 
     function readHash() {
       const [id, mode] = location.hash.slice(1).split('/');
       if (versions.some((v) => v.id === id)) state.id = id;
       if (['phone', 'desktop', 'all'].includes(mode)) state.mode = mode;
     }
+
+    document.querySelectorAll('[data-mode]').forEach((b) => b.addEventListener('click', () => { state.mode = b.dataset.mode; render(); }));
+    document.addEventListener('keydown', (e) => {
+      if (e.target.closest('input, textarea')) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+      if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+    });
     window.addEventListener('hashchange', () => {
       if (location.hash === `#${state.id}/${state.mode}`) return;
       readHash();
       render();
+      indexEl.querySelector(`[data-id="${state.id}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
+    });
+
+    fetch('versions.json', { cache: 'no-store' }).then((r) => r.json()).then((list) => {
+      versions = list;
+      const section = (title, items, extra) => {
+        if (!items.length) return;
+        const head = document.createElement('p');
+        head.className = `index__head ${extra ?? ''}`;
+        head.textContent = title;
+        const ol = document.createElement('ol');
+        for (const v of items) {
+          const li = document.createElement('li');
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = `entry ${v.draft ? 'entry--draft' : ''}`;
+          b.dataset.id = v.id;
+          b.innerHTML = `<span class="tab" aria-hidden="true">${esc(v.label)}</span><span class="name">${esc(v.name)}</span><span class="note">${esc(v.note)}</span>`;
+          b.addEventListener('click', () => { state.id = v.id; if (state.mode === 'all') state.mode = window.innerWidth < 860 ? 'phone' : 'desktop'; render(); });
+          li.append(b);
+          ol.append(li);
+        }
+        indexEl.append(head, ol);
+      };
+      section('Saved versions', versions.filter((v) => !v.draft));
+      section('Not saved', versions.filter((v) => v.draft), 'index__head--drafts');
+      const hint = document.createElement('p');
+      hint.className = 'hint';
+      hint.textContent = '↑ ↓ to flip through';
+      indexEl.append(hint);
+      readHash();
+      render();
+      indexEl.querySelector(`[data-id="${state.id}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center' });
     });
   </script>
 </body>
