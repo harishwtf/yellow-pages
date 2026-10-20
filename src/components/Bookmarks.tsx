@@ -74,9 +74,17 @@ export function Bookmarks({ sections, startStep, step, turns, readingByStep, cur
           style={placement(i, sections.length, startStep, step, turns, readingByStep, currentSection) as CSSProperties}
           aria-label={`${section.navLabel}: ${section.title}, ${section.listings.length} ${COPY.places}`}
           aria-current={open && i === currentSection ? 'page' : undefined}
+          onPointerDown={(event) => {
+            // Answer on press: during a turn the slip slides along with the page, and a click (press and
+            // release on the same element) could miss it.
+            if (event.button !== 0 || event.pointerType === 'touch') return;
+            event.preventDefault();
+            onPick(i);
+          }}
           onClick={(event) => {
             event.stopPropagation();
-            onPick(i);
+            // Keyboard (Enter/Space) and touch taps arrive as clicks.
+            if (event.detail === 0 || (event.nativeEvent as PointerEvent).pointerType === 'touch') onPick(i);
           }}
         >
           <span className="bookmark__paper" aria-hidden="true">

@@ -25,9 +25,19 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
 
   const perSection = useMemo(() => sectionItems(sections), [sections]);
   const directory = usePagination(perSection, measureRef);
+  /** The measuring copy of every item, built once: React skips it when the book turns a page. */
+  const measureItems = useMemo(
+    () =>
+      perSection.flat().map((item) => (
+        <div key={item.key} data-key={item.key} data-kind={item.kind}>
+          <PageItem item={item} onCopy={noop} />
+        </div>
+      )),
+    [perSection],
+  );
   const pages = useMemo(() => bookPages(directory), [directory]);
   const turns = Math.max(0, pages.length / 2 - 1);
-  const { open, step, goTo, snaps, height, reduced } = useBookScroll(trackRef, stageRef, turns);
+  const { open, step, goTo, turnBy, snaps, height, reduced } = useBookScroll(trackRef, stageRef, turns);
   const total = sections.reduce((n, s) => n + s.listings.length, 0);
 
   /** Book page index where each section starts. */
@@ -96,8 +106,9 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
     }
   }, [open, sectionId]);
 
-  const back = () => goTo(open ? step - 1 : -1);
-  const forward = () => goTo(open ? step + 1 : 0);
+  // Measured from where the book is heading, so two quick clicks turn two pages.
+  const back = () => turnBy(-1);
+  const forward = () => turnBy(1);
 
 
 
@@ -159,11 +170,7 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
                 <span className="sheet__guide">Measure</span>
               </p>
               <div className="sheet__body">
-                {perSection.flat().map((item) => (
-                  <div key={item.key} data-key={item.key} data-kind={item.kind}>
-                    <PageItem item={item} onCopy={noop} />
-                  </div>
-                ))}
+                {measureItems}
               </div>
             </div>
           </div>
@@ -174,9 +181,11 @@ export function Book({ sections, onCopy }: { sections: Section[]; onCopy: (phone
           </div>
           {hasLeaf && (
             <div className="leaf">
-              <div className="leaf__face leaf__front sheet">{page(R, 'right')}</div>
-              <div className="leaf__face leaf__back sheet" inert aria-hidden="true">
-                {page(R + 1, 'left')}
+              <div className="leaf__face leaf__front">
+                <div className="leaf__paper sheet">{page(R, 'right')}</div>
+              </div>
+              <div className="leaf__face leaf__back" inert aria-hidden="true">
+                <div className="leaf__paper sheet">{page(R + 1, 'left')}</div>
               </div>
             </div>
           )}

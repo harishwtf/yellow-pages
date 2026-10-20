@@ -1,5 +1,6 @@
 import { type RefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { prefersReducedMotion } from '../lib/motion';
+import { createWheelGesture } from '../lib/wheelGesture';
 
 /** Scroll distances, in viewport heights: one stretch swings the cover open, then one per page turn.
  *  Snap points sit at the end of each stretch so a scroll always settles on a whole page. */
@@ -83,6 +84,22 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     apply.current();
   }, [step]);
 
+  /** Where the book is heading: the resting point a scroll is on its way to, or null when it's at rest.
+   *  Every move is measured from here, so a second press, click or swipe during a turn goes one page
+   *  further instead of re-aiming at the page the book is already turning to. */
+  const dest = useRef<number | null>(null);
+  const destTimer = useRef<number | undefined>(undefined);
+
+  /** The resting point nearest the current scroll position: -1 is the closed book. */
+  const restingNow = () => {
+    const el = track.current;
+    if (!el) return -1;
+    const h = window.innerHeight;
+    const scrolled = -el.getBoundingClientRect().top;
+    if (scrolled < turnStart(h) / 2) return -1;
+    return clamp(Math.round((scrolled - turnStart(h)) / turnLength(h)), 0, turns);
+  };
+
   /** Scroll to a resting point: -1 is the closed book, 0 the first spread, and so on. */
   const goTo = (target: number, instant = false) => {
     const el = track.current;
@@ -91,69 +108,102 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     const k = clamp(target, -1, turns);
     const offset = k < 0 ? 0 : turnStart(h) + k * turnLength(h);
     const top = Math.round(el.getBoundingClientRect().top + window.scrollY + offset);
+    dest.current = instant || reduced ? null : k;
+    window.clearTimeout(destTimer.current);
+    // If the scroll is interrupted (say, by dragging the scrollbar), forget the destination soon after.
+    destTimer.current = window.setTimeout(() => (dest.current = null), 1200);
     window.scrollTo({ top, behavior: instant || reduced ? 'auto' : 'smooth' });
   };
-  const goToRef = useRef(goTo);
+
+  /** One page forward (1) or back (-1) from where the book is heading. */
+  const turnBy = (dir: 1 | -1) => {
+    const from = dest.current ?? restingNow();
+    const target = from + dir;
+    if (target < -1 || target > turns || target === from) return;
+    goTo(target);
+  };
+
+  const navRef = useRef({ goTo, turnBy });
   useEffect(() => {
-    goToRef.current = goTo;
+    navRef.current = { goTo, turnBy };
   });
 
-  /** One gesture turns one page, however fast: a wheel or trackpad flick, a swipe, or a key press moves to
-   *  the next resting point, and the rest of that gesture (trackpad momentum included) is ignored. */
-  const latest = useRef({ open: false, step: 0 });
-  useEffect(() => {
-    latest.current = { open, step };
-  }, [open, step]);
+  // The destination is reached (or the scroll ended elsewhere): the book is at rest again.
   useEffect(() => {
     const el = track.current;
     if (!el) return;
-    let busyUntil = 0;
-    let lastInput = -Infinity;
-    let pending = 0;
-    /** This gesture has already turned its page; the rest of it (trackpad momentum included) is ignored. */
-    let spent = false;
-
-    /** Whether the book is on screen (the track covers the viewport). */
-    const inBook = () => {
-      const r = el.getBoundingClientRect();
-      return r.top <= 1 && r.bottom >= window.innerHeight - 1;
+    const check = () => {
+      if (dest.current === null) return;
+      const h = window.innerHeight;
+      const scrolled = -el.getBoundingClientRect().top;
+      const at = dest.current < 0 ? 0 : turnStart(h) + dest.current * turnLength(h);
+      if (Math.abs(scrolled - at) < 3) dest.current = null;
     };
-    const turn = (dir: 1 | -1) => {
-      const { open: isOpen, step: at } = latest.current;
-      const target = !isOpen ? (dir > 0 ? 0 : -1) : at + dir;
-      if (target < -1 || target > turns) return;
-      busyUntil = performance.now() + (reduced ? 120 : 600);
-      goToRef.current(target);
+    const ended = () => (dest.current = null);
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('scrollend', ended);
+    return () => {
+      window.removeEventListener('scroll', check);
+      window.removeEventListener('scrollend', ended);
+      window.clearTimeout(destTimer.current);
     };
+  }, [track]);
 
+  /** One gesture turns one page: a wheel or trackpad swipe, a key press, a touch swipe. The wheel stream is
+   *  read by createWheelGesture (glides ignored, new swipes always counted). Its memory lives in a ref and
+   *  the listeners are registered once, so re-measuring the pages can't reset a swipe halfway through. */
+  const wheel = useRef(createWheelGesture());
+  useEffect(() => {
+    const el = track.current;
+    if (!el) return;
+
+    // Where the track sits, cached so a wheel event doesn't force a layout while a turn is drawing.
+    let trackTop = 0;
+    let trackHeight = 0;
+    const measure = () => {
+      trackTop = el.getBoundingClientRect().top + window.scrollY;
+      trackHeight = el.offsetHeight;
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    window.addEventListener('resize', measure);
+    /** Whether the book fills the screen (the track covers the viewport). */
+    const inBook = () => window.scrollY >= trackTop - 1 && window.scrollY + window.innerHeight <= trackTop + trackHeight + 1;
     /** Inside the search panel, scrolling and keys belong to the panel. */
     const inPanel = (event: Event) => (event.target as HTMLElement | null)?.closest?.('[data-free-scroll]');
 
+    // A frame clock while wheel input is coming in: a gap in the input only counts as a pause if the page
+    // kept drawing frames through it (if it didn't, the page was busy and the browser bunched the events).
+    let lastFrame = -Infinity;
+    let lastWheel = -Infinity;
+    let ticking = false;
+    const tick = (now: number) => {
+      lastFrame = now;
+      if (now - lastWheel < 1000) window.requestAnimationFrame(tick);
+      else ticking = false;
+    };
+    const frameAfter = (t: number) => lastFrame > t;
+
     const onWheel = (event: WheelEvent) => {
-      const panel = inPanel(event);
-      if (panel) {
+      if (inPanel(event)) {
         // The results list scrolls; the dimmed page behind it stays put.
         if (!(event.target as HTMLElement).closest('.search-results')) event.preventDefault();
         return;
       }
       if (event.ctrlKey || !inBook()) return; // pinch-zoom, or outside the book
       event.preventDefault();
-      const size = Math.abs(event.deltaY) > Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-      // A new gesture starts after a real pause in the input. The gap is measured from when the input
-      // happened (event.timeStamp), not when it was handled: right after a turn the page is busy drawing the
-      // new spread, events queue up, and a late handler must not mistake that delay for a fresh scroll.
-      if (event.timeStamp - lastInput > 200) {
-        spent = false;
-        pending = 0;
+      lastWheel = performance.now();
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(tick);
       }
-      lastInput = event.timeStamp;
-      if (spent || performance.now() < busyUntil) return;
-      pending += size;
-      if (Math.abs(pending) < 4) return;
-      const dir = pending > 0 ? 1 : -1;
-      pending = 0;
-      spent = true;
-      turn(dir);
+      // Lines and pages (some mice, Firefox) in pixels.
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      const d = (Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX) * unit;
+      const momentum = 'momentum' in event ? Boolean((event as WheelEvent & { momentum?: boolean }).momentum) : undefined;
+      const dir = wheel.current({ t: event.timeStamp, d, momentum }, frameAfter);
+      if (dir) navRef.current.turnBy(dir);
     };
 
     let startX = 0;
@@ -167,22 +217,26 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
       if (inBook() && event.cancelable) event.preventDefault();
     };
     const onTouchEnd = (event: TouchEvent) => {
-      if (inPanel(event) || !inBook() || performance.now() < busyUntil) return;
+      if (inPanel(event) || !inBook()) return;
       const dx = startX - event.changedTouches[0].clientX;
       const dy = startY - event.changedTouches[0].clientY;
       const along = Math.abs(dx) > Math.abs(dy) ? dx : dy;
-      if (Math.abs(along) > 40) turn(along > 0 ? 1 : -1);
+      if (Math.abs(along) > 40) navRef.current.turnBy(along > 0 ? 1 : -1);
     };
 
     const onKey = (event: KeyboardEvent) => {
       if (event.altKey || event.ctrlKey || event.metaKey || !inBook() || inPanel(event)) return;
       const target = event.target as HTMLElement | null;
       if (target?.closest('input, textarea, select')) return;
+      // Space on a focused button or link presses it rather than turning the page.
+      if (event.key === ' ' && target?.closest('button, a, [role="button"]')) return;
       const forward = ['ArrowDown', 'PageDown', 'ArrowRight'].includes(event.key) || (event.key === ' ' && !event.shiftKey);
       const backward = ['ArrowUp', 'PageUp', 'ArrowLeft'].includes(event.key) || (event.key === ' ' && event.shiftKey);
       if (!forward && !backward) return;
       event.preventDefault();
-      if (performance.now() >= busyUntil) turn(forward ? 1 : -1);
+      // Each press turns a page; holding a key pages steadily, one turn at a time.
+      if (event.repeat && dest.current !== null) return;
+      navRef.current.turnBy(forward ? 1 : -1);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
@@ -191,13 +245,15 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
     window.addEventListener('touchend', onTouchEnd, { passive: true });
     window.addEventListener('keydown', onKey);
     return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', measure);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('keydown', onKey);
     };
-  }, [track, turns, reduced]);
+  }, [track]);
 
   /** The track's height and its snap points, in px. */
   const openPx = turnStart(vh);
@@ -205,5 +261,5 @@ export function useBookScroll(track: RefObject<HTMLElement | null>, stage: RefOb
   const snaps = [0, ...Array.from({ length: turns + 1 }, (_, k) => openPx + k * turnPx)];
   const height = vh + openPx + turns * turnPx;
 
-  return { open, step, goTo, snaps, height, reduced };
+  return { open, step, goTo, turnBy, snaps, height, reduced };
 }
